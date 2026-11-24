@@ -1,0 +1,16 @@
+// SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me>
+// SPDX-License-Identifier: MIT
+// Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663
+
+import {Plus,Trash2} from 'lucide-react';
+import type {Entry} from './types';
+import {Field,NumberField} from './Fields';
+export type MaterialLifetime={tau_ps:number;kind:'calculated'|'measured'|'assumed';method:string;state:string;reference_title:string;reference_url:string;comment:string};
+export function MaterialLifetimes({entry,editable,change}:{entry:Entry;editable:boolean;change:(v:MaterialLifetime[])=>void}){
+ const values=(entry.properties.positron_lifetimes??[]) as MaterialLifetime[];
+ const update=(i:number,p:Partial<MaterialLifetime>)=>change(values.map((v,j)=>i===j?{...v,...p}:v));
+ return <div className="material-lifetimes"><p className="field-note">Optional positron lifetimes.</p>
+ {values.map((v,i)=><section className="material-lifetime" key={i}><header><strong>{v.tau_ps} ps · {v.method}</strong><a href={/^https?:\/\//.test(v.reference_url)?v.reference_url:undefined} target="_blank" rel="noreferrer" title={v.reference_url}>{v.reference_title||'No source assigned'} ↗</a>{editable&&<button title="Remove this lifetime value" onClick={()=>change(values.filter((_,j)=>i!==j))}><Trash2 size={14}/></button>}</header>
+ <fieldset disabled={!editable} className="material-editor-fields"><div className="field-grid"><NumberField label="Lifetime · ps" help="Mean positron lifetime. Module 2 converts picoseconds to nanoseconds. Bulk, vacancy and source values must not be confused." value={v.tau_ps} min={.001} onChange={tau_ps=>update(i,{tau_ps})}/><Field label="Evidence" help="Identify whether this is a calculation, measurement or an explicit modelling assumption."><select value={v.kind} onChange={e=>update(i,{kind:e.target.value as MaterialLifetime['kind']})}><option value="calculated">Calculated</option><option value="measured">Measured</option><option value="assumed">Model assumption</option></select></Field><Field label="Method / conditions" help="For example LMTO / GGA, or the experimental technique."><input value={v.method} onChange={e=>update(i,{method:e.target.value})}/></Field><Field label="Material state" help="Crystal structure, phase, temperature and defect state relevant to this value."><input value={v.state} onChange={e=>update(i,{state:e.target.value})}/></Field><Field label="Reference" help="Original publication supporting this particular lifetime."><input value={v.reference_title} onChange={e=>update(i,{reference_title:e.target.value})}/></Field><Field label="Reference URL" help="Direct DOI or source link."><input value={v.reference_url} onChange={e=>update(i,{reference_url:e.target.value})}/></Field></div><Field label="Comment" help="State limitations or discrepancies without mixing them into the value."><textarea rows={2} value={v.comment} onChange={e=>update(i,{comment:e.target.value})}/></Field></fieldset></section>)}
+ {!values.length&&<p className="empty-state">No lifetime entered. Transport simulation remains available.</p>}{editable&&<button title="Add another independently referenced lifetime" onClick={()=>change([...values,{tau_ps:150,kind:'calculated',method:'',state:'',reference_title:'',reference_url:'',comment:''}])}><Plus size={14}/>Add lifetime</button>}</div>;
+}

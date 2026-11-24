@@ -1,0 +1,104 @@
+{
+  "archives": [
+    {
+      "archive": "WIN64-VC17.11.4-11.zip",
+      "sha256": "75bc55c1fce39e89db248ee0564d61875f38cd2a4ec8d56f17b7fcd78af0b29d",
+      "source": "https://geant4-data.web.cern.ch/releases/lib4.11.4/WIN64-VC17.11.4-11.zip",
+      "kind": "sdk",
+      "target": "geant4-11.4.0-win64",
+      "probe": "lib/cmake/Geant4/Geant4Config.cmake"
+    },
+    {
+      "archive": "G4EMLOW.8.8.tar.gz",
+      "sha256": "b60cfd63176f5d16107e2a25b35b235155032d1735d749670ca50fede12624cf",
+      "source": "https://geant4-data.web.cern.ch/datasets/G4EMLOW.8.8.tar.gz",
+      "kind": "dataset",
+      "target": "geant4-data/G4EMLOW8.8",
+      "probe": "README"
+    },
+    {
+      "archive": "G4ENSDFSTATE.3.0.tar.gz",
+      "sha256": "4bdc3bd40b31d43485bf4f87f055705e540a6557d64ed85c689c59c9a4eba7d6",
+      "source": "https://geant4-data.web.cern.ch/datasets/G4ENSDFSTATE.3.0.tar.gz",
+      "kind": "dataset",
+      "target": "geant4-data/G4ENSDFSTATE3.0",
+      "probe": "ENSDFSTATE.dat"
+    },
+    {
+      "archive": "G4PhotonEvaporation.6.1.2.tar.gz",
+      "sha256": "02149c0ab91d88ee24e78532558777e39a068b9fcdd199136101ff58e635e742",
+      "source": "https://geant4-data.web.cern.ch/datasets/G4PhotonEvaporation.6.1.2.tar.gz",
+      "kind": "dataset",
+      "target": "geant4-data/PhotonEvaporation6.1.2",
+      "probe": "README-LevelGammaData"
+    },
+    {
+      "archive": "G4RealSurface.2.2.tar.gz",
+      "sha256": "9954dee0012f5331267f783690e912e72db5bf52ea9babecd12ea22282176820",
+      "source": "https://cern.ch/geant4-data/datasets/G4RealSurface.2.2.tar.gz",
+      "kind": "dataset",
+      "target": "geant4-data/RealSurface2.2",
+      "probe": "README"
+    },
+    {
+      "archive": "geant4-v11.4.0.tar.gz",
+      "sha256": "f9b8e9913b9b40322a071d8464c9c20151290188f8a34d40d5162084b29c48a8",
+      "source": "https://codeload.github.com/Geant4/geant4/tar.gz/refs/tags/v11.4.0",
+      "kind": "source",
+      "target": "legal-sources/geant4-v11.4.0.tar.gz"
+    }
+  ],
+  "environment": {
+    "G4LEDATA": ".runtime/geant4-data/G4EMLOW8.8",
+    "G4ENSDFSTATEDATA": ".runtime/geant4-data/G4ENSDFSTATE3.0",
+    "G4LEVELGAMMADATA": ".runtime/geant4-data/PhotonEvaporation6.1.2",
+    "GEANT4_DATA_DIR": ".runtime/geant4-data",
+    "G4REALSURFACEDATA": ".runtime/geant4-data/RealSurface2.2"
+  },
+  "notices": {
+    "CLHEP-COPYING.LESSER.txt": {
+      "file": "clhep-1.txt",
+      "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+    },
+    "CLHEP-LICENSE.txt": {
+      "file": "clhep-2.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    "Expat-COPYING.txt": {
+      "file": "expat-1.txt",
+      "sha256": "f6eeb2310d0b00e5cecac39c73a0696a5bdbfb754b26325ed5a502fc1a6c338c"
+    },
+    "G4EMLOW8.8-README.txt": {
+      "file": "emlow-1.txt",
+      "sha256": "7a9ce19c2634bc9d1fbeaa1e49eda90af848e9d4d50dd0e79cf94380ea196678"
+    },
+    "G4ENSDFSTATE3.0-README.txt": {
+      "file": "ensdf-1.txt",
+      "sha256": "cc18aae3d19bd1be158467026805088da2527eb4102bdcc64256b42f7d91d1a9"
+    },
+    "G4tools-LICENSE.txt": {
+      "file": "g4tools-1.txt",
+      "sha256": "6c42aaba904005644c0d544d0202994a2d53abc5cb78ec7d1d6a9ce548ed7fd1"
+    },
+    "Geant4-LICENSE.txt": {
+      "file": "geant4-1.txt",
+      "sha256": "e2e3b456d6f939a98438eb22c6b7ac6ad4306321010493ac6e014980dfca567f"
+    },
+    "nlohmann-json-LICENSE.txt": {
+      "file": "nlohmann-2.txt",
+      "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
+    },
+    "PhotonEvaporation6.1.2-README.txt": {
+      "file": "photon-1.txt",
+      "sha256": "3bee8f2b9aea2afe384d8c6902b41a02b188c584b79d3c6af48cc6ea96ddbe4c"
+    },
+    "PTL-LICENSE.txt": {
+      "file": "ptl-1.txt",
+      "sha256": "c8ad11d0099294cbaf15559536d8096522078253b2463abf634f61678167a005"
+    },
+    "zlib-LICENSE.txt": {
+      "file": "zlib-1.txt",
+      "sha256": "254398acc7ecebe67b2cab0582f82dac00557b959f75cdff19c00885758fc141"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.venv/
+.runtime/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.tsbuildinfo
+*.log
+.vscode/
+/data/
+/tmp/
+/build/
+/dist/
+/release/
+/validation/
+/native/build/
+/frontend/node_modules/
+/frontend/dist/

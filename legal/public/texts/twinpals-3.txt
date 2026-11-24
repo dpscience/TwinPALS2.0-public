@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "Please cite TwinPALS 2.0 and the doctoral dissertation listed in references when using this work in research."
+type: software
+title: TwinPALS 2.0
+version: "2.0.0"
+license: MIT
+authors:
+  - family-names: Petschke
+    given-names: Danny
+    email: twinpals@proton.me
+references:
+  - type: thesis
+    thesis-type: Doctoral dissertation
+    authors:
+      - family-names: Boras
+        given-names: Dominik
+    title: "Digitale Positronen-Annihilation-Lebensdauer-Spektroskopie: Geant4-Monte-Carlo-Simulation und Puls-Generator-Kopplung für einen realitätsgetreuen digitalen Zwilling"
+    institution:
+      name: Julius-Maximilians-Universität Würzburg
+    year: 2024
+    doi: 10.25972/OPUS-37663
+    url: https://doi.org/10.25972/OPUS-37663

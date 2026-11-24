@@ -1,0 +1,75 @@
+/* SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me>
+ * SPDX-License-Identifier: MIT
+ * Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663 */
+
+/* Shared plot controls: fixed chart geometry across views and selections. */
+.analysis-scroll{--analysis-row-gap:10px;row-gap:var(--analysis-row-gap);display:flex;flex-direction:column;overflow:hidden}
+.analysis-scroll>.analysis-grid{row-gap:var(--analysis-row-gap);flex:1;min-height:0;height:auto}
+.shared-legend{flex:none;padding:9px 12px;border-top:1px solid #dce6ee;background:#fff;display:flex;align-items:center;gap:12px;min-width:0}
+.shared-legend-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px 8px;flex:1;min-width:0}
+.analysis-scroll>.shared-legend{--legend-gap:5px;height:calc(20px + 22px * var(--split-rows) + var(--legend-gap) * (var(--split-rows) - 1));box-sizing:border-box;border:1px solid #dce6ee;border-radius:6px}
+.shared-legend .legend-badge{display:flex;align-items:center;justify-content:flex-start;gap:6px;font-size:9px;min-height:22px;padding:3px 7px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis;border-radius:14px}
+.shared-legend .legend-badge.muted{opacity:.45;background:transparent}
+.shared-legend .legend-badge:disabled{opacity:.32;cursor:default}
+.monitor-panel>.shared-legend{padding:8px 0;display:block;border-top:1px solid #e2e9f0}
+.monitor-panel .shared-legend-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 6px}
+.monitor-panel .shared-legend .legend-badge{font-size:8px;min-height:18px;padding:2px 5px}
+.monitor-panel>.monitor-plots{flex:1;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));min-height:0}
+.monitor-panel>.monitor-plots>.plot{min-height:0;height:100%;margin:0;padding:8px 3px;overflow:hidden}
+.analysis-cell .plot-note,.monitor-plots .plot-note{overflow:hidden}
+.plot-unavailable{background:#fff!important;position:relative}
+.unavailable-chart{flex:1;min-height:0;position:relative;display:flex}
+.unavailable-chart>svg{width:100%;height:100%;filter:blur(.8px);opacity:.6;min-height:0}
+.unavailable-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;background:#f8fbfd66;color:#718a9f;font-size:11px;text-align:center;padding:10px}
+.unavailable-overlay small{font-size:9px;color:#8c9daa}
+.inset-filters.with-origin{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.inset-filters.with-origin select{font-size:9px;padding-left:6px;padding-right:16px;min-width:0}
+.physics-badges{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px;align-items:center}
+.analysis-phase-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid #cfe4e2;border-radius:6px;background:#eff8f7;color:#317d7b;font-size:10px;white-space:nowrap;min-height:30px}
+.analysis-phase-badge .spinner{flex:none;width:12px;height:12px}
+.m2-monitoring{padding:16px;gap:12px;overflow:hidden}
+.m2-monitor-controls{align-items:flex-end;margin:0;gap:12px}
+.m2-monitor-controls .field{width:76px;margin:0}
+.m2-acquisition-summary{display:flex;flex-direction:column;gap:6px;margin:0;font-size:11px}
+.measurement-readout{display:inline-flex;gap:6px;align-items:center;color:#66849b;font-size:10px}
+.m2-monitoring .monitor-plots{flex:1;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));min-height:0;gap:0}
+.m2-monitoring .monitor-plots>.plot{height:100%;min-height:0;padding:10px 2px;overflow:hidden}
+.m2-monitoring .monitor-plots .plot-svg{min-height:0}
+.m2-persistence{min-height:0;display:flex;flex-direction:column;padding-top:8px;position:relative}
+.persistence-channel-tabs{display:flex;gap:5px;flex:none;padding:0 0 4px}
+.persistence-channel-tabs button{font-size:9px;padding:4px 8px}
+.persistence-channel-tabs button.active{background:#e4f3f0;color:#00858b;border-color:transparent}
+.m2-persistence .cathode-map{flex:1;min-height:0;display:flex;flex-direction:column;border:0;padding:0}
+.m2-persistence .cathode-map>.plot-heading{flex:none}
+.m2-persistence .density-visual{min-height:0;flex:1}
+.m2-persistence .cathode-map svg{width:100%;height:100%;min-height:0}
+.plot-annotations{display:flex;flex-wrap:wrap;align-items:center;gap:5px 16px;margin:2px 0 4px;font-size:9px;color:#607f94;flex:none}
+.plot-annotations>span{display:inline-flex;align-items:center;gap:5px}
+.plot-annotations i{width:6px;height:6px;border-radius:50%;flex:none}
+.plot-annotations b{font-weight:400;font-variant-numeric:tabular-nums}
+@media(max-width:1500px){.shared-legend-items{gap:4px}.analysis-scroll>.shared-legend{--legend-gap:4px}.shared-legend .legend-badge{font-size:8px}.monitor-panel .shared-legend .legend-badge{font-size:7.5px}}
+
+.legend-short-name{display:none}
+.monitor-panel>.shared-legend{padding:8px 16px;height:102px;box-sizing:border-box;flex:none}
+.monitor-panel .shared-legend-items{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;align-content:start}
+.monitor-panel .shared-legend .legend-full-name{display:none}
+.monitor-panel .shared-legend .legend-short-name{display:inline}
+.monitor-panel .shared-legend .legend-badge{font-size:7.5px;gap:4px;padding:2px 4px}
+.monitor-panel .shared-legend .legend-badge svg{width:16px;flex:none}
+
+/* Busy state covers the entire chart, including all axis captions. */
+.plot > .plot-busy{inset:0;border-radius:inherit}
+
+/* Lightweight activity uses existing snapshots; no extra polling or reflow. */
+.processing-activity{position:absolute;right:10px;bottom:5px;display:inline-flex;align-items:center;gap:5px;color:#6f899b;background:#ffffffeb;border-radius:4px;padding:2px 4px;font-size:9px;font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:auto}
+.processing-activity .spinner{width:10px;height:10px;flex:none}
+.plot-note.has-activity{padding-right:66px}
+.cathode-map,.cathode-map-expanded{position:relative}
+.density-zoomable{touch-action:none;cursor:crosshair;user-select:none}
+.anode-columns small,.light-births b small{display:inline-block;min-width:46px;margin-left:8px;text-align:right;color:#8295a3;font-size:9px;font-weight:400;font-variant-numeric:tabular-nums}
+.outcome-overlay .anode-columns th:first-child{width:30%}
+.outcome-overlay .anode-columns td{white-space:nowrap;font-size:9px}
+.light-births b{font-variant-numeric:tabular-nums;color:#3c586b}
+.outcome-overlay .outcome-rows dd span,.analysis-outcomes .outcome-rows dd span{min-width:46px}
+.light-births summary .help,.detector-patterns summary .help{display:inline-flex;vertical-align:middle;margin-left:4px;color:#8096a6}
+input[aria-invalid=true]{border-color:#be6666}

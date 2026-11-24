@@ -1,0 +1,35 @@
+/* SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me>
+ * SPDX-License-Identifier: MIT
+ * Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663 */
+
+.study-observer{color:#223d55;background:#f2f5f8;height:100dvh;display:grid;grid-template-rows:54px minmax(0,1fr) 32px;font:14px "Segoe UI",sans-serif}
+.study-observer header,.study-observer footer,.study-heading,.study-title,.study-metadata,.study-tabs,.study-chip,.study-live,.study-run-row{display:flex;align-items:center;gap:10px}
+.study-observer header,.study-observer footer{background:white;padding:0 20px;border-bottom:1px solid #d7e1e9}
+.study-wordmark{font-size:22px;letter-spacing:-.8px}.study-divider{height:20px;border-left:1px solid #d7e1e9}
+.study-chip,.study-module{font-size:12px;border-radius:5px;padding:4px 8px;background:#e6f2f0;color:#21736f}.study-live{margin-left:auto;color:#137b75}
+.study-observer main{display:grid;grid-template-columns:minmax(205px,19%) minmax(0,1fr) minmax(210px,19%);min-height:0;gap:10px;padding:10px}
+.study-observer aside,.study-observer article,.study-chart,.study-geometry{min-height:0;border:1px solid #d5e1eb;border-radius:6px;background:white;overflow:auto}
+.study-observer article{padding:18px;display:flex;flex-direction:column;gap:15px}.study-observer h1,.study-observer h2,.study-observer h3{line-height:1.3;margin:0}
+.study-observer h1{font-size:21px}.study-observer h2,.study-observer h3{font-size:14px}.study-observer h3{margin:13px 12px 5px}
+.study-heading{min-height:44px;padding:10px 14px;border-bottom:1px solid #dde6ed}.study-observer small,.study-event time,.study-empty{color:#587087}
+.study-title{justify-content:space-between;gap:16px}.study-title small,.study-event small{display:block;margin-bottom:5px}
+.study-observer button{display:inline-flex;align-items:center;justify-content:center;gap:6px}.study-observer button.chosen{color:#086c68;background:#e4f2f0}
+.study-list .study-run{width:calc(100% - 16px);min-height:64px;display:grid;gap:5px;text-align:left;justify-content:stretch;margin:3px 8px;padding:7px 9px;border:1px solid transparent;background:transparent}
+.study-list .study-run.chosen{border-color:#b8d8d5;background:#eaf4f3}.study-run strong{overflow-wrap:anywhere}
+.study-run-state{display:flex;justify-content:space-between;color:#52697b;font-size:11px}
+.study-observer progress{appearance:none;height:4px;width:100%;border:0;border-radius:3px;overflow:hidden;background:#e2ebed}
+.study-observer progress::-webkit-progress-bar{background:#e2ebed}.study-observer progress::-webkit-progress-value{background:#23948b}
+.study-tabs{border-bottom:1px solid #dae4eb;padding-bottom:8px}.study-tabs button{border-color:transparent}
+.study-metadata,.study-metrics{flex-wrap:wrap}.study-metadata{font-size:12px;gap:14px}.study-metrics{display:flex;gap:10px 24px}
+.study-metrics small,.study-metrics strong{display:block}.study-metrics small{margin-bottom:4px}.study-metrics strong{font-size:17px;font-variant-numeric:tabular-nums}
+.study-figures{display:grid;flex:1;min-height:260px;grid-auto-rows:minmax(220px,1fr);gap:10px}
+.study-figures.with-geometry{grid-template-rows:minmax(215px,.85fr) minmax(245px,1fr)}
+.study-chart{display:flex;flex-direction:column;overflow:hidden;border:0}.study-chart>.plot{display:flex;flex-direction:column;min-height:0;height:100%;margin:0}.study-chart .plot-svg{flex:1;min-height:0;height:0;width:100%}.study-geometry{position:relative;overflow:hidden}.study-geometry .scene-panel{position:absolute;inset:0}
+.study-event{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px;border-bottom:1px solid #e8edf2;font-size:12px;overflow-wrap:anywhere}.study-event small{margin-top:4px}
+.study-observer footer{justify-content:flex-start;border-top:1px solid #dae4eb;font-size:12px}.study-empty,.study-error{padding:14px}.study-error{background:#fff2df}
+.study-settings summary{padding:8px 0;font-weight:600;cursor:pointer}.study-settings details>div{padding-left:18px;border-left:2px solid #d9e7eb}
+.study-setting{display:grid;grid-template-columns:minmax(110px,35%) minmax(0,1fr);gap:15px;padding:6px 0;border-bottom:1px solid #eef2f5;overflow-wrap:anywhere}
+@media(max-width:1100px){.study-observer main{grid-template-columns:210px minmax(0,1fr)}.study-events{display:none}}
+@media(max-width:650px){.study-observer{display:block;overflow:auto}.study-observer main{display:flex;flex-direction:column}.study-list{max-height:215px}.study-observer article{min-height:450px}.study-observer header{height:50px;padding:0 10px;gap:7px}.study-observer .study-wordmark{font-size:18px}.study-figures{min-height:300px}.study-observer footer{min-height:32px}}
+
+.study-wordmark img{vertical-align:middle;margin-right:7px;position:relative;top:-1px}

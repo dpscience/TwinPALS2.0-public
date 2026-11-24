@@ -1,0 +1,201 @@
+{
+  "schema": "twinpals-native-runtime-v1",
+  "platform": "Windows x64",
+  "minimum_os_model": "Windows 10/11 x64 with OS Universal CRT",
+  "official_release_page": "https://geant4.web.cern.ch/download/11.4.0.html",
+  "event_time_kernel": {
+    "format": "TPSTRM06",
+    "record_bytes": 324,
+    "channels": 2,
+    "semantics": "Two detector summaries plus complete accepted-PE raw times, PMT onsets and cathode XY. Optical mean arrival remains relative to gamma emission; the separate analog response includes independent per-PE TTS and calibrated transit. PROV stores shared immutable branching transport ancestry referenced by each accepted photoelectron.",
+    "includes_all_generated_events": true,
+    "missing_mean": "zero payload with mean-valid flag unset",
+    "primary_emission_offset_ns": 0,
+    "outcome_semantics": "One primary event across both detector records: interaction, otherwise crystal entry, otherwise miss."
+  },
+  "parallelism": {
+    "model": "Native G4MTRunManager with worker-local actions and shared immutable geometry/configuration",
+    "per_event_seed_mode": 0,
+    "event_modulo": 1,
+    "rng": "CLHEP::MixMaxRng",
+    "ordered_event_file": true,
+    "compact_live_stdout": true,
+    "pending_serialized_bytes_limit": 67108864,
+    "pending_events_limit": "clamp(128*threads,256,8192)",
+    "event_record_bytes_limit": 324,
+    "memory_limit_scope": "64 MiB serialized reorder queue; each active Geant4 event also owns its accepted-PE list. Live batches are bounded by elapsed time, events and bytes.",
+    "reproducibility": "Current regression includes native multithreaded transport, ordered writer lookahead, optical invariance under analysis cuts, and deterministic serial/parallel pulse processing. Exact cases and counts are in the linked report. No cross-version RNG promise."
+  },
+  "version_limit": "Pinned baseline 11.4.0; no claim of incorporating or validating later 11.4.x patches",
+  "archives": [
+    {
+      "archive": "WIN64-VC17.11.4-11.zip",
+      "source_url": "https://geant4-data.web.cern.ch/releases/lib4.11.4/WIN64-VC17.11.4-11.zip",
+      "bytes": 43612653,
+      "sha256": "75bc55c1fce39e89db248ee0564d61875f38cd2a4ec8d56f17b7fcd78af0b29d"
+    },
+    {
+      "archive": "G4EMLOW.8.8.tar.gz",
+      "source_url": "https://geant4-data.web.cern.ch/datasets/G4EMLOW.8.8.tar.gz",
+      "bytes": 350393595,
+      "sha256": "b60cfd63176f5d16107e2a25b35b235155032d1735d749670ca50fede12624cf",
+      "dataset_directory": ".runtime/geant4-data/G4EMLOW8.8",
+      "published_md5": "328330009df633f7e9b3a9f445745298",
+      "md5_verified": true
+    },
+    {
+      "archive": "G4ENSDFSTATE.3.0.tar.gz",
+      "source_url": "https://geant4-data.web.cern.ch/datasets/G4ENSDFSTATE.3.0.tar.gz",
+      "bytes": 320010,
+      "sha256": "4bdc3bd40b31d43485bf4f87f055705e540a6557d64ed85c689c59c9a4eba7d6",
+      "dataset_directory": ".runtime/geant4-data/G4ENSDFSTATE3.0",
+      "published_md5": "c500728534ce3e9fb2fefa0112eb3a74",
+      "md5_verified": true
+    },
+    {
+      "archive": "G4PhotonEvaporation.6.1.2.tar.gz",
+      "source_url": "https://geant4-data.web.cern.ch/datasets/G4PhotonEvaporation.6.1.2.tar.gz",
+      "bytes": 11167864,
+      "sha256": "02149c0ab91d88ee24e78532558777e39a068b9fcdd199136101ff58e635e742",
+      "dataset_directory": ".runtime/geant4-data/PhotonEvaporation6.1.2",
+      "published_md5": "d80ba9bdefcf9e23487a26adfa273304",
+      "md5_verified": true
+    },
+    {
+      "archive": "G4RealSurface.2.2.tar.gz",
+      "source_url": "https://cern.ch/geant4-data/datasets/G4RealSurface.2.2.tar.gz",
+      "bytes": 132506346,
+      "sha256": "9954dee0012f5331267f783690e912e72db5bf52ea9babecd12ea22282176820",
+      "dataset_directory": ".runtime/geant4-data/RealSurface2.2"
+    }
+  ],
+  "environment": {
+    "G4LEDATA": ".runtime/geant4-data/G4EMLOW8.8",
+    "G4ENSDFSTATEDATA": ".runtime/geant4-data/G4ENSDFSTATE3.0",
+    "G4LEVELGAMMADATA": ".runtime/geant4-data/PhotonEvaporation6.1.2",
+    "GEANT4_DATA_DIR": ".runtime/geant4-data",
+    "G4REALSURFACEDATA": ".runtime/geant4-data/RealSurface2.2"
+  },
+  "licenses": [
+    {
+      "path": ".runtime/geant4-licenses/CLHEP-COPYING.LESSER.txt",
+      "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+    },
+    {
+      "path": ".runtime/geant4-licenses/CLHEP-LICENSE.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": ".runtime/geant4-licenses/Expat-COPYING.txt",
+      "sha256": "f6eeb2310d0b00e5cecac39c73a0696a5bdbfb754b26325ed5a502fc1a6c338c"
+    },
+    {
+      "path": ".runtime/geant4-licenses/G4EMLOW8.8-README.txt",
+      "sha256": "7a9ce19c2634bc9d1fbeaa1e49eda90af848e9d4d50dd0e79cf94380ea196678"
+    },
+    {
+      "path": ".runtime/geant4-licenses/G4ENSDFSTATE3.0-README.txt",
+      "sha256": "cc18aae3d19bd1be158467026805088da2527eb4102bdcc64256b42f7d91d1a9"
+    },
+    {
+      "path": ".runtime/geant4-licenses/G4tools-LICENSE.txt",
+      "sha256": "6c42aaba904005644c0d544d0202994a2d53abc5cb78ec7d1d6a9ce548ed7fd1"
+    },
+    {
+      "path": ".runtime/geant4-licenses/Geant4-LICENSE.txt",
+      "sha256": "e2e3b456d6f939a98438eb22c6b7ac6ad4306321010493ac6e014980dfca567f"
+    },
+    {
+      "path": ".runtime/geant4-licenses/nlohmann-json-LICENSE.txt",
+      "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
+    },
+    {
+      "path": ".runtime/geant4-licenses/PhotonEvaporation6.1.2-README.txt",
+      "sha256": "3bee8f2b9aea2afe384d8c6902b41a02b188c584b79d3c6af48cc6ea96ddbe4c"
+    },
+    {
+      "path": ".runtime/geant4-licenses/PTL-LICENSE.txt",
+      "sha256": "c8ad11d0099294cbaf15559536d8096522078253b2463abf634f61678167a005"
+    },
+    {
+      "path": ".runtime/geant4-licenses/zlib-LICENSE.txt",
+      "sha256": "254398acc7ecebe67b2cab0582f82dac00557b959f75cdff19c00885758fc141"
+    }
+  ],
+  "third_party": [
+    {
+      "component": "Geant4 11.4.0",
+      "license": "Geant4 Software License",
+      "notice": ".runtime/geant4-licenses/Geant4-LICENSE.txt",
+      "corresponding_source": "https://github.com/Geant4/geant4/tree/v11.4.0"
+    },
+    {
+      "component": "CLHEP bundled with Geant4",
+      "license": "LGPL-3.0 with incorporated GPL-3.0 terms",
+      "notices": [
+        ".runtime/geant4-licenses/CLHEP-COPYING.LESSER.txt",
+        ".runtime/geant4-licenses/CLHEP-LICENSE.txt"
+      ],
+      "corresponding_source": "https://github.com/Geant4/geant4/tree/v11.4.0/source/externals/clhep",
+      "linkage": "Unmodified replaceable G4clhep.dll; native worker is dynamically linked"
+    },
+    {
+      "component": "PTL",
+      "license": "MIT",
+      "notice": ".runtime/geant4-licenses/PTL-LICENSE.txt",
+      "corresponding_source": "https://github.com/Geant4/geant4/tree/v11.4.0/source/externals/ptl"
+    },
+    {
+      "component": "Expat",
+      "license": "MIT",
+      "notice": ".runtime/geant4-licenses/Expat-COPYING.txt",
+      "corresponding_source": "https://github.com/Geant4/geant4/tree/v11.4.0/source/externals/expat"
+    },
+    {
+      "component": "zlib 1.3.1",
+      "license": "zlib",
+      "notice": ".runtime/geant4-licenses/zlib-LICENSE.txt",
+      "corresponding_source": "https://github.com/Geant4/geant4/tree/v11.4.0/source/externals/zlib"
+    },
+    {
+      "component": "G4tools",
+      "notice": ".runtime/geant4-licenses/G4tools-LICENSE.txt"
+    },
+    {
+      "component": "nlohmann-json 3.11.3",
+      "license": "MIT",
+      "notice": ".runtime/geant4-licenses/nlohmann-json-LICENSE.txt",
+      "corresponding_source": "https://github.com/nlohmann/json/tree/v3.11.3"
+    },
+    {
+      "component": "Microsoft Visual C++ runtime 14.44.35211.0 x64",
+      "license": "Microsoft Visual Studio license terms",
+      "origin": "Unmodified release DLLs bundled in the official Geant4 Windows archive",
+      "redist_list": "https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution",
+      "guidance": "https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files",
+      "redistribution_condition": "Redistribution is subject to the applicable Microsoft license terms for licensed Visual Studio users. No debug runtime DLLs are included."
+    },
+    {
+      "component": "G4EMLOW8.8",
+      "notice": ".runtime/geant4-licenses/G4EMLOW8.8-README.txt",
+      "restriction": "DATA ARE *NOT* FOR COMMERCIAL USE AND MUST BE USED WITHIN GEANT4",
+      "restriction_source": "Original upstream dataset README; no unrestricted-commercial-use claim is made"
+    },
+    {
+      "component": "G4ENSDFSTATE3.0",
+      "notice": ".runtime/geant4-licenses/G4ENSDFSTATE3.0-README.txt",
+      "data_provenance": "ENSDF; original upstream README is preserved; no standalone data license inferred"
+    },
+    {
+      "component": "PhotonEvaporation6.1.2",
+      "notice": ".runtime/geant4-licenses/PhotonEvaporation6.1.2-README.txt",
+      "data_provenance": "ENSDF; original upstream README is preserved; no standalone data license inferred"
+    }
+  ],
+  "stream_version": 6,
+  "optical_boundary_model": "geant4-11.4-lut-interior-v1",
+  "dependency_audit": {
+    "method": "Recursive MSVC dumpbin /DEPENDENTS"
+  },
+  "binaries": []
+}

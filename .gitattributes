@@ -1,0 +1,10 @@
+* text=auto
+LICENSE text eol=lf
+CITATION.cff text eol=lf
+NOTICE.md text eol=lf
+legal/public/texts/** -text
+legal/upstream/** -text
+native/vendor/** -text
+**/originals/** -text
+*.cmd text eol=crlf
+.githooks/* text eol=lf

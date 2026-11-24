@@ -1,0 +1,892 @@
+{
+  "version": "2.0.0",
+  "reviewed": "2026-11-24",
+  "components": [
+    {
+      "id": "twinpals",
+      "name": "TwinPALS 2.0",
+      "version": "2.0.0",
+      "group": "Project",
+      "license": "MIT",
+      "note": "Copyright © 2026 Danny Petschke. The MIT license covers original TwinPALS code and documentation. The portable physics data and third-party components have individual terms. G4EMLOW 8.8 is restricted to Geant4 and non-commercial use.",
+      "url": "https://opensource.org/license/mit",
+      "documents": [
+        {
+          "label": "MIT license",
+          "file": "texts/twinpals-1.txt",
+          "sha256": "7176e09c4cda166ef529d2cf17d74b1ac1d05808bf4ea2796c9cee5ff4652a38"
+        },
+        {
+          "label": "Project notices and scientific credit",
+          "file": "texts/twinpals-2.txt",
+          "sha256": "e54c729c60041df6d75925b7edf7813a7b51672e27c31dd9f6f49fa037c3637c"
+        },
+        {
+          "label": "Software citation",
+          "file": "texts/twinpals-3.txt",
+          "sha256": "4e962aba9ac1f0382d8b6ef827b1bc6db9f2811d6fcac4653124a57dd01c2181"
+        }
+      ]
+    },
+    {
+      "id": "twinpals-mcp",
+      "name": "TwinPALS 2.0 MCP server and observer",
+      "version": "2.0.0",
+      "group": "Project",
+      "license": "MIT",
+      "note": "TwinPALS implements the Model Context Protocol using JSON-RPC over standard input and output. The local study service, read-only observer, offline methods handbook and shared Windows notification-area helper and icon are original TwinPALS work covered by the project MIT license. The helper uses the Windows-installed .NET Framework and Windows Forms. Their system assemblies are provided by Windows.",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "documents": [
+        {
+          "label": "MIT license",
+          "file": "texts/twinpals-mcp-1.txt",
+          "sha256": "7176e09c4cda166ef529d2cf17d74b1ac1d05808bf4ea2796c9cee5ff4652a38"
+        }
+      ]
+    },
+    {
+      "id": "inno-setup",
+      "name": "Inno Setup",
+      "version": "7",
+      "group": "Native runtime",
+      "license": "Inno Setup License",
+      "note": "The optional Windows installer and its uninstaller are built with Inno Setup by Jordan Russell and Martijn Laan.",
+      "url": "https://jrsoftware.org/isinfo.php",
+      "documents": [
+        {
+          "label": "Original license",
+          "file": "texts/inno-setup-1.txt",
+          "sha256": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c"
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Optical curves and catalogue data",
+      "version": "",
+      "group": "Scientific sources",
+      "license": "Source-specific terms",
+      "note": "Open Database, select a material or instrument, and consult its references for the source, units and assumptions of each property. Permissions for redistribution depend on that source.",
+      "url": null,
+      "documents": [
+        {
+          "label": "Project notices",
+          "file": "texts/data-1.txt",
+          "sha256": "e54c729c60041df6d75925b7edf7813a7b51672e27c31dd9f6f49fa037c3637c"
+        }
+      ]
+    },
+    {
+      "id": "geant4",
+      "name": "Geant4",
+      "version": "11.4.0",
+      "group": "Transport and physics data",
+      "license": "Geant4 Software License",
+      "note": "This product includes software developed by Members of the Geant4 Collaboration (http://cern.ch/geant4).",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Geant4 license",
+          "file": "texts/geant4-1.txt",
+          "sha256": "e2e3b456d6f939a98438eb22c6b7ac6ad4306321010493ac6e014980dfca567f"
+        }
+      ]
+    },
+    {
+      "id": "clhep",
+      "name": "CLHEP",
+      "version": "Geant4 11.4.0 edition",
+      "group": "Transport and physics data",
+      "license": "LGPL-3.0",
+      "note": "The replaceable G4clhep.dll is supplied with the original build source in legal/sources/geant4-v11.4.0.tar.gz. The source archive contains the CMake build system and source/externals/clhep.",
+      "url": "https://github.com/Geant4/geant4/tree/v11.4.0/source/externals/clhep",
+      "documents": [
+        {
+          "label": "GNU Lesser General Public License, version 3",
+          "file": "texts/clhep-1.txt",
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+        },
+        {
+          "label": "GNU General Public License, version 3",
+          "file": "texts/clhep-2.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        }
+      ]
+    },
+    {
+      "id": "ptl",
+      "name": "PTL",
+      "version": "Geant4 11.4.0 edition",
+      "group": "Transport and physics data",
+      "license": "MIT",
+      "note": "Bundled with the Geant4 runtime. The accompanying text preserves upstream copyright and redistribution terms.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original notice",
+          "file": "texts/ptl-1.txt",
+          "sha256": "c8ad11d0099294cbaf15559536d8096522078253b2463abf634f61678167a005"
+        }
+      ]
+    },
+    {
+      "id": "expat",
+      "name": "Expat",
+      "version": "Geant4 11.4.0 edition",
+      "group": "Transport and physics data",
+      "license": "MIT",
+      "note": "Bundled with the Geant4 runtime. The accompanying text preserves upstream copyright and redistribution terms.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original notice",
+          "file": "texts/expat-1.txt",
+          "sha256": "f6eeb2310d0b00e5cecac39c73a0696a5bdbfb754b26325ed5a502fc1a6c338c"
+        }
+      ]
+    },
+    {
+      "id": "zlib",
+      "name": "zlib",
+      "version": "Geant4 11.4.0 edition",
+      "group": "Transport and physics data",
+      "license": "Zlib",
+      "note": "Bundled with the Geant4 runtime. The accompanying text preserves upstream copyright and redistribution terms.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original notice",
+          "file": "texts/zlib-1.txt",
+          "sha256": "254398acc7ecebe67b2cab0582f82dac00557b959f75cdff19c00885758fc141"
+        }
+      ]
+    },
+    {
+      "id": "g4tools",
+      "name": "G4tools",
+      "version": "Geant4 11.4.0 edition",
+      "group": "Transport and physics data",
+      "license": "Component-specific upstream terms",
+      "note": "Bundled with the Geant4 runtime. The accompanying text preserves upstream copyright and redistribution terms.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original notice",
+          "file": "texts/g4tools-1.txt",
+          "sha256": "6c42aaba904005644c0d544d0202994a2d53abc5cb78ec7d1d6a9ce548ed7fd1"
+        }
+      ]
+    },
+    {
+      "id": "nlohmann",
+      "name": "JSON for Modern C++",
+      "version": "3.11.3",
+      "group": "Transport and physics data",
+      "license": "MIT",
+      "note": "Used in the native calculation and transport workers.",
+      "url": "https://github.com/nlohmann/json/tree/v3.11.3",
+      "documents": [
+        {
+          "label": "Vendored header license",
+          "file": "texts/nlohmann-1.txt",
+          "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
+        },
+        {
+          "label": "Geant4 notice",
+          "file": "texts/nlohmann-2.txt",
+          "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
+        }
+      ]
+    },
+    {
+      "id": "emlow",
+      "name": "G4EMLOW",
+      "version": "8.8",
+      "group": "Transport and physics data",
+      "license": "Non-commercial · Geant4 only",
+      "note": "The original upstream data notice restricts use to Geant4 and excludes commercial use.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original dataset README",
+          "file": "texts/emlow-1.txt",
+          "sha256": "7a9ce19c2634bc9d1fbeaa1e49eda90af848e9d4d50dd0e79cf94380ea196678"
+        }
+      ]
+    },
+    {
+      "id": "ensdf",
+      "name": "G4ENSDFSTATE",
+      "version": "3.0",
+      "group": "Transport and physics data",
+      "license": "Upstream data notice",
+      "note": "Nuclear state data derived from ENSDF. The original distribution records data provenance.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original dataset README",
+          "file": "texts/ensdf-1.txt",
+          "sha256": "cc18aae3d19bd1be158467026805088da2527eb4102bdcc64256b42f7d91d1a9"
+        }
+      ]
+    },
+    {
+      "id": "photon",
+      "name": "PhotonEvaporation",
+      "version": "6.1.2",
+      "group": "Transport and physics data",
+      "license": "Upstream data notice",
+      "note": "Nuclear level and transition data distributed for Geant4.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original dataset README",
+          "file": "texts/photon-1.txt",
+          "sha256": "3bee8f2b9aea2afe384d8c6902b41a02b188c584b79d3c6af48cc6ea96ddbe4c"
+        }
+      ]
+    },
+    {
+      "id": "surface",
+      "name": "RealSurface",
+      "version": "2.2",
+      "group": "Transport and physics data",
+      "license": "Upstream data notice",
+      "note": "Optical surface measurements from LBNL and UC Davis. The original distribution describes the measurement sets.",
+      "url": "https://geant4.web.cern.ch/download/11.4.0.html",
+      "documents": [
+        {
+          "label": "Original dataset README",
+          "file": "texts/surface-1.txt",
+          "sha256": "64baa77ebee67f16618cdbf4de3bcd3396d9a35cc2ccb74139518437c3a2ffac"
+        }
+      ]
+    },
+    {
+      "id": "web-lucide-react",
+      "name": "lucide-react",
+      "version": "0.468.0",
+      "group": "User interfaces",
+      "license": "ISC and MIT (Feather)",
+      "note": "Included in the offline user interfaces.",
+      "url": "https://www.npmjs.com/package/lucide-react",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/web-lucide-react-1.txt",
+          "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc"
+        },
+        {
+          "label": "Feather MIT license",
+          "file": "texts/web-lucide-react-2.txt",
+          "sha256": "308028e93fcf84972523cdf6e616f73168546b4953895f516d01287f16fe7bee"
+        }
+      ]
+    },
+    {
+      "id": "web-react",
+      "name": "react",
+      "version": "19.3.1",
+      "group": "User interfaces",
+      "license": "MIT",
+      "note": "Included in the offline user interfaces.",
+      "url": "https://www.npmjs.com/package/react",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/web-react-1.txt",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "id": "web-react-dom",
+      "name": "react-dom",
+      "version": "19.3.1",
+      "group": "User interfaces",
+      "license": "MIT",
+      "note": "Included in the offline user interfaces.",
+      "url": "https://www.npmjs.com/package/react-dom",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/web-react-dom-1.txt",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "id": "web-scheduler",
+      "name": "scheduler",
+      "version": "0.28.0",
+      "group": "User interfaces",
+      "license": "MIT",
+      "note": "Included in the offline user interfaces.",
+      "url": "https://www.npmjs.com/package/scheduler",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/web-scheduler-1.txt",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "id": "web-three",
+      "name": "three",
+      "version": "0.171.0",
+      "group": "User interfaces",
+      "license": "MIT",
+      "note": "Included in the offline user interfaces.",
+      "url": "https://www.npmjs.com/package/three",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/web-three-1.txt",
+          "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454"
+        }
+      ]
+    },
+    {
+      "id": "cpython",
+      "name": "CPython",
+      "version": "3.12.14",
+      "group": "Python runtime",
+      "license": "PSF and incorporated licenses",
+      "note": "Python interpreter, standard library and incorporated third-party code.",
+      "url": "https://docs.python.org/3.12/license.html",
+      "documents": [
+        {
+          "label": "Python license",
+          "file": "texts/cpython-1.txt",
+          "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+        },
+        {
+          "label": "Incorporated software notices",
+          "file": "texts/cpython-2.txt",
+          "sha256": "341832873fd316a37927e79385093fbbfd40a467428480835fe435a80cadf4e5"
+        },
+        {
+          "label": "bzip2 license",
+          "file": "texts/cpython-3.txt",
+          "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+        },
+        {
+          "label": "XZ and liblzma notices",
+          "file": "texts/cpython-4.txt",
+          "sha256": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c"
+        }
+      ]
+    },
+    {
+      "id": "python-annotated-doc",
+      "name": "annotated-doc",
+      "version": "0.0.7",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/annotated-doc/0.0.7/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-annotated-doc-1.txt",
+          "sha256": "fff170779a6acbf65abdb405c087f1cee1786691e4a96a4034517e4a504a0cdf"
+        }
+      ]
+    },
+    {
+      "id": "python-annotated-types",
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/annotated-types/0.8.0/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-annotated-types-1.txt",
+          "sha256": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d"
+        }
+      ]
+    },
+    {
+      "id": "python-anyio",
+      "name": "anyio",
+      "version": "4.16.0",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/anyio/4.16.0/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-anyio-1.txt",
+          "sha256": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0"
+        }
+      ]
+    },
+    {
+      "id": "python-certifi",
+      "name": "certifi",
+      "version": "2026.11.20",
+      "group": "Python runtime",
+      "license": "MPL-2.0",
+      "note": "The unmodified Mozilla CA bundle is also supplied in readable source form under _internal/certifi/cacert.pem.",
+      "url": "https://pypi.org/project/certifi/2026.11.20/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-certifi-1.txt",
+          "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+        },
+        {
+          "label": "Mozilla Public License, version 2.0",
+          "file": "texts/python-certifi-2.txt",
+          "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+        }
+      ]
+    },
+    {
+      "id": "python-click",
+      "name": "click",
+      "version": "8.5.1",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/click/8.5.1/",
+      "documents": [
+        {
+          "label": "LICENSE.txt",
+          "file": "texts/python-click-1.txt",
+          "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+        }
+      ]
+    },
+    {
+      "id": "python-fastapi",
+      "name": "fastapi",
+      "version": "0.143.3",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/fastapi/0.143.3/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-fastapi-1.txt",
+          "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e"
+        }
+      ]
+    },
+    {
+      "id": "python-h11",
+      "name": "h11",
+      "version": "0.16.0",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/h11/0.16.0/",
+      "documents": [
+        {
+          "label": "LICENSE.txt",
+          "file": "texts/python-h11-1.txt",
+          "sha256": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361"
+        }
+      ]
+    },
+    {
+      "id": "python-httpcore",
+      "name": "httpcore",
+      "version": "1.0.9",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/httpcore/1.0.9/",
+      "documents": [
+        {
+          "label": "LICENSE.md",
+          "file": "texts/python-httpcore-1.txt",
+          "sha256": "fdcb59154c74cbaba16a11242f7740bea9f23d6feb5547917d8c5f94a80392a5"
+        }
+      ]
+    },
+    {
+      "id": "python-httpx",
+      "name": "httpx",
+      "version": "0.28.1",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/httpx/0.28.1/",
+      "documents": [
+        {
+          "label": "LICENSE.md",
+          "file": "texts/python-httpx-1.txt",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        }
+      ]
+    },
+    {
+      "id": "python-idna",
+      "name": "idna",
+      "version": "3.20",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/idna/3.20/",
+      "documents": [
+        {
+          "label": "LICENSE.md",
+          "file": "texts/python-idna-1.txt",
+          "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+        }
+      ]
+    },
+    {
+      "id": "python-numpy",
+      "name": "numpy",
+      "version": "2.5.4",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/numpy/2.5.4/",
+      "documents": [
+        {
+          "label": "NumPy wheel and bundled BLAS / compiler runtime notices",
+          "file": "texts/python-numpy-1.txt",
+          "sha256": "a804dff0ead9fadc5293456410bcbfc32bf024be9c4513459663fb7b442d2341"
+        },
+        {
+          "label": "numpy/ma/LICENSE",
+          "file": "texts/python-numpy-2.txt",
+          "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7"
+        },
+        {
+          "label": "numpy/random/LICENSE.md",
+          "file": "texts/python-numpy-3.txt",
+          "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a"
+        },
+        {
+          "label": "numpy/fft/pocketfft/LICENSE.md",
+          "file": "texts/python-numpy-4.txt",
+          "sha256": "8db000e158c162e7249787852d8c69764706502ccee725c06641b31c1e95c8af"
+        },
+        {
+          "label": "numpy/linalg/lapack_lite/LICENSE.txt",
+          "file": "texts/python-numpy-5.txt",
+          "sha256": "19060ef465e1797d682ee0fc3081bd25ab1395e995e43d25c9d13c95d9a3cd6b"
+        },
+        {
+          "label": "numpy/_core/src/highway/LICENSE",
+          "file": "texts/python-numpy-6.txt",
+          "sha256": "d208152e2777ffd0126eacc1bd21c0320d69e4e6b622d21a2a12a47e8ef73763"
+        },
+        {
+          "label": "numpy/random/src/pcg64/LICENSE.md",
+          "file": "texts/python-numpy-7.txt",
+          "sha256": "41190663b77bee5302386495a07b7eabfbfa571aa0ae2f11da6764162062fc4f"
+        },
+        {
+          "label": "numpy/random/src/sfc64/LICENSE.md",
+          "file": "texts/python-numpy-8.txt",
+          "sha256": "28cad82ce1379dc529df30da78ec012d7d0d1d576b03ddcb93388aee53659f59"
+        },
+        {
+          "label": "numpy/random/src/philox/LICENSE.md",
+          "file": "texts/python-numpy-9.txt",
+          "sha256": "322ac46d870c8aeead6c53adcccc839296fb3c8e456eae155081297daf7f8013"
+        },
+        {
+          "label": "numpy/random/src/mt19937/LICENSE.md",
+          "file": "texts/python-numpy-10.txt",
+          "sha256": "92c10699884321f1c2947fe2a70ab23b0fbf1507f756d89dd08f38c61fc3d4fa"
+        },
+        {
+          "label": "numpy/random/src/splitmix64/LICENSE.md",
+          "file": "texts/python-numpy-11.txt",
+          "sha256": "454ec7350e478e037061850b67395753b425b1cb0a34bbc26290b020bf89d763"
+        },
+        {
+          "label": "numpy/random/src/distributions/LICENSE.md",
+          "file": "texts/python-numpy-12.txt",
+          "sha256": "cf5619f25b112d5ce7c896efffc8e610bcb345dfadcc19f2c1460aa48fff2c9e"
+        },
+        {
+          "label": "numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+          "file": "texts/python-numpy-13.txt",
+          "sha256": "b0fd592d4ead563148e3977e7b589169d46a5ef2ff133c755a81af880a3fc919"
+        },
+        {
+          "label": "numpy/_core/src/umath/svml/LICENSE",
+          "file": "texts/python-numpy-14.txt",
+          "sha256": "585483905b13d4b42f800c55ba99e89d6e2e33ccd5f503e201c07531d148ff41"
+        },
+        {
+          "label": "numpy/_core/include/numpy/libdivide/LICENSE.txt",
+          "file": "texts/python-numpy-15.txt",
+          "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150"
+        },
+        {
+          "label": "numpy/_core/src/common/pythoncapi-compat/COPYING",
+          "file": "texts/python-numpy-16.txt",
+          "sha256": "aea41976c720f91bd19725c16916a1ace40eb1ea42620d340e587a5de4bbcea0"
+        },
+        {
+          "label": "numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+          "file": "texts/python-numpy-17.txt",
+          "sha256": "a732977853530066790c42817087f4829b518dd98d340c916acbfd227e39d3cb"
+        },
+        {
+          "label": "Native random distributions",
+          "file": "texts/python-numpy-18.txt",
+          "sha256": "cf5619f25b112d5ce7c896efffc8e610bcb345dfadcc19f2c1460aa48fff2c9e"
+        }
+      ]
+    },
+    {
+      "id": "python-opentelemetry-api",
+      "name": "opentelemetry-api",
+      "version": "1.45.2",
+      "group": "Python runtime",
+      "license": "Apache-2.0",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/opentelemetry-api/1.45.2/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-opentelemetry-api-1.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "id": "python-pydantic",
+      "name": "pydantic",
+      "version": "2.14.1",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/pydantic/2.14.1/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-pydantic-1.txt",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        }
+      ]
+    },
+    {
+      "id": "python-pydantic-core",
+      "name": "pydantic_core",
+      "version": "2.50.1",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Native Python validation extension. The Rust notice collection covers the matching upstream lockfile, including optional and build dependencies.",
+      "url": "https://pypi.org/project/pydantic_core/2.50.1/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-pydantic-core-1.txt",
+          "sha256": "fbe7f615f18d135c07000e5a86325db27f42c7729699ef166ac1f7a3f4586bf4"
+        },
+        {
+          "label": "Rust dependency notices and archive identities",
+          "file": "texts/python-pydantic-core-2.txt",
+          "sha256": "816eed36a2a7b8dc33b71b92fafd29a45afc573587542a0bf2333a4533ba65b4"
+        }
+      ]
+    },
+    {
+      "id": "python-pyinstaller",
+      "name": "pyinstaller",
+      "version": "6.22.3",
+      "group": "Python runtime",
+      "license": "GPL-2.0-or-later with bootloader exception",
+      "note": "The frozen launchers use the PyInstaller bootloader. The original license includes the bootloader exception.",
+      "url": "https://pypi.org/project/pyinstaller/6.22.3/",
+      "documents": [
+        {
+          "label": "COPYING.txt",
+          "file": "texts/python-pyinstaller-1.txt",
+          "sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64"
+        }
+      ]
+    },
+    {
+      "id": "python-python-multipart",
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "group": "Python runtime",
+      "license": "Apache-2.0",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/python-multipart/0.0.32/",
+      "documents": [
+        {
+          "label": "LICENSE.txt",
+          "file": "texts/python-python-multipart-1.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "id": "python-starlette",
+      "name": "starlette",
+      "version": "1.10.0",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/starlette/1.10.0/",
+      "documents": [
+        {
+          "label": "LICENSE.md",
+          "file": "texts/python-starlette-1.txt",
+          "sha256": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf"
+        }
+      ]
+    },
+    {
+      "id": "python-typing-inspection",
+      "name": "typing-inspection",
+      "version": "0.4.5",
+      "group": "Python runtime",
+      "license": "MIT",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/typing-inspection/0.4.5/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-typing-inspection-1.txt",
+          "sha256": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3"
+        }
+      ]
+    },
+    {
+      "id": "python-typing-extensions",
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "group": "Python runtime",
+      "license": "PSF-2.0",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/typing_extensions/4.16.0/",
+      "documents": [
+        {
+          "label": "LICENSE",
+          "file": "texts/python-typing-extensions-1.txt",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        }
+      ]
+    },
+    {
+      "id": "python-uvicorn",
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "group": "Python runtime",
+      "license": "BSD-3-Clause",
+      "note": "Included in the portable Python application.",
+      "url": "https://pypi.org/project/uvicorn/0.54.0/",
+      "documents": [
+        {
+          "label": "LICENSE.md",
+          "file": "texts/python-uvicorn-1.txt",
+          "sha256": "efe1acf3e62fb99c288b0ec73e5a773b7268ef4320fe757ea994214e4b63c371"
+        }
+      ]
+    },
+    {
+      "id": "openssl",
+      "name": "OpenSSL",
+      "version": "3.5.8",
+      "group": "Native runtime",
+      "license": "Apache-2.0",
+      "note": "Native runtime supplied with the Windows distribution.",
+      "url": "https://www.openssl.org/",
+      "documents": [
+        {
+          "label": "OpenSSL license",
+          "file": "texts/openssl-1.txt",
+          "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+        }
+      ]
+    },
+    {
+      "id": "libffi",
+      "name": "libffi",
+      "version": "Windows Python runtime",
+      "group": "Native runtime",
+      "license": "MIT",
+      "note": "Native runtime supplied with the Windows distribution.",
+      "url": "https://github.com/libffi/libffi",
+      "documents": [
+        {
+          "label": "Original notice",
+          "file": "texts/libffi-1.txt",
+          "sha256": "2c9c2acb9743e6b007b91350475308aee44691d96aa20eacef8e199988c8c388"
+        }
+      ]
+    },
+    {
+      "id": "sqlite",
+      "name": "SQLite",
+      "version": "3.53.1",
+      "group": "Native runtime",
+      "license": "Public domain",
+      "note": "Native runtime supplied with the Windows distribution.",
+      "url": "https://sqlite.org/copyright.html",
+      "documents": [
+        {
+          "label": "Public-domain dedication",
+          "file": "texts/sqlite-1.txt",
+          "sha256": "c9053892d578840a196d588ff68baa9bc0f5240eb215fb9cf91cd6b0b3209305"
+        }
+      ]
+    },
+    {
+      "id": "tcltk",
+      "name": "Tcl and Tk",
+      "version": "8.6",
+      "group": "Native runtime",
+      "license": "Tcl/Tk licenses",
+      "note": "Native runtime supplied with the Windows distribution.",
+      "url": "https://www.tcl-lang.org/software/tcltk/license.html",
+      "documents": [
+        {
+          "label": "Tcl license",
+          "file": "texts/tcltk-1.txt",
+          "sha256": "c0a69a2bfd757361ec7e6143973b103c90409316b49e9c88db26ad6388e79f16"
+        },
+        {
+          "label": "Tk license",
+          "file": "texts/tcltk-2.txt",
+          "sha256": "0d1e4405f6273f091732764ed89b57066be63ce64869be6c71ea337dc4f2f9b5"
+        }
+      ]
+    },
+    {
+      "id": "msvc",
+      "name": "Microsoft Visual C++ and Universal CRT",
+      "version": "Windows x64",
+      "group": "Native runtime",
+      "license": "Microsoft redistribution terms",
+      "note": "Native runtime supplied with the Windows distribution.",
+      "url": "https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution",
+      "documents": [
+        {
+          "label": "Runtime terms (plain text)",
+          "file": "texts/msvc-1.txt",
+          "sha256": "39ddc5931e5243b5b766c5393f74ced9d71823ab145fb14934de27251e1fe1a4"
+        },
+        {
+          "label": "Original runtime terms (RTF)",
+          "file": "texts/msvc-2.rtf",
+          "sha256": "8099dc3cf9502c335da829e5c755948a12e3e6de490eb492a99deb673d883d8b"
+        },
+        {
+          "label": "Visual Studio redistributable list",
+          "file": "texts/msvc-3.txt",
+          "sha256": "da53b097e02b08e0fc69706102a60bc384fe756426ae4dc4a855e96f95cb2b9c"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me>
+# SPDX-License-Identifier: MIT
+# Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663
+
+cmake_minimum_required(VERSION 3.16)
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/../backend/__init__.py" twinpals_version_line REGEX "^__version__ = ")
+string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" twinpals_version "${twinpals_version_line}")
+project(TwinPALSNative VERSION ${twinpals_version} LANGUAGES CXX)
+find_package(Geant4 11.4 REQUIRED)
+add_executable(twinpals-worker worker.cpp)
+add_library(twinpals-analog SHARED analog_library.cpp)
+add_library(twinpals-sweeps SHARED sweep_library.cpp)
+add_library(twinpals-lifetime SHARED lifetime_reader.cpp)
+target_compile_features(twinpals-lifetime PRIVATE cxx_std_17)
+target_compile_definitions(twinpals-lifetime PRIVATE TP_M2_FOLDING_CRC NOMINMAX)
+set_target_properties(twinpals-lifetime PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../.runtime/bin")
+find_package(OpenMP QUIET)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(twinpals-lifetime PRIVATE OpenMP::OpenMP_CXX)
+endif()
+target_compile_definitions(twinpals-sweeps PRIVATE TP_M2_FOLDING_CRC TP_M2_AVX_GRID)
+target_compile_definitions(twinpals-analog PRIVATE TP_M2_FOLDING_CRC TP_M2_AVX_GRID)
+target_compile_features(twinpals-sweeps PRIVATE cxx_std_17)
+set_target_properties(twinpals-sweeps PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../.runtime/bin")
+# Use the same distribution implementation as the application. Builds without
+# the NumPy development archive keep the existing waveform worker.
+set(NUMPY_ROOT "${CMAKE_SOURCE_DIR}/../.venv/Lib/site-packages/numpy" CACHE PATH "NumPy installation used by TwinPALS")
+if(EXISTS "${NUMPY_ROOT}/random/lib/npyrandom.lib")
+  execute_process(COMMAND "${CMAKE_SOURCE_DIR}/../.venv/Scripts/python.exe" -c "import pathlib,sys;print(pathlib.Path(sys.base_prefix,'libs').as_posix())"
+                  OUTPUT_VARIABLE NUMPY_PYTHON_LIBDIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+  target_compile_definitions(twinpals-sweeps PRIVATE TP_NUMPY_RANDOM)
+  execute_process(COMMAND "${CMAKE_SOURCE_DIR}/../.venv/Scripts/python.exe" -c "import numpy;print(numpy.__version__)"
+                  OUTPUT_VARIABLE NUMPY_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if(NUMPY_VERSION STREQUAL "2.5.4")
+    target_compile_definitions(twinpals-sweeps PRIVATE TP_NUMPY_NORMAL_TABLES)
+  endif()
+  target_link_directories(twinpals-sweeps PRIVATE "${NUMPY_PYTHON_LIBDIR}")
+  target_link_libraries(twinpals-sweeps PRIVATE "${NUMPY_ROOT}/random/lib/npyrandom.lib" "${NUMPY_ROOT}/_core/lib/npymath.lib")
+endif()
+target_compile_features(twinpals-analog PRIVATE cxx_std_17)
+set_target_properties(twinpals-analog PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../.runtime/bin")
+target_compile_features(twinpals-worker PRIVATE cxx_std_17)
+target_compile_definitions(twinpals-worker PRIVATE TWINPALS_VERSION="${PROJECT_VERSION}")
+target_include_directories(twinpals-worker PRIVATE vendor ${Geant4_INCLUDE_DIRS})
+target_link_libraries(twinpals-worker PRIVATE Geant4::G4run Geant4::G4event Geant4::G4tracking Geant4::G4physicslists Geant4::G4processes_core Geant4::G4particles Geant4::G4geometry Geant4::G4materials Geant4::G4intercoms Geant4::G4global)
+if(MSVC)
+  target_compile_options(twinpals-worker PRIVATE /W4 /utf-8 /permissive-)
+  target_compile_definitions(twinpals-worker PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+endif()
+set_target_properties(twinpals-worker PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../.runtime/bin")
+
