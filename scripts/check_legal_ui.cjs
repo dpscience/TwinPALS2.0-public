@@ -10,7 +10,7 @@ module.exports = async function checkLicenses(run, send, until, capture) {
     const mid = s => { const r=document.querySelector(s).getBoundingClientRect(); return r.top+r.height/2; };
     return Math.abs(mid(${JSON.stringify(a)})-mid(${JSON.stringify(b)})) <= 1;
   })()`);
-  assert.ok(await centersMatch('.legal-trigger span','.legal-trigger+span'),'Footer text alignment');
+  assert.ok(await centersMatch('.legal-trigger span','.release-version'),'Footer text alignment');
   await run("document.querySelector('.legal-trigger').click()");
   await until(()=>run("document.querySelector('.legal-text')?.textContent.includes('Permission is hereby granted')"),'MIT text missing');
   assert.ok(await run("!!document.querySelector('.legal-reading a[href=\"https://doi.org/10.25972/OPUS-37663\"]')"));
