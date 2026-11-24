@@ -4,11 +4,11 @@
 
 TwinPALS simulates positron annihilation lifetime spectroscopy (PALS) on Windows x64. Set up a detector, acquire digitized pulse pairs and see how timing, filters and event selection affect the lifetime spectrum. The desktop and MCP server share the same simulation engines and component catalogue.
 
-```mermaid
-flowchart LR
-    A["1 · Detector response<br/>Source, geometry, optical transport"] -->|Detector streams| B["2 · Digitizer acquisition<br/>Electronics, trigger, ADC"]
-    B -->|Pulse pairs| C["3 · Lifetime spectrum<br/>Pulse selection, timing, analysis"]
-```
+[![Na-22 simulation with particle tracks in the detector assembly and the resulting anode current](docs/screenshots/detector-transport.png)](docs/screenshots/detector-transport.png)
+
+| Digitizer setup | Waveform acquisition | Lifetime analysis |
+| :--- | :--- | :--- |
+| [![Two PMT channels connected to a digitizer and coincidence trigger](docs/screenshots/acquisition-chain.png)](docs/screenshots/acquisition-chain.png) | [![Digitized pulses and trigger timing for channels A and B](docs/screenshots/waveform-acquisition.png)](docs/screenshots/waveform-acquisition.png) | [![Lifetime and pulse-height spectra before and after filtering](docs/screenshots/lifetime-analysis.png)](docs/screenshots/lifetime-analysis.png) |
 
 ## Run the desktop
 

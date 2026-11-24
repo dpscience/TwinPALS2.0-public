@@ -259,6 +259,7 @@ def public_materials(destination: Path) -> None:
         target = destination / "seed" / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / "seed" / name, target)
+    copy_tree(ROOT/"docs/screenshots", destination/"docs/screenshots")
     copy_tree(ROOT/"docs/mcp/knowledge", destination/"docs/mcp/knowledge")
     build_catalog(destination / "legal/public", destination / "TwinPALS.exe")
     copy_corresponding_source(destination / "legal/sources")
