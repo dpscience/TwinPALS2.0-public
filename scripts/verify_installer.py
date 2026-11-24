@@ -157,7 +157,9 @@ def verify(setup, work, previous_setup=None):
 
         unknown = program / 'personal-notes.txt'
         unknown.write_bytes(b'keep')
-        install(setup, 'same-version-repair', program)
+        (program / 'NOTICE.md').unlink()
+        run(setup, 'same-version-repair', '/NOICONS', '/TASKS=')
+        assert sha256(program / 'NOTICE.md') == installed['files']['NOTICE.md']['sha256']
         preserved()
         install(older, 'block-downgrade', program, False)
         preserved()
@@ -169,7 +171,10 @@ def verify(setup, work, previous_setup=None):
         assert registration() == program
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, KEY, 0, winreg.KEY_READ | winreg.KEY_WOW64_64KEY) as key:
             previous_version = winreg.QueryValueEx(key, 'DisplayVersion')[0]
-        install(setup, 'upgrade-from-earlier-version', program)
+        wrong = work / 'Unexpected relocation'
+        install(setup, 'reject-update-relocation', wrong, False)
+        assert not (wrong / 'TwinPALS.exe').exists()
+        run(setup, 'upgrade-from-earlier-version', '/NOICONS', '/TASKS=')
         assert registration() == program
         preserved()
         with running_desktop(program, env) as base:

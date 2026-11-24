@@ -1,6 +1,6 @@
 # TwinPALS 2.0
 
-**Cite this software** · Danny Petschke, *TwinPALS 2.0*, version 2.0.0. When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
+**Cite this software** · Danny Petschke, *TwinPALS 2.0*, version 2.0.1. When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
 
 TwinPALS simulates positron annihilation lifetime spectroscopy (PALS) on Windows x64. Set up a detector, acquire digitized pulse pairs and see how timing, filters and event selection affect the lifetime spectrum. The desktop and MCP server share the same simulation engines and component catalogue.
 
@@ -25,6 +25,29 @@ In PowerShell, open the program folder (by default `%LOCALAPPDATA%\Programs\Twin
 ```
 
 Replace `claude-desktop` with `codex`, `claude-code`, `copilot-cli` or `vscode` as appropriate. Add the printed entry to the client's MCP configuration, reconnect and ask it to call **capabilities**. The client starts the local server. Choose **Open study observer** in the tray to follow its work. [Client configuration and study examples](docs/mcp/README.md)
+
+### Connect TwinPALS to Codex
+
+1. Open **Status and paths** from the TwinPALS tray icon to find the program folder. In that folder, run this in PowerShell.
+
+   ```powershell
+   .\TwinPALS-MCP.exe --print-config codex
+   ```
+
+   Your command prints the paths for your installation. The example below uses the screenshot's program folder and a custom workspace selected with `--data-dir D:\TwinPALS\Data`.
+
+   ```toml
+   [mcp_servers.twinpals]
+   command = "C:\\Tools\\TwinPALS\\TwinPALS-MCP.exe"
+   args = ["--data-dir", "D:\\TwinPALS\\Data"]
+   ```
+
+2. In Codex, open **Plugins → MCPs → Add**, choose a local **STDIO** server and name it `twinpals`. Enter the executable path under **Command to launch**. Under **Arguments**, add `--data-dir` and the data folder as two separate entries. TOML escapes each backslash as `\\`. In the form, enter ordinary Windows paths such as `D:\TwinPALS\Data`, without quotes. Leave the environment and working directory fields empty.
+3. Save, enable the server and open a new chat. Ask **“Call TwinPALS capabilities and show my study workspace.”** The returned data directory identifies the catalogue and studies this connection uses. [Codex MCP documentation](https://developers.openai.com/codex/mcp/)
+
+| Command and arguments · example paths | Enabled server in Codex |
+| :--- | :--- |
+| [![Local server form with the TwinPALS executable and two separate arguments](docs/screenshots/codex-mcp-command.png)](docs/screenshots/codex-mcp-command.png) | [![TwinPALS enabled in the Codex MCP server list](docs/screenshots/codex-mcp-servers.png)](docs/screenshots/codex-mcp-servers.png) |
 
 ### Try a zero-lifetime timing study
 

@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Please cite TwinPALS 2.0 and the doctoral dissertation listed in references when using this work in research."
 type: software
 title: TwinPALS 2.0
-version: "2.0.0"
+version: "2.0.1"
 repository-code: "https://github.com/dpscience/TwinPALS2.0-public"
 license: MIT
 authors:

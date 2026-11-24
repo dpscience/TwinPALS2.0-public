@@ -1,6 +1,6 @@
 # TwinPALS study server
 
-TwinPALS-MCP.exe and the TwinPALS 2.0 study observer use the same 2.0.0 engines as the application. Extract the entire portable folder to a writable local drive. Keep both executables beside the shared _internal, .runtime, frontend, legal and seed directories.
+TwinPALS-MCP.exe and the TwinPALS 2.0 study observer use the same 2.0.1 engines as the application. Extract the entire portable folder to a writable local drive. Keep both executables beside the shared _internal, .runtime, frontend, legal and seed directories.
 
 ## Connect a client
 
@@ -17,6 +17,8 @@ Open PowerShell in the release folder and print the configuration for your clien
     .\TwinPALS-MCP.exe --print-config vscode
 
 For Codex, merge the TOML section into the client configuration. For Claude Desktop, merge the twinpals entry into mcpServers in claude_desktop_config.json. For Claude Code, the printed JSON also works as a project .mcp.json. Reload the client and call capabilities. Print the configuration again after relocating the portable folder. An optional --data-dir selects another writable workspace. Point it to the existing TwinPALS data directory to share its instrument and material catalogue.
+
+For example, run `.\TwinPALS-MCP.exe --data-dir "D:\TwinPALS\Lab" --print-config codex` to generate a configuration for a separate workspace. A new directory starts with the factory catalogue and an empty study queue. Switching the configured path leaves existing studies and any active coordinator in their original workspace. Reconnect with the original path to see those studies again. The `capabilities` tool reports the active `data_directory`.
 
 For GitHub Copilot CLI, merge the generated `copilot-cli` entry into the `mcpServers` object in `~/.copilot/mcp-config.json`. Open `/mcp` to inspect the connection. For GitHub Copilot in VS Code, merge the generated `vscode` entry into `servers` in the workspace's `.vscode/mcp.json`. Use **MCP: List Servers** to start TwinPALS and inspect its tools. In either client, ask for the TwinPALS `capabilities` tool to check the connection to the local study service.
 

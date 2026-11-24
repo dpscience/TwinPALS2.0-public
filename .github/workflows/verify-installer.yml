@@ -1,0 +1,72 @@
+name: Windows installer lifecycle
+on:
+  workflow_dispatch:
+  push:
+    branches: [danny-dev]
+    paths:
+      - '.github/workflows/verify-installer.yml'
+      - 'native/windows/installer/**'
+      - 'scripts/verify_installer.py'
+permissions: {}
+jobs:
+  lifecycle:
+    if: github.repository == 'dpscience/TwinPALS2.0-public'
+    runs-on: windows-2022
+    timeout-minutes: 40
+    # GitHub restricts draft release downloads to collaborators with push access.
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Fetch the draft installer and its published predecessor
+        id: installers
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = python -c "from backend import __version__; print(__version__)"
+          $repo = $env:GITHUB_REPOSITORY
+          $rows = gh api "repos/$repo/releases?per_page=100" | ConvertFrom-Json
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $candidate = @($rows | Where-Object { $_.draft -and $_.tag_name -eq "v$version" })
+          if ($candidate.Count -eq 0 -and $env:GITHUB_EVENT_NAME -eq 'push') {
+            Write-Output 'No matching release draft to test.'
+            exit 0
+          }
+          if ($candidate.Count -ne 1) { throw "Expected one draft for v$version" }
+          $previous = gh api "repos/$repo/releases/latest" | ConvertFrom-Json
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          if ([version]($previous.tag_name.TrimStart('v')) -ge [version]$version) { throw 'Expected an earlier stable release' }
+          foreach ($release in @($candidate[0], $previous)) {
+            $stem = "TwinPALS-$($release.tag_name.TrimStart('v'))-windows-x64-setup.exe"
+            $asset = @($release.assets | Where-Object name -eq $stem)
+            if ($asset.Count -ne 1 -or $asset[0].digest -notmatch '^sha256:[0-9a-f]{64}$') { throw "Missing installer digest for $stem" }
+            $out = Join-Path $env:RUNNER_TEMP $stem
+            $assetUrl = "https://api.github.com/repos/$repo/releases/assets/$($asset[0].id)"
+            Invoke-WebRequest -Uri $assetUrl -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/octet-stream' } -OutFile $out
+            if ("sha256:$((Get-FileHash -LiteralPath $out).Hash)" -ne $asset[0].digest) { throw "Digest mismatch for $stem" }
+            $key = if ($release.draft) { 'candidate' } else { 'previous' }
+            "$key=$out" >> $env:GITHUB_OUTPUT
+          }
+      - name: Install, repair, update and uninstall on a fresh Windows account
+        if: steps.installers.outputs.candidate
+        shell: pwsh
+        env:
+          CANDIDATE: ${{ steps.installers.outputs.candidate }}
+          PREVIOUS: ${{ steps.installers.outputs.previous }}
+        run: python scripts/verify_installer.py --setup "$env:CANDIDATE" --previous-setup "$env:PREVIOUS" --work "$env:RUNNER_TEMP/installer-test"
+      - name: Store exact installer verification receipt
+        if: steps.installers.outputs.candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-verification
+          path: ${{ runner.temp }}/installer-test/installer-verification.json
+          if-no-files-found: error
+      - name: Store installer diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-test-logs
+          path: ${{ runner.temp }}/installer-test/*.log
