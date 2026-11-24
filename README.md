@@ -1,6 +1,6 @@
 # TwinPALS 2.0
 
-**Cite this software** · Danny Petschke, *TwinPALS 2.0*, version 2.0.1. When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
+**Cite this software** · Danny Petschke, *TwinPALS 2.0*, version 2.0.2 (development). When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
 
 TwinPALS simulates positron annihilation lifetime spectroscopy (PALS) on Windows x64. Set up a detector, acquire digitized pulse pairs and see how timing, filters and event selection affect the lifetime spectrum. The desktop and MCP server share the same simulation engines and component catalogue.
 

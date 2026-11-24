@@ -1,6 +1,6 @@
 # TwinPALS study server
 
-TwinPALS-MCP.exe and the TwinPALS 2.0 study observer use the same 2.0.1 engines as the application. Extract the entire portable folder to a writable local drive. Keep both executables beside the shared _internal, .runtime, frontend, legal and seed directories.
+TwinPALS-MCP.exe and the TwinPALS 2.0 study observer use the same 2.0.2 engines as the application. Extract the entire portable folder to a writable local drive. Keep both executables beside the shared _internal, .runtime, frontend, legal and seed directories.
 
 ## Connect a client
 
