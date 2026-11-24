@@ -1,0 +1,21 @@
+/* SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me>
+ * SPDX-License-Identifier: MIT
+ * Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663 */
+.release-updates{display:inline-flex;position:relative;flex:none;align-items:center;gap:8px;font:inherit;line-height:16px;white-space:nowrap}
+.release-updates .release-version,.release-updates .release-badge{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:22px;margin:0;padding:0 5px;font:inherit;line-height:16px}
+.release-updates .release-version{border:1px solid transparent;background:transparent;color:#486477}
+.release-updates .release-version:hover,.release-updates .release-version[aria-expanded=true]{background:#eff4f6}
+.release-updates .release-badge{border:1px solid #bddfd8;border-radius:12px;background:#eaf6f2;color:#19685d;padding-inline:8px;font-weight:600}
+.release-updates svg{display:block;flex:none}
+.release-updates .release-popover{position:absolute;z-index:50;right:0;bottom:calc(100% + 9px);box-sizing:border-box;width:260px;max-width:calc(100vw - 24px);background:white;border:1px solid #c9d9df;border-radius:8px;box-shadow:0 5px 22px #213e521f;padding:13px 15px;white-space:normal;color:#2c4659;font:12px/1.5 'Segoe UI',sans-serif;text-align:left}
+.release-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.release-updates .release-heading strong{font:600 14px/1.4 'Segoe UI',sans-serif;color:#254655;text-transform:none}
+.release-heading button{padding:2px;border:0;background:transparent;color:#62798a}
+.release-popover p{margin:3px 0 0;color:#536b7c}
+.release-popover a{display:inline-flex;align-items:center;gap:4px;font-weight:600;color:#126e66;margin-top:8px;text-decoration:none}
+.release-popover a:hover{text-decoration:underline}
+.release-preferences{border-top:1px solid #dbe5e9;margin-top:12px;padding-top:10px;display:grid;justify-items:start;gap:10px}
+.release-preferences label{display:inline-flex;align-items:center;gap:7px}
+.release-preferences input{margin:0}
+.release-preferences button{font-size:11px;padding:4px 8px}
+

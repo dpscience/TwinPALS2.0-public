@@ -1,0 +1,4633 @@
+{
+  "format": "twinpals-geant4-materials",
+  "geant4_version": "11.4.0",
+  "items": [
+    {
+      "atomic_composition": {
+        "H": 2,
+        "O": 1
+      },
+      "chemical_formula": "H_2O",
+      "composition": {
+        "H": 0.11189847784106703,
+        "O": 0.8881015221589329
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_WATER",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "H": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.374799999999998e-05,
+      "id": "G4_H",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "He": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "He": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.000166322,
+      "id": "G4_He",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Li": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Li": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.534,
+      "id": "G4_Li",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Be": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Be": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8480000000000003,
+      "id": "G4_Be",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "B": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "B": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.37,
+      "id": "G4_B",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.0,
+      "id": "G4_C",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "N": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0011652,
+      "id": "G4_N",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00133151,
+      "id": "G4_O",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "F": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "F": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00158029,
+      "id": "G4_F",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Ne": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ne": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0008385049999999999,
+      "id": "G4_Ne",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Na": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Na": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9709999999999998,
+      "id": "G4_Na",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Mg": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Mg": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.7399999999999998,
+      "id": "G4_Mg",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Al": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Al": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.6989999999999994,
+      "id": "G4_Al",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Si": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Si": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.3299999999999996,
+      "id": "G4_Si",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "P": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "P": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.2,
+      "id": "G4_P",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "S": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.0,
+      "id": "G4_S",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cl": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cl": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00299473,
+      "id": "G4_Cl",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Ar": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ar": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0016620099999999998,
+      "id": "G4_Ar",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "K": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "K": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8619999999999999,
+      "id": "G4_K",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ca": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.55,
+      "id": "G4_Ca",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Sc": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Sc": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.9889999999999994,
+      "id": "G4_Sc",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ti": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ti": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.539999999999999,
+      "id": "G4_Ti",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "V": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "V": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.109999999999999,
+      "id": "G4_V",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.179999999999999,
+      "id": "G4_Cr",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Mn": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Mn": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.44,
+      "id": "G4_Mn",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Fe": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Fe": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.873999999999999,
+      "id": "G4_Fe",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Co": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Co": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.9,
+      "id": "G4_Co",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ni": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ni": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.901999999999997,
+      "id": "G4_Ni",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cu": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cu": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.959999999999999,
+      "id": "G4_Cu",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Zn": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Zn": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.132999999999999,
+      "id": "G4_Zn",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ga": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ga": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.903999999999999,
+      "id": "G4_Ga",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ge": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ge": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.3229999999999995,
+      "id": "G4_Ge",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "As": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "As": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.7299999999999995,
+      "id": "G4_As",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Se": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Se": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.5,
+      "id": "G4_Se",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Br": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Br": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0070721,
+      "id": "G4_Br",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Kr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Kr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0034783199999999996,
+      "id": "G4_Kr",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Rb": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Rb": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.5319999999999998,
+      "id": "G4_Rb",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Sr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Sr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.5399999999999996,
+      "id": "G4_Sr",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Y": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Y": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.468999999999999,
+      "id": "G4_Y",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Zr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Zr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.505999999999999,
+      "id": "G4_Zr",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Nb": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Nb": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.57,
+      "id": "G4_Nb",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Mo": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Mo": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 10.219999999999999,
+      "id": "G4_Mo",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Tc": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Tc": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 11.5,
+      "id": "G4_Tc",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ru": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ru": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 12.41,
+      "id": "G4_Ru",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Rh": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Rh": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 12.41,
+      "id": "G4_Rh",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pd": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pd": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 12.02,
+      "id": "G4_Pd",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ag": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ag": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 10.5,
+      "id": "G4_Ag",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cd": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cd": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.65,
+      "id": "G4_Cd",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "In": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "In": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.31,
+      "id": "G4_In",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Sn": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Sn": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.31,
+      "id": "G4_Sn",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Sb": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Sb": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.690999999999999,
+      "id": "G4_Sb",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Te": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Te": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.239999999999999,
+      "id": "G4_Te",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "I": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "I": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.93,
+      "id": "G4_I",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Xe": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Xe": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.005485359999999999,
+      "id": "G4_Xe",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Cs": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cs": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8729999999999998,
+      "id": "G4_Cs",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ba": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ba": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.4999999999999996,
+      "id": "G4_Ba",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "La": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "La": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.153999999999999,
+      "id": "G4_La",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ce": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ce": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.656999999999998,
+      "id": "G4_Ce",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.709999999999999,
+      "id": "G4_Pr",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Nd": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Nd": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.899999999999999,
+      "id": "G4_Nd",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pm": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pm": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.22,
+      "id": "G4_Pm",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Sm": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Sm": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.459999999999998,
+      "id": "G4_Sm",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Eu": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Eu": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.242999999999999,
+      "id": "G4_Eu",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Gd": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Gd": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.900400000000001,
+      "id": "G4_Gd",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Tb": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Tb": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.228999999999997,
+      "id": "G4_Tb",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Dy": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Dy": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.55,
+      "id": "G4_Dy",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ho": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ho": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.794999999999998,
+      "id": "G4_Ho",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Er": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Er": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.066,
+      "id": "G4_Er",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Tm": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Tm": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.321,
+      "id": "G4_Tm",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Yb": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Yb": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.7299999999999995,
+      "id": "G4_Yb",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Lu": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Lu": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.84,
+      "id": "G4_Lu",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Hf": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Hf": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 13.309999999999999,
+      "id": "G4_Hf",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ta": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ta": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 16.654,
+      "id": "G4_Ta",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "W": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "W": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 19.3,
+      "id": "G4_W",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Re": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Re": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 21.02,
+      "id": "G4_Re",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Os": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Os": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 22.569999999999997,
+      "id": "G4_Os",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ir": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ir": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 22.419999999999998,
+      "id": "G4_Ir",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pt": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pt": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 21.449999999999996,
+      "id": "G4_Pt",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Au": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Au": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 19.32,
+      "id": "G4_Au",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Hg": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Hg": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 13.546,
+      "id": "G4_Hg",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Tl": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Tl": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 11.72,
+      "id": "G4_Tl",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pb": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pb": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 11.35,
+      "id": "G4_Pb",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Bi": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Bi": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.746999999999998,
+      "id": "G4_Bi",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Po": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Po": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.319999999999999,
+      "id": "G4_Po",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "At": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "At": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.319999999999999,
+      "id": "G4_At",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Rn": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Rn": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00900662,
+      "id": "G4_Rn",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "Fr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Fr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_Fr",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ra": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ra": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.999999999999999,
+      "id": "G4_Ra",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ac": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ac": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 10.069999999999999,
+      "id": "G4_Ac",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Th": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Th": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 11.72,
+      "id": "G4_Th",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pa": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pa": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 15.37,
+      "id": "G4_Pa",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "U": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "U": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 18.95,
+      "id": "G4_U",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Np": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Np": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 20.25,
+      "id": "G4_Np",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Pu": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Pu": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 19.839999999999996,
+      "id": "G4_Pu",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Am": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Am": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 13.67,
+      "id": "G4_Am",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cm": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cm": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 13.51,
+      "id": "G4_Cm",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Bk": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Bk": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 13.999999999999998,
+      "id": "G4_Bk",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cf": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cf": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.999999999999998,
+      "id": "G4_Cf",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7755002244997755,
+        "Ca": 0.01837798162201838,
+        "F": 0.017421982578017425,
+        "H": 0.10132689867310134,
+        "N": 0.035056964943035056,
+        "O": 0.05231594768405232
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1269999999999998,
+      "id": "G4_A-150_TISSUE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 6,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6203973505309239,
+        "H": 0.10412746607058551,
+        "O": 0.2754751833984906
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.7899,
+      "id": "G4_ACETONE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9225773292943783,
+        "H": 0.07742267070562171
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0010967,
+      "id": "G4_ACETYLENE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 5,
+        "N": 5
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4444232424070803,
+        "H": 0.03729598946152831,
+        "N": 0.5182807681313913
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.35,
+      "id": "G4_ADENINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.598,
+        "Cl": 0.001,
+        "H": 0.114,
+        "N": 0.007,
+        "Na": 0.001,
+        "O": 0.278,
+        "S": 0.001
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.95,
+      "id": "G4_ADIPOSE_TISSUE_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Ar": 0.012827012827012825,
+        "C": 0.000124000124000124,
+        "N": 0.7552677552677552,
+        "O": 0.23178123178123175
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0012047899999999999,
+      "id": "G4_AIR",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 7,
+        "N": 1,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.40443210957366915,
+        "H": 0.07919318028468356,
+        "N": 0.15721453815928274,
+        "O": 0.3591601719823645
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.42,
+      "id": "G4_ALANINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Al": 2,
+        "O": 3
+      },
+      "chemical_formula": "Al_2O_3",
+      "composition": {
+        "Al": 0.5292504916080714,
+        "O": 0.4707495083919286
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.9699999999999998,
+      "id": "G4_ALUMINUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.788973788973789,
+        "H": 0.10593010593010593,
+        "O": 0.10509610509610509
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1,
+      "id": "G4_AMBER",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 3,
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 0.17755239493977706,
+        "N": 0.8224476050602229
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.000826019,
+      "id": "G4_AMMONIA",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 7,
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7738313735000505,
+        "H": 0.075763231974996,
+        "N": 0.15040539452495352
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0235,
+      "id": "G4_ANILINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 14,
+        "H": 10
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9434470990304961,
+        "H": 0.056552900969503946
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.283,
+      "id": "G4_ANTHRACENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5369444630555369,
+        "Ca": 0.17658882341117657,
+        "F": 0.1674108325891674,
+        "H": 0.06547093452906547,
+        "N": 0.021499978500021496,
+        "O": 0.032084967915032084
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.45,
+      "id": "G4_B-100_BONE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.774591,
+        "H": 0.057441,
+        "O": 0.167968
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2499999999999998,
+      "id": "G4_BAKELITE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ba": 1,
+        "F": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ba": 0.7832761810063981,
+        "F": 0.216723818993602
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.89,
+      "id": "G4_BARIUM_FLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ba": 1,
+        "O": 4,
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ba": 0.5883993302638701,
+        "O": 0.2742081123407523,
+        "S": 0.1373925573953775
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.5,
+      "id": "G4_BARIUM_SULFATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 6
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9225773292943783,
+        "H": 0.07742267070562171
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8786499999999999,
+      "id": "G4_BENZENE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Be": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Be": 0.36032043777772843,
+        "O": 0.6396795622222714
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.01,
+      "id": "G4_BERYLLIUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Bi": 4,
+        "Ge": 3,
+        "O": 12
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Bi": 0.6710168961213168,
+        "Ge": 0.1748650835883821,
+        "O": 0.15411802029030117
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.129999999999999,
+      "id": "G4_BGO",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.11,
+        "Cl": 0.003,
+        "Fe": 0.001,
+        "H": 0.102,
+        "K": 0.002,
+        "N": 0.033,
+        "Na": 0.001,
+        "O": 0.745,
+        "P": 0.001,
+        "S": 0.002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.06,
+      "id": "G4_BLOOD_ICRP",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.278,
+        "Ca": 0.147,
+        "H": 0.064,
+        "Mg": 0.002,
+        "N": 0.027,
+        "O": 0.41,
+        "P": 0.07,
+        "S": 0.002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8499999999999999,
+      "id": "G4_BONE_COMPACT_ICRU",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.155,
+        "Ca": 0.225,
+        "H": 0.034,
+        "Mg": 0.002,
+        "N": 0.042,
+        "Na": 0.001,
+        "O": 0.435,
+        "P": 0.103,
+        "S": 0.003
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.92,
+      "id": "G4_BONE_CORTICAL_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "B": 4,
+        "C": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "B": 0.7826299986678551,
+        "C": 0.21737000133214482
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.5199999999999996,
+      "id": "G4_BORON_CARBIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "B": 2,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "B": 0.3105712357543674,
+        "O": 0.6894287642456326
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.812,
+      "id": "G4_BORON_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.145,
+        "Cl": 0.003,
+        "H": 0.107,
+        "K": 0.003,
+        "N": 0.022,
+        "Na": 0.002,
+        "O": 0.712,
+        "P": 0.004,
+        "S": 0.002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0399999999999998,
+      "id": "G4_BRAIN_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 10
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8265829410147718,
+        "H": 0.17341705898522822
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00249343,
+      "id": "G4_BUTANE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 10,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6481626480824588,
+        "H": 0.13598449060241222,
+        "O": 0.21585286131512904
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8097999999999999,
+      "id": "G4_N-BUTYL_ALCOHOL",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5016105016105016,
+        "F": 0.4652094652094652,
+        "H": 0.02468002468002468,
+        "O": 0.004527004527004527,
+        "Si": 0.003973003973003973
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.7599999999999998,
+      "id": "G4_C-552",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cd": 1,
+        "Te": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cd": 0.46835318560669537,
+        "Te": 0.5316468143933045
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.2,
+      "id": "G4_CADMIUM_TELLURIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cd": 1,
+        "O": 4,
+        "W": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cd": 0.31203678986130257,
+        "O": 0.1776473333799625,
+        "W": 0.510315876758735
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.9,
+      "id": "G4_CADMIUM_TUNGSTATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "Ca": 1,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.12000303405741311,
+        "Ca": 0.40043218365675287,
+        "O": 0.47956478228583393
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.8,
+      "id": "G4_CALCIUM_CARBONATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ca": 1,
+        "F": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 0.513328441427641,
+        "F": 0.486671558572359
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.18,
+      "id": "G4_CALCIUM_FLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ca": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 0.7146910498816451,
+        "O": 0.28530895011835483
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.299999999999999,
+      "id": "G4_CALCIUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ca": 1,
+        "O": 4,
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 0.29438466994218276,
+        "O": 0.47008049772584476,
+        "S": 0.2355348323319724
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.96,
+      "id": "G4_CALCIUM_SULFATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ca": 1,
+        "O": 4,
+        "W": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 0.1391998504560634,
+        "O": 0.2222776579996537,
+        "W": 0.638522491544283
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.062,
+      "id": "G4_CALCIUM_TUNGSTATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "O": 2
+      },
+      "chemical_formula": "CO_2",
+      "composition": {
+        "C": 0.27291225043146294,
+        "O": 0.7270877495685371
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0018421199999999998,
+      "id": "G4_CARBON_DIOXIDE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "Cl": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.07808253774897783,
+        "Cl": 0.9219174622510222
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.5939999999999999,
+      "id": "G4_CARBON_TETRACHLORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 10,
+        "O": 5
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.44445585638851354,
+        "H": 0.06216454404364449,
+        "O": 0.49337959956784205
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.42,
+      "id": "G4_CELLULOSE_CELLOPHANE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.545403,
+        "H": 0.067125,
+        "O": 0.387472
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1999999999999997,
+      "id": "G4_CELLULOSE_BUTYRATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.271296,
+        "H": 0.029216,
+        "N": 0.121276,
+        "O": 0.578212
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.4899999999999998,
+      "id": "G4_CELLULOSE_NITRATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Ce": 0.0020010000000000006,
+        "H": 0.10759600000000001,
+        "N": 0.0008000000000000001,
+        "O": 0.8749760000000001,
+        "S": 0.014627000000000001
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0299999999999998,
+      "id": "G4_CERIC_SULFATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cs": 1,
+        "F": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cs": 0.8749310417015024,
+        "F": 0.1250689582984976
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.114999999999999,
+      "id": "G4_CESIUM_FLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cs": 1,
+        "I": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cs": 0.5115488685919272,
+        "I": 0.48845113140807284
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.51,
+      "id": "G4_CESIUM_IODIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "Cl": 1,
+        "H": 5
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.640249946892637,
+        "Cl": 0.31497525100895485,
+        "H": 0.04477480209840812
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1057999999999997,
+      "id": "G4_CHLOROBENZENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "Cl": 3,
+        "H": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.10061232076328948,
+        "Cl": 0.8909442953250959,
+        "H": 0.008443383911614631
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.4832,
+      "id": "G4_CHLOROFORM",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Al": 0.033872,
+        "C": 0.001,
+        "Ca": 0.044,
+        "Fe": 0.014,
+        "H": 0.01,
+        "K": 0.013,
+        "Mg": 0.002,
+        "Na": 0.016,
+        "O": 0.529107,
+        "Si": 0.337021
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.3,
+      "id": "G4_CONCRETE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 12
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8562817122551981,
+        "H": 0.14371828774480183
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.7789999999999999,
+      "id": "G4_CYCLOHEXANE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "Cl": 2,
+        "H": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.49022970891497997,
+        "Cl": 0.4823435796190253,
+        "H": 0.027426711465994656
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.3048,
+      "id": "G4_1,2-DICHLOROBENZENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "Cl": 2,
+        "H": 8,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.33593879197932897,
+        "Cl": 0.4958020184501997,
+        "H": 0.05638395317724273,
+        "O": 0.11187523639322854
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2199,
+      "id": "G4_DICHLORODIETHYL_ETHER",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "Cl": 2,
+        "H": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.24274318290163677,
+        "Cl": 0.7165148111568078,
+        "H": 0.04074200594155537
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2350999999999999,
+      "id": "G4_1,2-DICHLOROETHANE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 10,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6481626480824588,
+        "H": 0.13598449060241222,
+        "O": 0.21585286131512904
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.7137799999999999,
+      "id": "G4_DIETHYL_ETHER",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 7,
+        "N": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.49295745101736077,
+        "H": 0.09652761827503908,
+        "N": 0.1916269162593645,
+        "O": 0.21888801444823552
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9487,
+      "id": "G4_N,N-DIMETHYL_FORMAMIDE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 6,
+        "O": 1,
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.3074369871053702,
+        "H": 0.07740031711030444,
+        "O": 0.20476697797110383,
+        "S": 0.41039571781322154
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1014,
+      "id": "G4_DIMETHYL_SULFOXIDE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 6
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7988752226916991,
+        "H": 0.20112477730830097
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00125324,
+      "id": "G4_ETHANE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 6,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.521429366091304,
+        "H": 0.1312750253835251,
+        "O": 0.34729560852517094
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.7893,
+      "id": "G4_ETHYL_ALCOHOL",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.585182,
+        "H": 0.090027,
+        "O": 0.324791
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1299999999999997,
+      "id": "G4_ETHYL_CELLULOSE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8562817122551982,
+        "H": 0.14371828774480183
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0011749699999999998,
+      "id": "G4_ETHYLENE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.195,
+        "Cl": 0.001,
+        "H": 0.096,
+        "N": 0.057,
+        "Na": 0.001,
+        "O": 0.646,
+        "P": 0.001,
+        "S": 0.003
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.07,
+      "id": "G4_EYE_LENS_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Fe": 2,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Fe": 0.6994260485519561,
+        "O": 0.30057395144804383
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.2,
+      "id": "G4_FERRIC_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "B": 1,
+        "Fe": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "B": 0.16219088708658702,
+        "Fe": 0.837809112913413
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.15,
+      "id": "G4_FERROBORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Fe": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Fe": 0.7773052893156457,
+        "O": 0.22269471068435429
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.7,
+      "id": "G4_FERROUS_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Cl": 3.4000000000000007e-05,
+        "Fe": 5.4000000000000005e-05,
+        "H": 0.10825900000000001,
+        "N": 2.7000000000000002e-05,
+        "Na": 2.2000000000000003e-05,
+        "O": 0.8786360000000001,
+        "S": 0.012968000000000002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.024,
+      "id": "G4_FERROUS_SULFATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.099335,
+        "Cl": 0.586418,
+        "F": 0.314247
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1199999999999999,
+      "id": "G4_FREON-12",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Br": 0.761659,
+        "C": 0.057245,
+        "F": 0.181096
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8,
+      "id": "G4_FREON-12B2",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.114982885017115,
+        "Cl": 0.3393956606043394,
+        "F": 0.5456214543785457
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.95,
+      "id": "G4_FREON-13",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Br": 1,
+        "C": 1,
+        "F": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Br": 0.5365912888900843,
+        "C": 0.08065798621566032,
+        "F": 0.3827507248942553
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.5,
+      "id": "G4_FREON-13B1",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.061309,
+        "F": 0.290924,
+        "I": 0.647767
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8,
+      "id": "G4_FREON-13I1",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Gd": 2,
+        "O": 2,
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Gd": 0.8307709544893754,
+        "O": 0.08452559126304099,
+        "S": 0.08470345424758352
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.44,
+      "id": "G4_GADOLINIUM_OXYSULFIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "As": 1,
+        "Ga": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "As": 0.5179699626459349,
+        "Ga": 0.4820300373540652
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.31,
+      "id": "G4_GALLIUM_ARSENIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.41606,
+        "H": 0.08118,
+        "N": 0.11124,
+        "O": 0.38064,
+        "S": 0.01088
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2913999999999999,
+      "id": "G4_GEL_PHOTO_EMULSION",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Al": 0.011643976712046577,
+        "B": 0.04006391987216026,
+        "K": 0.003320993358013284,
+        "Na": 0.028190943618112762,
+        "O": 0.5395609208781582,
+        "Si": 0.3772192455615088
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.23,
+      "id": "G4_Pyrex_Glass",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "As": 0.002651,
+        "O": 0.156453,
+        "Pb": 0.751938,
+        "Si": 0.080866,
+        "Ti": 0.008092
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.22,
+      "id": "G4_GLASS_LEAD",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 0.1072051072051072,
+        "Na": 0.09644109644109644,
+        "O": 0.4598004598004598,
+        "Si": 0.3365533365533366
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.3999999999999995,
+      "id": "G4_GLASS_PLATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 10,
+        "N": 2,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4109190507198908,
+        "H": 0.06896863675348634,
+        "N": 0.1916834413010747,
+        "O": 0.32842887122554815
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.4599999999999997,
+      "id": "G4_GLUTAMINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 8,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.39125508462763925,
+        "H": 0.08755764997952517,
+        "O": 0.5211872653928356
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2612999999999999,
+      "id": "G4_GLYCEROL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 5,
+        "N": 5,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.3973732857425537,
+        "H": 0.03334755805541787,
+        "N": 0.4634117033440385,
+        "O": 0.10586745285798999
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.58,
+      "id": "G4_GUANINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ca": 1,
+        "H": 4,
+        "O": 6,
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ca": 0.23277869296771098,
+        "H": 0.02341703136480961,
+        "O": 0.5575598953830929,
+        "S": 0.18624438028438647
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.32,
+      "id": "G4_GYPSUM",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 7,
+        "H": 16
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.839054921310261,
+        "H": 0.160945078689739
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.68376,
+      "id": "G4_N-HEPTANE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 14
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8362509530717921,
+        "H": 0.1637490469282079
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.6602999999999999,
+      "id": "G4_N-HEXANE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 22,
+        "H": 10,
+        "N": 2,
+        "O": 5
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.691127814286998,
+        "H": 0.026363378233987947,
+        "N": 0.07327132015491389,
+        "O": 0.20923748732410025
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.42,
+      "id": "G4_KAPTON",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Br": 1,
+        "La": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Br": 0.34029297153743754,
+        "La": 0.5915688472134324,
+        "O": 0.06813818124913017
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.28,
+      "id": "G4_LANTHANUM_OXYBROMIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "La": 2,
+        "O": 2,
+        "S": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "La": 0.8126073069776348,
+        "O": 0.09359786984731605,
+        "S": 0.09379482317504918
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.86,
+      "id": "G4_LANTHANUM_OXYSULFIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "O": 0.071682,
+        "Pb": 0.928318
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.53,
+      "id": "G4_LEAD_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 2,
+        "Li": 1,
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 0.08778945588453152,
+        "Li": 0.30223092852428285,
+        "N": 0.6099796155911855
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.178,
+      "id": "G4_LITHIUM_AMIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "Li": 2,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.16255113212542396,
+        "Li": 0.18785030646862608,
+        "O": 0.64959856140595
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.11,
+      "id": "G4_LITHIUM_CARBONATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "F": 1,
+        "Li": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "F": 0.7324420811254113,
+        "Li": 0.2675579188745887
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.6349999999999993,
+      "id": "G4_LITHIUM_FLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 1,
+        "Li": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 0.12681731943932903,
+        "Li": 0.8731826805606709
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.82,
+      "id": "G4_LITHIUM_HYDRIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "I": 1,
+        "Li": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "I": 0.9481483556520233,
+        "Li": 0.051851644347976726
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.494,
+      "id": "G4_LITHIUM_IODIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Li": 2,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Li": 0.4645354330356348,
+        "O": 0.5354645669643651
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.013,
+      "id": "G4_LITHIUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "B": 4,
+        "Li": 2,
+        "O": 7
+      },
+      "chemical_formula": "",
+      "composition": {
+        "B": 0.255700686772426,
+        "Li": 0.08207235988972522,
+        "O": 0.6622269533378488
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.44,
+      "id": "G4_LITHIUM_TETRABORATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.083,
+        "Cl": 0.003,
+        "H": 0.105,
+        "K": 0.002,
+        "N": 0.023,
+        "Na": 0.002,
+        "O": 0.779,
+        "P": 0.001,
+        "S": 0.002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0399999999999998,
+      "id": "G4_LUNG_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6558236558236558,
+        "Ca": 0.002883002883002883,
+        "H": 0.11431811431811431,
+        "Mg": 0.13479213479213478,
+        "O": 0.09218309218309217
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.05,
+      "id": "G4_M3_WAX",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "Mg": 1,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.14245258552214662,
+        "Mg": 0.2882681150119891,
+        "O": 0.5692792994658642
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.9579999999999997,
+      "id": "G4_MAGNESIUM_CARBONATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "F": 2,
+        "Mg": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "F": 0.6098827062500369,
+        "Mg": 0.3901172937499631
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.0,
+      "id": "G4_MAGNESIUM_FLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Mg": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Mg": 0.6030361955186937,
+        "O": 0.3969638044813063
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.58,
+      "id": "G4_MAGNESIUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "B": 4,
+        "Mg": 1,
+        "O": 7
+      },
+      "chemical_formula": "",
+      "composition": {
+        "B": 0.24085388254610146,
+        "Mg": 0.13537019079769835,
+        "O": 0.6237759266562002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.5299999999999994,
+      "id": "G4_MAGNESIUM_TETRABORATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Hg": 1,
+        "I": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Hg": 0.44145238952408433,
+        "I": 0.5585476104759157
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.36,
+      "id": "G4_MERCURIC_IODIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "H": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7486823647312881,
+        "H": 0.25131763526871176
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.000667151,
+      "id": "G4_METHANE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "H": 4,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.37484481890258375,
+        "H": 0.1258278783060922,
+        "O": 0.499327302791324
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.7913999999999999,
+      "id": "G4_METHANOL",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.77796,
+        "H": 0.13404,
+        "Mg": 0.038594,
+        "O": 0.03502,
+        "Ti": 0.014386
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9899999999999998,
+      "id": "G4_MIX_D_WAX",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.583442,
+        "Cl": 0.0009,
+        "H": 0.081192,
+        "Mg": 0.130287,
+        "N": 0.017798,
+        "O": 0.186381
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_MS20_TISSUE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.143,
+        "Cl": 0.001,
+        "H": 0.102,
+        "K": 0.004,
+        "N": 0.034,
+        "Na": 0.001,
+        "O": 0.71,
+        "P": 0.002,
+        "S": 0.003
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.05,
+      "id": "G4_MUSCLE_SKELETAL_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.12312312312312312,
+        "H": 0.10210210210210209,
+        "K": 0.003003003003003003,
+        "N": 0.035035035035035036,
+        "Na": 0.001001001001001001,
+        "O": 0.7297297297297297,
+        "P": 0.002002002002002002,
+        "S": 0.004004004004004004
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0399999999999998,
+      "id": "G4_MUSCLE_STRIATED_ICRU",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.1562141562141562,
+        "H": 0.09823409823409823,
+        "N": 0.03545103545103546,
+        "O": 0.7101007101007101
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.11,
+      "id": "G4_MUSCLE_WITH_SUCROSE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.120058,
+        "H": 0.101969,
+        "N": 0.035451,
+        "O": 0.742522
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.07,
+      "id": "G4_MUSCLE_WITHOUT_SUCROSE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 10,
+        "H": 8
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.937087695711856,
+        "H": 0.06291230428814393
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1449999999999998,
+      "id": "G4_NAPHTHALENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 5,
+        "N": 1,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5853676418068003,
+        "H": 0.04093670049316915,
+        "N": 0.11377472421397986,
+        "O": 0.2599209334860506
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.19867,
+      "id": "G4_NITROBENZENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "N": 2,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "N": 0.6364843009154877,
+        "O": 0.36351569908451226
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00183094,
+      "id": "G4_NITROUS_OXIDE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6484156484156484,
+        "H": 0.1035091035091035,
+        "N": 0.09953609953609951,
+        "O": 0.14853914853914854
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.08,
+      "id": "G4_NYLON-8062",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 11,
+        "N": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.636848172035053,
+        "H": 0.09798119034228513,
+        "N": 0.12378071482704152,
+        "O": 0.14138992279562052
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.14,
+      "id": "G4_NYLON-6-6",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6804490000000001,
+        "H": 0.10706200000000002,
+        "N": 0.09918900000000001,
+        "O": 0.11330000000000001
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.14,
+      "id": "G4_NYLON-6-10",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7208182791817208,
+        "H": 0.11547588452411547,
+        "N": 0.07641692358307642,
+        "O": 0.0872889127110873
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.425,
+      "id": "G4_NYLON-11_RILSAN",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 8,
+        "H": 18
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8411702684202982,
+        "H": 0.15882973157970193
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.7026,
+      "id": "G4_OCTANE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 25,
+        "H": 52
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8513873151694462,
+        "H": 0.14861268483055373
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.93,
+      "id": "G4_PARAFFIN",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 12
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8323567352972435,
+        "H": 0.16764326470275645
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.6261999999999999,
+      "id": "G4_N-PENTANE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Ag": 0.474105,
+        "Br": 0.349103,
+        "C": 0.072261,
+        "H": 0.0141,
+        "I": 0.00312,
+        "N": 0.01932,
+        "O": 0.066101,
+        "S": 0.00189
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.815,
+      "id": "G4_PHOTO_EMULSION",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 9,
+        "H": 10
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9147085318000254,
+        "H": 0.0852914681999746
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.032,
+      "id": "G4_PLASTIC_SC_VINYLTOLUENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "O": 2,
+        "Pu": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 0.11591124571998063,
+        "Pu": 0.8840887542800194
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 11.459999999999999,
+      "id": "G4_PLUTONIUM_DIOXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 3,
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.679048389774075,
+        "H": 0.05698572705539083,
+        "N": 0.26396588317053415
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.17,
+      "id": "G4_POLYACRYLONITRILE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 16,
+        "H": 14,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7557453702034369,
+        "H": 0.055494369081123034,
+        "O": 0.1887602607154401
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1999999999999997,
+      "id": "G4_POLYCARBONATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 8,
+        "Cl": 1,
+        "H": 7
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.693290161027735,
+        "Cl": 0.2558015547891576,
+        "H": 0.050908284183107486
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.3,
+      "id": "G4_POLYCHLOROSTYRENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "H": 2
+      },
+      "chemical_formula": "(C_2H_4)_N-Polyethylene",
+      "composition": {
+        "C": 0.8562817122551982,
+        "H": 0.14371828774480183
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9399999999999998,
+      "id": "G4_POLYETHYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 10,
+        "H": 8,
+        "O": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6250108323408885,
+        "H": 0.04196071706794325,
+        "O": 0.3330284505911682
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.4,
+      "id": "G4_MYLAR",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 8,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5998410708799623,
+        "H": 0.08054184074428425,
+        "O": 0.31961708837575337
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.19,
+      "id": "G4_PLEXIGLASS",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "H": 2,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4000110924324206,
+        "H": 0.0671378454783368,
+        "O": 0.5328510620892426
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.425,
+      "id": "G4_POLYOXYMETHYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 4
+      },
+      "chemical_formula": "(C_2H_4)_N-Polypropylene",
+      "composition": {
+        "C": 0.8562817122551982,
+        "H": 0.14371828774480183
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9,
+      "id": "G4_POLYPROPYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 8,
+        "H": 8
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9225773292943783,
+        "H": 0.07742267070562171
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.06,
+      "id": "G4_POLYSTYRENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "F": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.2401785260671943,
+        "F": 0.7598214739328056
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.2,
+      "id": "G4_TEFLON",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "Cl": 1,
+        "F": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.20624734470248418,
+        "Cl": 0.3043942892125953,
+        "F": 0.48935836608492056
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.1,
+      "id": "G4_POLYTRIFLUOROCHLOROETHYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 6,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5580589687343572,
+        "H": 0.07024844595469011,
+        "O": 0.3716925853109526
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.19,
+      "id": "G4_POLYVINYL_ACETATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "H": 4,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5452903684094166,
+        "H": 0.09152151324724009,
+        "O": 0.3631881183433433
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.3,
+      "id": "G4_POLYVINYL_ALCOHOL",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 8,
+        "H": 14,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6757292577526509,
+        "H": 0.0992375747364344,
+        "O": 0.22503316751091473
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.1199999999999999,
+      "id": "G4_POLYVINYL_BUTYRAL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "Cl": 1,
+        "H": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.38435667276427204,
+        "Cl": 0.5672605209970953,
+        "H": 0.048382806238632496
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.3,
+      "id": "G4_POLYVINYL_CHLORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "Cl": 2,
+        "H": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.24779093272837832,
+        "Cl": 0.7314144572380744,
+        "H": 0.020794610033547243
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.6999999999999997,
+      "id": "G4_POLYVINYLIDENE_CHLORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "F": 2,
+        "H": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.37513531701324954,
+        "F": 0.5933833348146902,
+        "H": 0.031481348172060275
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.7599999999999998,
+      "id": "G4_POLYVINYLIDENE_FLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 9,
+        "N": 1,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6483992502822714,
+        "H": 0.08162047783913964,
+        "N": 0.1260258350695867,
+        "O": 0.1439544368090022
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2499999999999998,
+      "id": "G4_POLYVINYL_PYRROLIDONE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "I": 1,
+        "K": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "I": 0.764471367131602,
+        "K": 0.23552863286839798
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.1299999999999994,
+      "id": "G4_POTASSIUM_IODIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "K": 2,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "K": 0.8301478368205829,
+        "O": 0.16985216317941704
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.32,
+      "id": "G4_POTASSIUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 8
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8171359204734588,
+        "H": 0.18286407952654118
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00187939,
+      "id": "G4_PROPANE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 8
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.8171359204734588,
+        "H": 0.18286407952654118
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.43000000000000005,
+      "id": "G4_lPROPANE",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 3,
+        "H": 8,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5995862192955609,
+        "H": 0.13417936886773157,
+        "O": 0.2662344118367076
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8035000000000001,
+      "id": "G4_N-PROPYL_ALCOHOL",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 5,
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7592106764642262,
+        "H": 0.06371294452361985,
+        "N": 0.17707637901215387
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9818999999999999,
+      "id": "G4_PYRIDINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.856289,
+        "H": 0.143711
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9199999999999998,
+      "id": "G4_RUBBER_BUTYL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.881629,
+        "H": 0.118371
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9199999999999998,
+      "id": "G4_RUBBER_NATURAL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.542646,
+        "Cl": 0.400434,
+        "H": 0.05692
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.23,
+      "id": "G4_RUBBER_NEOPRENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "O": 2,
+        "Si": 1
+      },
+      "chemical_formula": "SiO_2",
+      "composition": {
+        "O": 0.532566158208473,
+        "Si": 0.4674338417915269
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.32,
+      "id": "G4_SILICON_DIOXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ag": 1,
+        "Br": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ag": 0.5744646322267702,
+        "Br": 0.4255353677732298
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.472999999999998,
+      "id": "G4_SILVER_BROMIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ag": 1,
+        "Cl": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ag": 0.7526348231895847,
+        "Cl": 0.24736517681041528
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 5.559999999999999,
+      "id": "G4_SILVER_CHLORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Ag": 0.573748,
+        "Br": 0.422895,
+        "I": 0.003357
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.47,
+      "id": "G4_SILVER_HALIDES",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Ag": 1,
+        "I": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ag": 0.45945904502670715,
+        "I": 0.5405409549732928
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 6.01,
+      "id": "G4_SILVER_IODIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.204,
+        "Cl": 0.003,
+        "H": 0.1,
+        "K": 0.001,
+        "N": 0.042,
+        "Na": 0.002,
+        "O": 0.645,
+        "P": 0.001,
+        "S": 0.002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.09,
+      "id": "G4_SKIN_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "Na": 2,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.11332111990721931,
+        "Na": 0.43381684519879377,
+        "O": 0.45286203489398685
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.532,
+      "id": "G4_SODIUM_CARBONATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "I": 1,
+        "Na": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "I": 0.846626077929841,
+        "Na": 0.153373922070159
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.6669999999999994,
+      "id": "G4_SODIUM_IODIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Na": 2,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Na": 0.7418578407795355,
+        "O": 0.25814215922046446
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.2699999999999996,
+      "id": "G4_SODIUM_MONOXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "N": 1,
+        "Na": 1,
+        "O": 3
+      },
+      "chemical_formula": "",
+      "composition": {
+        "N": 0.16479571474887064,
+        "Na": 0.2704849729265176,
+        "O": 0.5647193123246118
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.261,
+      "id": "G4_SODIUM_NITRATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 14,
+        "H": 12
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9328955095571203,
+        "H": 0.0671044904428797
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.9707,
+      "id": "G4_STILBENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 12,
+        "H": 22,
+        "O": 11
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.42106389811984324,
+        "H": 0.06478206856763045,
+        "O": 0.5141540333125264
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.5804999999999998,
+      "id": "G4_SUCROSE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 18,
+        "H": 14
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9387281832982871,
+        "H": 0.061271816701712854
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.2399999999999998,
+      "id": "G4_TERPHENYL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.099,
+        "Cl": 0.002,
+        "H": 0.106,
+        "K": 0.002,
+        "N": 0.02,
+        "Na": 0.002,
+        "O": 0.766,
+        "P": 0.001,
+        "S": 0.002
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0399999999999998,
+      "id": "G4_TESTIS_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "Cl": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.14485447081262098,
+        "Cl": 0.8551455291873791
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.6250000000000002,
+      "id": "G4_TETRACHLOROETHYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "Cl": 1,
+        "Tl": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Cl": 0.14782037258189262,
+        "Tl": 0.8521796274181074
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 7.003999999999999,
+      "id": "G4_THALLIUM_CHLORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.256,
+        "Cl": 0.002,
+        "H": 0.105,
+        "K": 0.002,
+        "N": 0.027,
+        "Na": 0.001,
+        "O": 0.602,
+        "P": 0.002,
+        "S": 0.003
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0299999999999998,
+      "id": "G4_TISSUE_SOFT_ICRP",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.111,
+        "H": 0.101,
+        "N": 0.026,
+        "O": 0.762
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_TISSUE_SOFT_ICRU-4",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.456179,
+        "H": 0.101869,
+        "N": 0.035172,
+        "O": 0.40678
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0010640899999999997,
+      "id": "G4_TISSUE-METHANE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.56894,
+        "H": 0.102672,
+        "N": 0.035022,
+        "O": 0.293366
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.00182628,
+      "id": "G4_TISSUE-PROPANE",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "O": 2,
+        "Ti": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 0.400658376425574,
+        "Ti": 0.599341623574426
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 4.26,
+      "id": "G4_TITANIUM_DIOXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 7,
+        "H": 8
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9124848981807072,
+        "H": 0.0875151018192928
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8668999999999999,
+      "id": "G4_TOLUENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "Cl": 3,
+        "H": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.18282971917580113,
+        "Cl": 0.8094987476673112,
+        "H": 0.007671533156887641
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.4599999999999997,
+      "id": "G4_TRICHLOROETHYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 6,
+        "H": 15,
+        "O": 4,
+        "P": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.39562164814639006,
+        "H": 0.08300140165995712,
+        "O": 0.35133594940814494,
+        "P": 0.17004100078550796
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.07,
+      "id": "G4_TRIETHYL_PHOSPHATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "F": 6,
+        "W": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "F": 0.3827338773961872,
+        "W": 0.6172661226038128
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.3999999999999995,
+      "id": "G4_TUNGSTEN_HEXAFLUORIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 2,
+        "U": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.09166730621522017,
+        "U": 0.9083326937847799
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 11.279999999999998,
+      "id": "G4_URANIUM_DICARBIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "U": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.04803528573071668,
+        "U": 0.9519647142692832
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 13.63,
+      "id": "G4_URANIUM_MONOCARBIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "O": 2,
+        "U": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 0.11850175353047106,
+        "U": 0.881498246469529
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 10.96,
+      "id": "G4_URANIUM_OXIDE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1,
+        "H": 4,
+        "N": 2,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.19999418596544297,
+        "H": 0.06713403207028366,
+        "N": 0.46646138380421825,
+        "O": 0.2664103981600551
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.3229999999999997,
+      "id": "G4_UREA",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 11,
+        "N": 1,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5126370903856569,
+        "H": 0.09464508723154996,
+        "N": 0.11956617909481636,
+        "O": 0.2731516432879769
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.23,
+      "id": "G4_VALINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.280555,
+        "F": 0.710028,
+        "H": 0.009417
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8,
+      "id": "G4_VITON",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 2,
+        "O": 1
+      },
+      "chemical_formula": "H_2O-Gas",
+      "composition": {
+        "H": 0.11189847784106703,
+        "O": 0.8881015221589329
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0007561819999999999,
+      "id": "G4_WATER_VAPOR",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 8,
+        "H": 10
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.9050593022132982,
+        "H": 0.09494069778670168
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8699999999999999,
+      "id": "G4_XYLENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 1
+      },
+      "chemical_formula": "Graphite",
+      "composition": {
+        "C": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.21,
+      "id": "G4_GRAPHITE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.0708,
+      "id": "G4_lH2",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "N": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "N": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.807,
+      "id": "G4_lN2",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.141,
+      "id": "G4_lO2",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Ar": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Ar": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.396,
+      "id": "G4_lAr",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Br": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Br": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 3.1028000000000002,
+      "id": "G4_lBr",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Kr": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Kr": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.4179999999999997,
+      "id": "G4_lKr",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "Xe": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "Xe": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 2.9529999999999994,
+      "id": "G4_lXe",
+      "state": "liquid"
+    },
+    {
+      "atomic_composition": {
+        "O": 4,
+        "Pb": 1,
+        "W": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 0.14063661945907333,
+        "Pb": 0.4553657612232324,
+        "W": 0.40399761931769407
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.28,
+      "id": "G4_PbWO4",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 9.999999999999999e-26,
+      "id": "G4_Galactic",
+      "state": "gas"
+    },
+    {
+      "atomic_composition": {
+        "C": 1
+      },
+      "chemical_formula": "Graphite",
+      "composition": {
+        "C": 1.0
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.6999999999999997,
+      "id": "G4_GRAPHITE_POROUS",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.599848,
+        "H": 0.080538,
+        "O": 0.319614
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.19,
+      "id": "G4_LUCITE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Cu": 0.57515,
+        "Pb": 0.0907,
+        "Zn": 0.33415
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.52,
+      "id": "G4_BRASS",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Cu": 0.8494,
+        "Pb": 0.0622,
+        "Zn": 0.0884
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.82,
+      "id": "G4_BRONZE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {},
+      "chemical_formula": "",
+      "composition": {
+        "Cr": 0.169,
+        "Fe": 0.7462,
+        "Ni": 0.0848
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 8.0,
+      "id": "G4_STAINLESS-STEEL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 12,
+        "H": 18,
+        "O": 7
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.5255046076964393,
+        "H": 0.0661505039806579,
+        "O": 0.4083448883229027
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.32,
+      "id": "G4_CR39",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 18,
+        "H": 38,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7992522571764251,
+        "H": 0.14159904778726398,
+        "O": 0.05914869503631088
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 0.8119999999999999,
+      "id": "G4_OCTADECANOL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 14,
+        "H": 10,
+        "N": 2,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.7057961409057479,
+        "H": 0.04230742699014924,
+        "N": 0.11758436268723023,
+        "O": 0.1343120694168727
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.44,
+      "id": "G4_KEVLAR",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 10,
+        "H": 8,
+        "O": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.6250108323408885,
+        "H": 0.04196071706794325,
+        "O": 0.3330284505911682
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.4,
+      "id": "G4_DACRON",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "Cl": 1,
+        "H": 5
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.542642171826244,
+        "Cl": 0.4004346781484627,
+        "H": 0.05692315002529334
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.23,
+      "id": "G4_NEOPRENE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 5,
+        "N": 3,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4324206193778278,
+        "H": 0.045360911976366054,
+        "N": 0.378212595643865,
+        "O": 0.14400587300194118
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.3,
+      "id": "G4_CYTOSINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 6,
+        "N": 2,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.47618702817420594,
+        "H": 0.047953926860289875,
+        "N": 0.2221293174493973,
+        "O": 0.2537297275161068
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.48,
+      "id": "G4_THYMINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 4,
+        "N": 2,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4286218190364861,
+        "H": 0.03596993433372963,
+        "N": 0.24992667395714627,
+        "O": 0.28548157267263796
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.32,
+      "id": "G4_URACIL",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 10,
+        "O": 4
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4477252695088133,
+        "H": 0.07514619101745969,
+        "O": 0.4771285394737269
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.5,
+      "id": "G4_DEOXYRIBOSE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "H": 3,
+        "O": 4,
+        "P": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "H": 0.03085684558763147,
+        "O": 0.6530684376081553,
+        "P": 0.31607471680421323
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.8699999999999999,
+      "id": "G4_PHOSPHORIC_ACID",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 7,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.722592370625662,
+        "H": 0.08489591185964611,
+        "O": 0.19251171751469204
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_DEOXYRIBOSE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "O": 4,
+        "P": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "O": 0.6738616835240792,
+        "P": 0.32613831647592084
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_PHOSPHATE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 4,
+        "N": 5
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4477631967001582,
+        "H": 0.030061022686284737,
+        "N": 0.5221757806135571
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_ADENINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 4,
+        "N": 5,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.400041366279871,
+        "H": 0.02685717065586444,
+        "N": 0.4665231851441974,
+        "O": 0.10657827792006716
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_GUANINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 4,
+        "N": 3,
+        "O": 1
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4363795341047908,
+        "H": 0.03662096162444007,
+        "N": 0.38167522288160344,
+        "O": 0.1453242813891657
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_CYTOSINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 5,
+        "H": 5,
+        "N": 2,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.48002353038542617,
+        "H": 0.040283564904424654,
+        "N": 0.223918949604727,
+        "O": 0.2557739551054222
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_THYMINE",
+      "state": "solid"
+    },
+    {
+      "atomic_composition": {
+        "C": 4,
+        "H": 3,
+        "N": 2,
+        "O": 2
+      },
+      "chemical_formula": "",
+      "composition": {
+        "C": 0.4325111686199523,
+        "H": 0.027222246353737364,
+        "N": 0.25219452912009016,
+        "O": 0.2880720559062203
+      },
+      "composition_basis": "mass_fraction",
+      "density_g_cm3": 1.0,
+      "id": "G4_DNA_URACIL",
+      "state": "solid"
+    }
+  ]
+}

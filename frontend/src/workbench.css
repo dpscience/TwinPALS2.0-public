@@ -1,0 +1,207 @@
+/* SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me>
+ * SPDX-License-Identifier: MIT
+ * Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663 */
+
+/* Current workbench layouts. Shared controls retain the existing palette. */
+.app-header { gap:12px }
+.modules button { padding:8px 10px; font-size:11px }
+.help-portal { width:max-content; max-width:min(390px,calc(100vw - 24px)); font-size:12px; line-height:1.6; text-align:left; white-space:normal }
+.help-section + .help-section { margin-top:12px }
+.help-section p { font-weight:500 }
+.help-section ul { margin:5px 0 0; padding-left:18px }
+.help-section li + li { margin-top:5px }
+.help-action { gap:5px; padding:7px 9px; border-radius:0 5px 5px 0; background:#fff8eb; border:1px solid #eadbbd; color:#8b692c; font-size:11px; cursor:pointer; white-space:nowrap }
+.geometry-check { gap:0; align-items:stretch }
+.geometry-check:has(.help-action)>button { border-radius:5px 0 0 5px }
+.plot-preview { padding:10px!important; background:#fbfdfd; border-color:#e2ebee }
+.plot-preview .plot-heading { flex-wrap:nowrap }
+.plot-preview .plot-heading h3 { font-size:11px }
+.plot-preview .plot-svg { height:180px; cursor:default; touch-action:auto }
+.plot-preview .plot-svg:active { cursor:default }
+.plot-preview .plot-legend { padding:3px 0; gap:5px; flex-direction:column }
+.static-legend { display:flex; gap:6px; align-items:center; font-size:10px; color:#638295; line-height:1.4 }
+.static-legend i { flex:none }
+.plot-preview .plot-note { margin:6px 0 0; color:#7f929f; font-size:10px }
+.analysis-toolbar { align-items:center; gap:12px }
+.analysis-toolbar>.field { flex:none; width:125px }
+.analysis-toolbar>.field:nth-child(2) { width:155px }
+.analysis-toolbar>.field:nth-child(4) { width:65px }
+.analysis-status { display:flex; align-items:center; flex:1; min-width:0; margin-left:auto; padding:0; gap:10px; justify-content:flex-end }
+.primary-counts { display:flex; gap:8px; flex:none }
+.primary-outcome-badge { width:218px; background:#f6f9fb; border:1px solid #e3ebf1; border-radius:8px; padding:9px 11px; font-variant-numeric:tabular-nums }
+.primary-outcome-badge header { display:flex; align-items:center; gap:6px }
+.primary-outcome-badge header strong { font-size:10px; font-weight:500; white-space:nowrap }
+.primary-outcome-badge header .help { margin-left:auto }
+.event-total { display:block; font-size:10px; color:#6e8395; margin-top:3px }
+.analysis-status>span.analysis-phase-badge { display:inline-flex; align-items:center; gap:7px; flex:none; min-height:34px; padding:8px 10px; border:1px solid #cfe4e2; border-radius:7px; background:#eff8f7; color:#317d7b; font-size:10px; font-variant-numeric:tabular-nums }
+.analysis-phase-badge strong { font-weight:500; min-width:28px; text-align:right }
+.outcome-rows { margin:10px 0 0; font-size:10px; color:#5e7689; font-variant-numeric:tabular-nums }
+.outcome-rows>div { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:6px }
+.outcome-rows dt { display:flex; align-items:center; gap:5px; white-space:nowrap }
+.outcome-rows dd { margin:0; display:flex; align-items:center; justify-content:flex-end; gap:10px; color:#3c586b }
+.outcome-rows dd span { width:42px; text-align:right; color:#8295a3 }
+.outcome-dot { height:5px; width:5px; border-radius:50%; flex:none; background:#97a7b6 }
+.outcome-dot.interaction { background:#48aa83 }
+.outcome-dot.transmission { background:#d1a360 }
+.primary-outcome-badge .outcome-rows { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; margin-top:9px }
+.primary-outcome-badge .outcome-rows>div { display:block; margin:0 }
+.primary-outcome-badge .outcome-rows dt { font-size:9px; gap:3px }
+.primary-outcome-badge .outcome-rows dd { display:block; margin-top:4px; font-size:10px }
+.primary-outcome-badge .outcome-rows dd span { display:block; text-align:left; width:auto; margin-top:2px; font-size:9px }
+.outcome-overlay { position:absolute; z-index:2; top:63px; right:18px; width:225px; padding:13px 14px; border-radius:8px; border:1px solid #e0e8ee85; background:#f7fafbb8; backdrop-filter:blur(5px) }
+.outcome-overlay header { display:flex; align-items:center; justify-content:space-between; font-size:11px; color:#5e788c }
+.outcome-overlay header strong { font-weight:500 }
+.outcome-overlay section { margin-top:16px }
+.outcome-overlay section>strong { font-size:10px; font-weight:500 }
+.outcome-overlay .outcome-rows { margin-top:7px }
+.material-database { grid-template-columns:174px 330px minmax(0,1fr) }
+.database-list>header { height:46px; padding-bottom:14px; flex:none; gap:7px }
+.database-list h2 { white-space:nowrap; font-size:13px; margin-right:auto }
+.database-list header button { flex:none; padding:6px 8px }
+.curve-workbench { display:grid; grid-template-columns:minmax(230px,.7fr) minmax(0,1.3fr); align-items:stretch; height:430px; gap:16px }
+.curve-points-panel { grid-column:1; grid-row:1; display:flex; flex-direction:column; min-height:0; height:100% }
+.curve-chart { grid-column:2; grid-row:1; height:100%; min-height:0 }
+.curve-chart>.plot { display:flex; flex-direction:column; height:100%; min-height:0; padding:14px }
+.curve-chart .plot-svg { flex:1; min-height:0; height:0!important }
+.curve-chart .plot-legend { margin-top:8px; flex:none }
+.curve-points-panel .curve-table { flex:1; min-height:0; max-height:none }
+.curve-table table { table-layout:fixed }
+.curve-table th,.curve-table td { text-align:right }
+.curve-table th:last-child:empty,.curve-table td:has(button) { width:36px }
+.curve-table td input { font-size:11px; text-align:right; padding:5px 4px }
+.curve-table td>span { white-space:nowrap }
+.curve-points-panel .pagination,.curve-actions { flex:none }
+@media(max-width:1400px) {
+ .analysis-toolbar>.field { width:100px }
+ .analysis-toolbar>.field:nth-child(2) { width:135px }
+ .primary-outcome-badge { width:218px; padding:8px 10px }
+ .material-database { grid-template-columns:150px 310px minmax(0,1fr) }
+ .curve-workbench { grid-template-columns:minmax(210px,.8fr) minmax(0,1.2fr); gap:10px; height:400px }
+}
+@media(max-width:1150px) {
+ .app-header { height:auto; min-height:60px; flex-wrap:wrap; padding:10px 18px; gap:8px 14px }
+ .modules { margin-left:auto }
+ .analysis-toolbar { flex-wrap:wrap; padding:10px 16px }
+ .analysis-status { gap:6px }
+ .analysis-status>span.analysis-phase-badge { padding:7px }
+ .material-database { grid-template-columns:138px 295px minmax(0,1fr) }
+ .database-list h2 { font-size:12px }
+ .curve-workbench { grid-template-columns:minmax(185px,.8fr) minmax(0,1fr) }
+ .curve-chart>.plot { padding:9px }
+ .curve-chart .plot-heading { flex-wrap:wrap }
+}
+.plot-heading h3 { display:flex; align-items:center; gap:7px }
+.plot-heading h3>.help { flex:none }
+.analysis-cell>.metric-picker { position:absolute; z-index:2; top:10px; left:14px; display:flex; align-items:center; gap:8px; width:calc(100% - 225px); max-width:320px }
+.analysis-cell .metric-picker>.metric-select { position:static; min-width:0; max-width:none; width:100%; flex:1; font-size:11px }
+.metric-picker>.help { flex:none }
+.help:focus-visible { outline:2px solid #23958f; outline-offset:3px; border-radius:3px }
+.help-portal.illustrated-help { max-width:min(460px,calc(100vw - 24px)) }
+.arrival-explanation { margin-bottom:13px }
+.arrival-stages { display:flex; align-items:center; justify-content:space-between; gap:6px }
+.arrival-stages span { flex:1; text-align:center; padding:7px 4px; background:#ffffff0c; border:1px solid #ffffff25; border-radius:5px; line-height:1.4 }
+.arrival-stages b { display:block; font-size:11px; font-weight:500; color:#bce9de }
+.arrival-stages small { display:block; font-size:10px; color:#d1dce8; margin-top:3px }
+.arrival-stages i { font-style:normal; color:#a2c9c6 }
+.arrival-result { font-size:10px; text-align:center; color:#bce9de; margin-top:7px }
+.depth-explanation { width:100%; height:85px; margin-bottom:10px }
+.depth-explanation text { fill:#d6e6ed; font-size:11px }
+@media(max-width:1100px) {
+ .analysis-cell>.metric-picker { width:calc(100% - 190px); left:10px; gap:5px }
+ .analysis-cell .metric-picker>.metric-select { font-size:10px; padding-right:17px }
+}
+@media(max-width:920px) {
+ .curve-workbench { height:auto; grid-template-columns:minmax(0,1fr) }
+ .curve-points-panel { grid-column:1; grid-row:1; height:330px }
+ .curve-chart { grid-column:1; grid-row:2; height:330px }
+ .outcome-overlay { width:190px; right:10px; padding:10px }
+}
+.preview-position{display:inline-flex;align-items:center;justify-content:center;min-width:62px;padding:4px 9px;border-radius:999px;background:#edf4f6;color:#49677b;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Shared histogram geometry: fixed nine-panel M1 overview and identical monitoring sizes. */
+.analysis-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:10px}
+.analysis-cell .metric-picker strong{font-size:11px;font-weight:500;color:#294e65}
+.analysis-cell .metric-picker{max-width:58%;gap:7px}
+.analysis-cell .plot-heading{min-height:25px}
+.analysis-cell .plot-legend{gap:4px;margin-top:2px}
+.analysis-cell .plot-legend button{font-size:9px;padding:2px 6px}
+.split-origin{display:flex;align-items:center;gap:5px;font-size:10px;white-space:nowrap;color:#526d81}
+.analysis-toolbar{gap:10px}
+.analysis-toolbar>.field{max-width:145px}
+.analysis-toolbar>.field:last-of-type{max-width:65px}
+.analysis-status{gap:10px}
+.summary-level .light-level{margin:0;flex-wrap:wrap;width:110px}
+.primary-outcome-badge .event-total{font-size:9px;margin-top:3px}
+.primary-outcome-badge .outcome-rows dd{display:flex;gap:4px;flex-wrap:wrap}
+.primary-outcome-badge .outcome-rows dd span{display:inline;margin:0}
+.detector-patterns{margin-top:12px;border-top:1px solid #dfe8ed;padding-top:3px}
+.detector-patterns summary{font-size:10px}
+.detector-patterns p{font-size:9px;color:#7d93a3}
+.event-paths{margin-top:10px;border-top:1px solid #dfe8ed;padding-top:6px;font-size:10px}
+.event-paths>p{font-size:9px;color:#6c8596;margin:9px 0}
+.path-tags{display:flex;gap:5px;flex-wrap:wrap}
+.path-tags span{border-radius:4px;background:#e5f2f1;padding:4px 6px;color:#257d80;font-size:9px}
+.event-route{margin-top:10px;padding-top:7px;border-top:1px solid #e4ebee}
+.event-route>strong{display:flex;justify-content:space-between;font-size:10px;font-weight:500}
+.event-route small{font-size:9px;color:#708b9d;font-weight:400}
+.event-route>div{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;line-height:1.8}
+.event-route span{display:inline-flex;gap:4px;align-items:center}
+.event-route b{color:#7c9ca8;font-weight:400}
+.event-route i{font-size:9px;font-style:normal;padding:0 4px;background:#eaf0f5;border-radius:3px}
+.pattern-glyph{display:inline-flex;align-items:center;gap:1px;color:#9cadbb}
+.pattern-glyph i{width:7px;height:10px;border:1px solid #9cadbb;border-radius:2px}
+.pattern-glyph i.on{background:#329c98;border-color:#329c98}
+.monitor-plots>.plot,.m2-monitoring .monitor-plots>.plot{height:215px;min-height:215px;flex:none;display:flex;flex-direction:column}
+.monitor-plots .plot-svg{min-height:60px;flex:1;height:0}
+.m2-monitor-controls{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.m2-monitor-controls .field{width:75px;margin:0}
+.m2-acquisition-summary{display:flex;flex-direction:column;gap:6px;font-size:11px;margin-bottom:18px;color:#648096}
+.m2-acquisition-summary b{font-weight:500;color:#294e65}
+.anode-summary-table{border-collapse:collapse;font-size:9px;white-space:nowrap;width:100%;margin-top:6px}.anode-summary-table th{font-weight:400;color:#607d90}.anode-summary-table td,.anode-summary-table th{padding:3px 5px;text-align:right}.anode-summary-table th:first-child{padding-left:0}.anode-summary-table .outcome-dot{margin-right:3px}.analysis-status .primary-outcome-badge{width:auto;min-width:200px}.analysis-status .primary-outcome-badge header{display:flex;gap:8px}.summary-level .light-level{width:auto;flex-wrap:nowrap}.analysis-status{margin-left:auto}.m2-monitoring .monitor-plots{display:flex;flex-direction:column;flex:none;gap:0}.monitor-origin{display:flex;align-items:center;gap:10px;padding:0 20px 8px}.monitor-origin select{min-width:0;flex:1}
+/* Outcome review: shared statistics, stable histogram geometry and readable line keys. */
+.analysis-content{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr)}
+.analysis-content.has-session{grid-template-columns:minmax(0,1fr) 410px}
+.analysis-scroll{min-width:0;min-height:0}
+.analysis-outcomes{min-height:0;overflow:auto;background:#fff;border-left:1px solid #dce4eb;padding:18px 20px}
+.analysis-outcomes header,.outcome-overlay header{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#5e788c}
+.analysis-outcomes section,.outcome-overlay section{margin-top:20px}
+.analysis-outcomes section>strong,.outcome-overlay section>strong{font-size:11px;font-weight:500}
+.analysis-outcomes .light-level,.outcome-overlay .light-level{margin:12px 0 8px}
+.outcome-activity{margin-inline:8px auto;cursor:help}.outcome-activity .analysis-phase-badge{display:inline-flex;align-items:center;gap:5px;color:#317d7b;font-size:10px;font-variant-numeric:tabular-nums}.outcome-activity .spinner{width:10px;height:10px}
+.outcome-overlay{width:320px;max-width:calc(100% - 36px)}
+.outcome-scope{font-size:9px;color:#718797;line-height:1.5;margin:8px 0 0}
+.anode-columns{table-layout:fixed;width:100%;border-collapse:collapse;margin-top:10px;font-size:10px}
+.anode-columns th,.anode-columns td{text-align:right;padding:6px 0;font-weight:400;font-variant-numeric:tabular-nums}
+.anode-columns th:first-child{width:34%;text-align:left}
+.anode-columns thead{color:#718797;border-bottom:1px solid #e2eaf0}
+.anode-columns th span{display:flex;align-items:center;gap:5px}
+.anode-columns small{display:inline-block;color:#7890a1;font-size:9px;margin-left:6px;min-width:33px}
+.birth-detector{margin:10px 0;font-size:10px}.birth-detector>strong{font-weight:500}.birth-detector>div{display:flex;justify-content:space-between;gap:8px;padding:4px 0}.birth-detector b{font-weight:400}
+.light-births>.birth-detector{display:block}
+.analysis-toolbar{align-items:flex-end;min-height:72px}
+.analysis-layout>.analysis-toolbar>.field{width:125px;max-width:none;flex-shrink:0}
+.analysis-layout>.analysis-toolbar>.field:nth-child(2){width:145px}
+.analysis-layout>.analysis-toolbar>.field:nth-child(4){width:155px}
+.analysis-layout>.analysis-toolbar>.field:last-of-type{width:65px}
+.analysis-toolbar>.split-origin{height:34px;margin:0;align-self:flex-end}
+.split-origin input{margin:0;flex:none}
+.analysis-status{align-self:center;max-width:none}
+.primary-counts{display:flex;gap:8px}.primary-count-badge{background:#f4f8fa;border:1px solid #e0e9ef;border-radius:7px;padding:9px 11px;min-width:132px;font-size:10px;white-space:nowrap}.primary-count-badge strong{display:block;font-weight:500}.primary-count-badge span{display:block;font-size:10px;color:#75899c;margin-top:5px;font-variant-numeric:tabular-nums}
+.analysis-cell .plot-heading h3{visibility:visible;min-width:0;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500}
+.analysis-cell .plot-heading{gap:6px}.analysis-cell .plot-tools{gap:5px;flex:none}.analysis-cell .plot-tools button{padding:2px}
+.analysis-cell .plot-note,.monitor-plots .plot-note{font-size:10px;line-height:1.4;color:#6c8296;margin:4px 0 0;flex:none;height:28px;overflow:auto}
+.analysis-cell .plot-legend{height:24px;overflow:auto;align-content:flex-start;gap:3px 5px}
+.analysis-cell .plot-legend button{font-size:8px;padding:2px 5px}
+.line-swatch{width:25px;height:8px;flex:none;vertical-align:middle;overflow:visible}
+.legend-detectors{display:inline-flex;align-items:center;gap:4px;font-size:9px;color:#637b8c}
+.monitor-filters,.monitor-origin{padding-left:16px;padding-right:16px}
+.monitor-origin{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.monitor-origin .split-origin{justify-self:start;margin:0;min-height:34px}
+.monitor-panel>.monitor-plots{min-height:0;grid-template-rows:repeat(3,minmax(0,1fr));gap:0}
+.monitor-panel>.monitor-plots>.plot{height:100%;min-height:0;box-sizing:border-box;padding:8px 3px}
+.monitor-panel>.monitor-plots .plot-svg{min-height:0}
+.preview-basis{display:flex;align-items:center;gap:8px;font-size:10px;color:#536e82}.preview-basis select{width:155px}
+.quantity-sketch{width:100%;height:auto;margin:8px 0 12px;fill:none;stroke:#a3cfcf;stroke-width:1.5}
+.quantity-sketch text{fill:#e0edef;stroke:none;font-size:11px}.quantity-sketch .sketch-accent{stroke:#edc98a}.quantity-sketch circle{fill:#7cdfc0;stroke:none}
+@media(max-width:1750px){.analysis-cell .plot-legend{height:38px}.analysis-cell .plot-note{height:42px}}
+@media(max-width:1400px){.analysis-content.has-session{grid-template-columns:minmax(0,1fr) 350px}.simulation-layout{grid-template-columns:minmax(0,1fr) 350px}.analysis-toolbar{gap:7px}.primary-count-badge{min-width:120px}.analysis-cell .plot-heading{flex-wrap:wrap;align-content:space-between;min-height:48px}.analysis-cell .plot-heading h3{width:100%}.analysis-cell .plot-tools{margin-left:auto}.analysis-outcomes{padding:16px}.outcome-overlay{width:300px}}
