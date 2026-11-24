@@ -21,6 +21,7 @@ import os
 from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 import shutil
+import ssl
 import struct
 import subprocess
 import sys
@@ -496,6 +497,14 @@ def build(args) -> None:
         raise RuntimeError(f"PyInstaller failed; inspect {build_root / 'pyinstaller.log'}")
     staged = build_root / "dist/TwinPALS"
     require_file(staged / "TwinPALS.exe")
+    # Some Windows Python distributions load a certificate rejection list
+    # next to ssl.py every time a TLS context is created. PyInstaller freezes
+    # the module, but does not collect this adjacent runtime data.
+    tls_policy = Path(ssl.__file__).with_name("codex-rejected-cas.pem")
+    if tls_policy.is_file():
+        require_file(tls_policy)
+        shutil.copy2(tls_policy, staged / "_internal" / tls_policy.name)
+    subprocess.run([str(staged / "TwinPALS.exe"), "--verify-tls"], check=True, timeout=30)
     # Both launchers use one frozen interpreter and one scientific runtime.
     shutil.copy2(staged / "TwinPALS.exe", staged / "TwinPALS-MCP.exe")
     compiler=Path(os.environ["SystemRoot"])/"Microsoft.NET/Framework64/v4.0.30319/csc.exe"

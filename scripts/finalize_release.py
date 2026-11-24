@@ -95,11 +95,14 @@ def main():
     parser.add_argument("--no-zip", action="store_true", help="Finalize the portable folder without creating an archive")
     parser.add_argument("--preview", action="store_true", help="Finalize local preview evidence before an official version URL exists")
     parser.add_argument("--installer-test-work", type=Path, help="New installer-test directory on a Windows account without a TwinPALS installation")
+    parser.add_argument("--stage-for-installer-qa", action="store_true", help="Produce the official candidate for testing the exact installer on a separate Windows account. Publication requires its matching verification receipt.")
     parser.add_argument("--previous-setup", type=Path, help="Previous public installer for a real version-to-version upgrade check")
     parser.add_argument("--plan", default="docs/PLAN.md", help="Current handover plan inside the project")
     args = parser.parse_args()
-    if not args.preview and (args.no_zip or args.installer_test_work is None):
-        parser.error("Official finalization requires the ZIP and --installer-test-work for the final setup executable.")
+    if args.stage_for_installer_qa and (args.preview or args.installer_test_work or args.no_zip):
+        parser.error("Separate-account staging requires an official ZIP and a separate installer test.")
+    if not args.preview and (args.no_zip or not (args.installer_test_work or args.stage_for_installer_qa)):
+        parser.error("Choose local --installer-test-work or --stage-for-installer-qa with a separate Windows test run.")
     folder = target_path(args.folder)
     manifest = verify_folder(folder)
     from backend.mcp_server.knowledge import source_metadata
@@ -219,6 +222,8 @@ def main():
     result = {"folder": str(folder), "owned_files": len(manifest["files"])}
     result["installer_sha256"] = build_installer(folder, installer, iscc)
     result["installer"] = str(installer)
+    if args.stage_for_installer_qa:
+        result["installer_verification"] = {"status": "pending", "required_sha256": result["installer_sha256"]}
     if args.installer_test_work:
         from verify_installer import verify
         prior = args.previous_setup.resolve(strict=True) if args.previous_setup else None

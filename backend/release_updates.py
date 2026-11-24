@@ -7,8 +7,9 @@ from contextlib import closing
 import json
 import re
 import sqlite3
+import ssl
 import time
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from backend import __version__
@@ -48,16 +49,21 @@ def release_status(data, *, refresh=False, manual=False):
                 if row:
                     checked, state, tag = row
                 now = int(time.time())
-                if refresh and (not row or not 0 <= now - checked < (15 if manual else 86400)):
+                retry_after = (15 if manual else 86400) if state == 'checked' else (0 if manual else 300)
+                if refresh and (not row or not 0 <= now - checked < retry_after):
                     try:
                         tag = latest_tag()
                         state = 'checked'
+                    except (FileNotFoundError, ssl.SSLError):
+                        state = 'tls_error'
+                    except URLError as exc:
+                        state = 'tls_error' if isinstance(exc.reason, ssl.SSLError) else 'offline'
                     except (OSError, ValueError):
                         state = 'offline'
                     checked = now
                     db.execute('INSERT OR REPLACE INTO latest VALUES (1,?,?,?)', (checked, state, tag))
         except sqlite3.Error:
-            state = 'offline'
+            state = 'cache_error'
     match = TAG.fullmatch(tag or '')
     latest = '.'.join(match.groups()) if match else None
     available = bool(latest and tuple(map(int, latest.split('.'))) > tuple(map(int, __version__.split('.'))))

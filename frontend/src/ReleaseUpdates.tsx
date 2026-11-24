@@ -59,7 +59,10 @@ export default function ReleaseUpdates({version, observerToken}:{version?:string
   },[panel]);
   const installed=status?.installed??version;
   const available=status?.available&&status.url;
-  const detail=busy?'Checking GitHub…':failed||status?.state==='offline'?'GitHub could not be reached.':
+  const detail=busy?'Checking GitHub…':failed?'The local TwinPALS service could not complete the update check.':
+    status?.state==='cache_error'?'TwinPALS could not access the update cache in this workspace.':
+    status?.state==='tls_error'?'TwinPALS could not establish a verified HTTPS connection to GitHub.':
+    status?.state==='offline'?'GitHub could not be reached.':
     available?'Installed version '+installed:status?.state==='checked'?(status.latest?'You have the latest version.':'No published release found.'):'Automatic checking is off.';
   return <div className="release-updates" ref={box}>
     {available&&<button type="button" className="release-badge" onClick={()=>show(panel==='notice'?null:'notice')} aria-expanded={panel==='notice'} aria-controls={id}>

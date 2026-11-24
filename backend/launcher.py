@@ -37,7 +37,12 @@ def main():
     parser.add_argument("--port",type=int,default=18622)
     parser.add_argument("--no-browser",action="store_true")
     parser.add_argument("--data-dir")
+    parser.add_argument("--verify-tls", action="store_true", help=argparse.SUPPRESS)
     args=parser.parse_args()
+    if args.verify_tls:
+        import ssl
+        ssl.create_default_context()
+        return 0
     from backend.app import application_root, default_data_directory
     data=Path(args.data_dir or default_data_directory(application_root())).resolve()
     args.data_dir=data

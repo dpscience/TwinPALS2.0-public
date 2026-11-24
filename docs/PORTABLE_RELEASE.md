@@ -1,6 +1,6 @@
-# Portable Windows preview
+# Windows distribution
 
-TwinPALS 2.0 uses the product version **2.0.0** throughout development until the first official release. Keep the application and study server together in the extracted folder. Open **Third-party licenses** in either footer to read the offline notices.
+Keep the desktop application and study server together in the extracted folder. Open **Third-party licenses** in either footer to read the offline notices.
 
 ## Build
 
@@ -27,13 +27,17 @@ The portable ZIP contains a freshly initialized factory database. If `data/catal
 
 ### Installed layout
 
-Setup installs for the current Windows user. Both executables use `%LOCALAPPDATA%\TwinPALS\Data` by default. The factory catalogue is created on first use. Install, repair, update and uninstall only manage program files. The same data folder is available after reinstall, including saved settings, custom materials, measurements and the study queue. For backup or transfer, stop both services and copy the complete data folder and any externally stored runs. Use `--data-dir` to select an existing workspace explicitly. Keep the portable copy and installed program in separate directories.
+On first installation, choose a program folder or accept `%LOCALAPPDATA%\Programs\TwinPALS 2.0`. A newer installer updates the existing folder in place. Rerun the same version to repair or uninstall. Both executables use `%LOCALAPPDATA%\TwinPALS\Data` by default. Repair and update preserve its contents.
+
+During interactive uninstall, **Keep my data** preserves the catalogue, settings, runs and studies for reinstallation. **Choose data to delete** lists the full paths before removal. You can add another dedicated TwinPALS workspace. Confirming removal deletes all contents of the listed folders. Silent uninstall keeps data. For backup or transfer, stop both services and copy the data folder and externally stored runs. Use `--data-dir` to select an existing workspace. Keep the portable copy and installed program in separate directories.
 
 Close active desktop and study services through the tray before updating. Install a newer setup over the existing installation. Setup checks for the Windows .NET Framework used by the tray. If it is missing, interactive Setup offers to download the verified Microsoft installer. Silent setup reports the missing prerequisite. Python, Node.js and Geant4 are bundled for end users.
 
 ### Release assets
 
 Verify the final versioned ZIP and setup EXE, their SHA-256 sidecars and the setup lifecycle before attaching all four files to the GitHub Release for the public tag. Use a new output basename when finalizing a previously built candidate. Keep binaries out of Git source history.
+
+If the build account already has TwinPALS installed, run the finalizer with `--stage-for-installer-qa`. Upload the four files to a draft release. The **Windows installer lifecycle** workflow tests its installer and the preceding official installer on a fresh Windows runner. Check that the receipt reports success and both SHA-256 values match the release assets before publishing the draft.
 
 Before each public build, record the confirmed repository URL and the exact GitHub release URL for its version in `docs/mcp/knowledge/source.json`. Build with `--public-release`. Both the portable distribution and installer must contain this file. The official finalizer checks the packaged metadata and requires the version-specific release tag. Use `--preview` only for a local preview. After publishing, verify the link, tagged revision and downloadable files anonymously.
 

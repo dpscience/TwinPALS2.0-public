@@ -4,7 +4,8 @@
 
 from io import BytesIO
 import json
-from urllib.error import HTTPError
+import ssl
+from urllib.error import HTTPError, URLError
 
 import pytest
 
@@ -53,3 +54,25 @@ def test_cache_and_offline(monkeypatch, tmp_path):
     assert len(calls) == 2
     monkeypatch.setattr(updates, "__version__", "2.10.0")
     assert not updates.release_status(tmp_path)["available"]
+
+
+@pytest.mark.parametrize("failure", [
+    FileNotFoundError("TLS policy file missing"),
+    URLError(ssl.SSLCertVerificationError("untrusted issuer")),
+])
+def test_manual_retry_after_tls_failure(monkeypatch, tmp_path, failure):
+    results = iter([failure, "v2.0.0"])
+    def fetch():
+        value = next(results)
+        if isinstance(value, Exception):
+            raise value
+        return value
+    monkeypatch.setattr(updates, "latest_tag", fetch)
+    assert updates.release_status(tmp_path, refresh=True)["state"] == "tls_error"
+    assert updates.release_status(tmp_path, refresh=True)["state"] == "tls_error"
+    assert updates.release_status(tmp_path, refresh=True, manual=True)["latest"] == "2.0.0"
+
+
+def test_cache_failure_is_local(tmp_path):
+    (tmp_path / "release-check.sqlite").mkdir()
+    assert updates.release_status(tmp_path, refresh=True)["state"] == "cache_error"
