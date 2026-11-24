@@ -14,7 +14,9 @@ TwinPALS simulates positron annihilation lifetime spectroscopy (PALS) on Windows
 
 Download a Windows x64 build from [Releases](https://github.com/dpscience/TwinPALS2.0-public/releases). Run **TwinPALS-…-setup.exe** for a Start menu entry and automatic reuse of your catalogue on updates. For a portable copy, extract the **entire ZIP** to a writable folder and open **TwinPALS.exe**. Both include the scientific runtime. The tray icon reopens the workbench.
 
-## Connect an MCP client
+## Run a study with an MCP client
+
+**Codex, Claude and GitHub Copilot** can run the three modules locally, compare analysis settings on the same recorded pulses, and save a report linked to the underlying runs.
 
 In PowerShell, open the program folder (by default `%LOCALAPPDATA%\Programs\TwinPALS 2.0` for Setup) or the extracted portable folder and print the configuration for your client.
 
@@ -23,6 +25,21 @@ In PowerShell, open the program folder (by default `%LOCALAPPDATA%\Programs\Twin
 ```
 
 Replace `claude-desktop` with `codex`, `claude-code`, `copilot-cli` or `vscode` as appropriate. Add the printed entry to the client's MCP configuration, reconnect and ask it to call **capabilities**. The client starts the local server. Choose **Open study observer** in the tray to follow its work. [Client configuration and study examples](docs/mcp/README.md)
+
+### Try a constant-fraction timing study
+
+Copy this prompt into your connected client.
+
+```text
+Run a Na-22 timing study in a new TwinPALS study workspace.
+Simulate 10,000 prompt events and 10,000 annihilation events with seed 73125.
+Use the same detector setup throughout. Acquire one stream of 500 waveform pairs.
+Analyze that stream three times, setting the constant fraction to 15%, 25%
+and 35% in both channels. Keep all other settings and histogram bins identical.
+For each setting, report the accepted pair count and its fraction of pairs read.
+Compare the merged lifetime spectra on the same time axis. Report a peak width
+only if the counts support it. Save a Markdown report with the settings and run IDs.
+```
 
 ## Component catalogue
 
