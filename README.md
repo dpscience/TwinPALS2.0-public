@@ -26,19 +26,31 @@ In PowerShell, open the program folder (by default `%LOCALAPPDATA%\Programs\Twin
 
 Replace `claude-desktop` with `codex`, `claude-code`, `copilot-cli` or `vscode` as appropriate. Add the printed entry to the client's MCP configuration, reconnect and ask it to call **capabilities**. The client starts the local server. Choose **Open study observer** in the tray to follow its work. [Client configuration and study examples](docs/mcp/README.md)
 
-### Try a constant-fraction timing study
+### Try a zero-lifetime timing study
 
-Copy this prompt into your connected client.
+This study measures the simulated instrument response function (IRF). Each cell of a 9 × 9 grid uses the same waveform pairs. The row sets the constant-fraction (CF) level in A and the column sets it in B. Paste this prompt into your connected client.
 
 ```text
-Run a Na-22 timing study in a new TwinPALS study workspace.
-Simulate 10,000 prompt events and 10,000 annihilation events with seed 73125.
-Use the same detector setup throughout. Acquire one stream of 500 waveform pairs.
-Analyze that stream three times, setting the constant fraction to 15%, 25%
-and 35% in both channels. Keep all other settings and histogram bins identical.
-For each setting, report the accepted pair count and its fraction of pairs read.
-Compare the merged lifetime spectra on the same time axis. Report a peak width
-only if the counts support it. Save a Markdown report with the settings and run IDs.
+Find the CF levels for A and B that minimize the simulated coincidence IRF FWHM.
+
+Use Na-22 and record the detector, digitizer and source timing settings. In Module 2
+use exactly one discrete lifetime component: tau = 0 ps, intensity = 100%.
+Keep detector timing spread, electronic noise and digitizer jitter at their
+configured values. Generate one pulse stream for the entire scan. Record its seed.
+
+In Module 3, vary CF independently in A and B from 10% to 90% in steps of 10%.
+Run all 81 combinations on that stream. Keep the PHS windows, filters, cable
+correction, histogram range and bin width fixed throughout.
+
+Use the merged ideal/intended same-decay contribution for the prompt peak.
+Measure its full width at half maximum in ps using one method for all settings.
+State how you determine the baseline and interpolate both half-height crossings.
+Record the peak counts and accepted fraction. Flag unresolved widths and acquire
+more statistics if needed. Treat statistical ties as ties.
+
+Produce a 9 x 9 FWHM heatmap and a table. Give the best independent CF levels
+(A, B) and the best shared level (A = B). Cross-check the best settings on
+a new independent seed. Save a Markdown report with uncertainties and run IDs.
 ```
 
 ## Component catalogue
