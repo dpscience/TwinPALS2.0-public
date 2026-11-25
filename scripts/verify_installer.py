@@ -188,6 +188,8 @@ def verify(setup, work, previous_setup=None, interactive=False):
         if interactive:
             from verify_uninstall_dialog import verify_dialog
             assert registration() == program
+            mcp = program / 'TwinPALS-MCP.exe'
+            assert sha256(mcp) == installed['files']['TwinPALS-MCP.exe']['sha256']
             client = Client([str(mcp), '--no-logon-resume'], env)
             try:
                 verify_dialog(program, work, cancel=True)
