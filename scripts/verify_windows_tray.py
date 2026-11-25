@@ -15,6 +15,7 @@ import struct
 import subprocess
 import sys
 import time
+import tomllib
 import uuid
 from urllib.parse import urlsplit
 from xml.etree import ElementTree
@@ -249,8 +250,12 @@ def main():
         wait_until(lambda: not entry('desktop'),10)
         assert client.call('capabilities')
         click('Stop MCP service…')
-        wait_until(lambda: not host_file.exists(),20)
+        wait_until(lambda: not entry('mcp'),20)
+        assert host_file.exists() and entry('client')['pid']==client.proc.pid
+        click('Disconnect MCP client…')
+        assert client.proc.wait(10)==0
         client.close()
+        wait_until(lambda: not host_file.exists(),20)
         checks.append('MCP-only menu, reverse launch order, stale desktop removed and final host exit')
         process=start_desktop()
         client=connect()
@@ -258,8 +263,38 @@ def main():
         click('Stop MCP service…')
         click('Stop desktop service…')
         assert process.wait(20)==0
+        assert entry('client') and host_file.exists()
+        client.close()
         wait_until(lambda: not host_file.exists(),20)
         checks.append('Concurrent startup, independent idle stop and empty notification area')
+        adapters = []
+        unicode_data = workspace/'MCP workspace Ä'
+        for host_format in ('codex','claude-code','claude-desktop','copilot-cli','vscode'):
+            output = subprocess.check_output([mcp,'--data-dir',unicode_data,'--no-logon-resume',
+                                              '--print-config',host_format],env=env,encoding='utf-8')
+            if host_format == 'codex':
+                config = tomllib.loads(output)['mcp_servers']['twinpals']
+            else:
+                config = json.loads(output)['servers' if host_format == 'vscode' else 'mcpServers']['twinpals']
+            assert config['command'] == str(mcp) and config['args'][1] == str(unicode_data)
+            adapter = Client([config['command'],*config['args']],env,host_format)
+            clients.append(adapter)
+            adapters.append(adapter)
+        def identified():
+            try:
+                entries = [json.loads(file.read_bytes()) for file in registrations.glob('*.json')]
+            except (FileNotFoundError, PermissionError):
+                return False
+            return {r.get('client') for r in entries if r['role']=='client'} == {
+                'codex','claude-code','claude-desktop','copilot-cli','vscode'}
+        wait_until(identified,12)
+        assert not entry('mcp') and host()
+        for adapter in adapters[:-1]:
+            click(f'Disconnect MCP client (PID {adapter.proc.pid})…')
+            assert adapter.proc.wait(10)==0 and adapters[-1].request('ping',{})=={}
+        adapters[-1].close()
+        wait_until(lambda: not host_file.exists() and not list(registrations.glob('*.json')),15)
+        checks.append('Five generated client configurations with a Unicode workspace, idle stdio visibility, individual disconnect, EOF and final host exit')
         report.write_text(json.dumps(dict(checks=checks,status='passed',
             desktop_sha256=hashlib.sha256(desktop.read_bytes()).hexdigest(),
             tray_sha256=hashlib.sha256((folder/'_internal/TwinPALS.Tray.exe').read_bytes()).hexdigest()),indent=2))

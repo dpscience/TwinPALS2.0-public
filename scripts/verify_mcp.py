@@ -28,13 +28,13 @@ HTTP=build_opener(ProxyHandler({}))
 
 
 class Client:
-    def __init__(self,command,env):
+    def __init__(self,command,env,client_name='TwinPALS smoke'):
         self.proc=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
                                    cwd=ROOT,env=env,text=True,encoding='utf-8',creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
         self.seq=0
         self.called=set()
         self.response_ref=None
-        init=self.request('initialize',{'protocolVersion':'2025-11-25','capabilities':{},'clientInfo':{'name':'TwinPALS smoke','version':'1'}})
+        init=self.request('initialize',{'protocolVersion':'2025-11-25','capabilities':{},'clientInfo':{'name':client_name,'version':'1'}})
         assert init['protocolVersion']=='2025-11-25'
         self.write({'jsonrpc':'2.0','method':'notifications/initialized'})
 

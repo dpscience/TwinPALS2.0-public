@@ -15,7 +15,7 @@ import threading
 import webbrowser
 
 from backend import __version__
-from backend.windows_tray import TrayRegistration, reopen
+from backend.windows_tray import TrayRegistration, mutex_exists, reopen, uninstall_mutex
 
 
 def open_when_ready(server,url,stopped):
@@ -29,6 +29,10 @@ def open_when_ready(server,url,stopped):
 def main():
     import sys
     from pathlib import Path
+    guard = uninstall_mutex()
+    if guard and mutex_exists(guard):
+        print('TwinPALS is being uninstalled.', file=sys.stderr)
+        return 1
     if Path(sys.executable).stem.casefold() == "twinpals-mcp":
         from backend.mcp_server.cli import main as mcp_main
         return mcp_main()

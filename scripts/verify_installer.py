@@ -65,7 +65,7 @@ def running_desktop(program, env):
         desktop.require_closed_port(port)
 
 
-def verify(setup, work, previous_setup=None):
+def verify(setup, work, previous_setup=None, interactive=False):
     if registration() is not None:
         raise ValueError('Use a disposable Windows account without an existing TwinPALS Setup registration.')
     work.mkdir(parents=True, exist_ok=False)
@@ -78,7 +78,7 @@ def verify(setup, work, previous_setup=None):
 
     def run(exe, name, *options, success=True):
         log = work / (name + '.log')
-        command = [exe, '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/SP-', '/LOG=' + str(log), *options]
+        command = [exe, '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/SP-', '/LANG=english', '/LOG=' + str(log), *options]
         result = subprocess.run(command, timeout=900, cwd=work)
         if (result.returncode == 0) != success:
             raise RuntimeError(f'{name}: code {result.returncode}; inspect {log}')
@@ -133,6 +133,9 @@ def verify(setup, work, previous_setup=None):
         checks.append('desktop-factory-and-custom-data')
         client = Client([str(mcp), '--no-logon-resume'], env)
         try:
+            assert not (data / 'studies/endpoint.json').exists()
+            run(program / 'unins000.exe', 'silent-uninstall-refuses-idle-stdio-connection', success=False)
+            assert client.request('ping', {}) == {} and registration() == program
             assert client.call('capabilities')
         finally:
             client.close()
@@ -182,7 +185,20 @@ def verify(setup, work, previous_setup=None):
             assert state['ui']['selection']['bins'] == 173
             assert any(row['id'] == 'installer-test-material' for row in state['entries'])
         checks.append('reinstall-opens-original-catalogue-and-settings')
-        uninstall('final-uninstall')
+        if interactive:
+            from verify_uninstall_dialog import verify_dialog
+            assert registration() == program
+            client = Client([str(mcp), '--no-logon-resume'], env)
+            try:
+                verify_dialog(program, work, cancel=True)
+                assert registration() == program and client.request('ping', {}) == {}
+                verify_dialog(program, work, cancel=False)
+                assert client.proc.wait(timeout=10) == 0 and registration() is None and not mcp.exists()
+                checks.extend(['cancel-keeps-idle-connection', 'interactive-uninstall-closes-idle-connection'])
+            finally:
+                client.close()
+        else:
+            uninstall('final-uninstall')
         preserved()
         report = dict(status='passed', version=installed['version'], installer_sha256=sha256(setup),
                       verified_program_files=len(installed['files']), user_files_checked=len(sample), checks=checks,
@@ -198,9 +214,10 @@ def verify(setup, work, previous_setup=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--setup', type=Path, required=True)
+    parser.add_argument('--interactive', action='store_true', help='Also drive the real stop and retention prompts on an isolated Windows desktop')
     parser.add_argument('--previous-setup', type=Path, help='Earlier released TwinPALS installer; a minimal earlier-version fixture is used when omitted')
     parser.add_argument('--work', type=Path, required=True, help='New directory for test program, data, logs and report')
     options = parser.parse_args()
     prior = options.previous_setup.resolve(strict=True) if options.previous_setup else None
-    print(json.dumps(verify(options.setup.resolve(), options.work.resolve(), prior), indent=2))
+    print(json.dumps(verify(options.setup.resolve(), options.work.resolve(), prior, options.interactive), indent=2))
 

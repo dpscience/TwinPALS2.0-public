@@ -1,53 +1,114 @@
 # TwinPALS 2.0
 
-**Cite this software** · Danny Petschke, *TwinPALS 2.0*, version 2.0.2 (development). When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
+TwinPALS is a **digital twin of a positron annihilation lifetime spectrometer**. Build a virtual counterpart of your detector setup and follow a coincidence from gamma emission through the two detectors to its entry in the lifetime spectrum. You can study how much of a peak or tail comes from the intended start–stop pairs, scattered photons, overlapping pulses or accidental coincidences, and how much useful signal survives a change in your timing or selection settings.
 
-TwinPALS simulates positron annihilation lifetime spectroscopy (PALS) on Windows x64. Set up a detector, acquire digitized pulse pairs and see how timing, filters and event selection affect the lifetime spectrum. The desktop and MCP server share the same simulation engines and component catalogue.
+**Cite this software.** Danny Petschke, *TwinPALS 2.0*, version 2.0.2. When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Boras dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
 
-[![Na-22 simulation with particle tracks in the detector assembly and the resulting anode current](docs/screenshots/detector-transport.png)](docs/screenshots/detector-transport.png)
+TwinPALS is organized into **three modules**, each modelling one stage of a measurement.
 
-| Digitizer setup | Waveform acquisition | Lifetime analysis |
-| :--- | :--- | :--- |
-| [![Two PMT channels connected to a digitizer and coincidence trigger](docs/screenshots/acquisition-chain.png)](docs/screenshots/acquisition-chain.png) | [![Digitized pulses and trigger timing for channels A and B](docs/screenshots/waveform-acquisition.png)](docs/screenshots/waveform-acquisition.png) | [![Lifetime and pulse-height spectra before and after filtering](docs/screenshots/lifetime-analysis.png)](docs/screenshots/lifetime-analysis.png) |
+1. **Detector response** simulates how gamma rays from the source produce light in the detectors and electrical signals at the photomultipliers.
+2. **Waveform acquisition** uses the source activity to simulate when decays occur, places the detector signals on that timeline and records digitized pulse pairs when the trigger fires.
+3. **Lifetime analysis** measures the time difference between the two pulses, builds the lifetime spectrum and shows which types of events contribute to each peak or tail.
 
-## Run the desktop
+[Follow a measurement](#from-gamma-emission-to-a-lifetime-spectrum) · [Desktop setup](#open-twinpals-on-windows) · [AI-assisted studies](#run-a-study-with-an-ai-agent) · [Component catalogue](#component-catalogue) · [Download for Windows](https://github.com/dpscience/TwinPALS2.0-public/releases) · [Build from source](#build-from-source)
 
-Download a Windows x64 build from [Releases](https://github.com/dpscience/TwinPALS2.0-public/releases). Run **TwinPALS-…-setup.exe** for a Start menu entry and automatic reuse of your catalogue on updates. For a portable copy, extract the **entire ZIP** to a writable folder and open **TwinPALS.exe**. Both include the scientific runtime. The tray icon reopens the workbench.
+[![Na-22 gamma and optical transport through the source and opposing detectors, with the resulting anode current](docs/screenshots/detector-transport.png)](docs/screenshots/detector-transport.png)
 
-## Run a study with an MCP client
+*A simulated Na-22 event in Module 1. The detector view shows the particle tracks, and the anode plot shows the resulting electrical signal.*
 
-**Codex, Claude and GitHub Copilot** can run the three modules locally, compare analysis settings on the same recorded pulses, and save a report linked to the underlying runs.
+## From gamma emission to a lifetime spectrum
 
-In PowerShell, open the program folder (by default `%LOCALAPPDATA%\Programs\TwinPALS 2.0` for Setup) or the extracted portable folder and print the configuration for your client.
+A PALS measurement uses the delay between a start and a stop signal to study how long positrons survive in a sample. In a Na-22 setup, the prompt gamma provides the start and an annihilation gamma provides the stop. In the measured spectrum, that delay also reflects the detector response, electronics, pulse selection and background. TwinPALS models the chain in three stages so you can change one stage and see what it contributes.
 
-```powershell
-.\TwinPALS-MCP.exe --print-config claude-desktop
-```
+### Module 1 · Detector response
 
-Replace `claude-desktop` with `codex`, `claude-code`, `copilot-cli` or `vscode` as appropriate. Add the printed entry to the client's MCP configuration, reconnect and ask it to call **capabilities**. The client starts the local server. Choose **Open study observer** in the tray to follow its work. [Client configuration and study examples](docs/mcp/README.md)
+Choose the isotope, sample and encapsulation, detector geometry, scintillators, optical interfaces and photomultiplier tubes (PMTs). Geant4 follows particle transport, energy deposition and light production. The output records the photoelectron arrivals and their origins for the two channels. The transport view at the top of this page shows how a simulated event reaches the anode. TwinPALS supports Na-22 and the correlated Co-60 cascade. [Detector-response method](docs/mcp/knowledge/detector-response.md)
+
+### Module 2 · Waveform acquisition
+
+Choose the **source activity in becquerels** to set the mean number of decays per second. Module 2 samples the decay times and places the Module 1 detector responses on that timeline. For Na-22, the selected positron-lifetime distribution sets the delay between the prompt gamma and the annihilation photons. At higher activity, signals from separate decays are more likely to overlap or fall inside the same coincidence window. The electronics and trigger settings then determine which A/B waveforms the digitizer records. You can save those pairs and replay them in Module 3. [Acquisition method](docs/mcp/knowledge/acquisition.md)
+
+[![Acquisition setup showing two PMT channels, digitizer inputs and coincidence trigger](docs/screenshots/acquisition-chain.png)](docs/screenshots/acquisition-chain.png)
+
+*The acquisition setup defines which pulses the two channels can record together.*
+
+[![Digitized A and B waveforms with their trigger timing and acquisition readouts](docs/screenshots/waveform-acquisition.png)](docs/screenshots/waveform-acquisition.png)
+
+*Inspect the resulting sampled pulses before choosing the timing and energy cuts.*
+
+### Module 3 · Lifetime analysis
+
+Measure pulse heights and constant-fraction crossing times on the saved waveforms. Apply the start and stop windows to build a lifetime spectrum from the measured time differences. TwinPALS uses each pair’s simulated history to group events by their physical origin. The list below gives just three examples from the many **event classes and their subtypes** that you can inspect in a Na-22 spectrum.
+
+- **Intended coincidences.** The start detector records the prompt gamma and the stop detector records a 511 keV annihilation photon from the same decay.
+- **One gamma in both detectors.** A gamma scatters in one detector and deposits energy in the other, producing a pulse in each channel. Within this class, separate subtypes show whether the shared photon was the 1275 keV prompt gamma or a 511 keV annihilation photon.
+- **Accidental coincidences.** The start and stop signals come from different decays but fall within the same coincidence window.
+
+Replay the same waveforms with a tighter pulse-height window to see how much accidental background it removes and how many intended pairs it costs.
+
+[![Lifetime and pulse-height spectra with event selections before and after filtering](docs/screenshots/lifetime-analysis.png)](docs/screenshots/lifetime-analysis.png)
+
+## Two ways to use TwinPALS
+
+Use the **desktop workbench** when you want to build a detector, inspect an individual pulse or try a cut yourself. Use an **AI agent** when you want to repeat a measurement across many settings and compare the results. Both use the same component catalogue and run the same three modules on your PC.
+
+| Mode | How a measurement runs |
+| --- | --- |
+| **Desktop** | You choose the setup in the workbench → TwinPALS runs the modules → you inspect waveforms and spectra in the workbench. |
+| **AI-assisted** | You describe a study in chat → the agent submits it through the Model Context Protocol (MCP) → TwinPALS runs the modules → you follow progress in the study observer and review the agent’s report. |
+
+## Open TwinPALS on Windows
+
+To open the workbench, download either Windows x64 package from the [release page](https://github.com/dpscience/TwinPALS2.0-public/releases). TwinPALS starts on your PC and opens its controls in your default browser.
+
+| Distribution | First launch | Where your data go by default |
+| --- | --- | --- |
+| **Windows installer** | Run the release file ending in **-setup.exe**. Complete Setup, then open **TwinPALS 2.0** from the Start menu. | `%LOCALAPPDATA%\TwinPALS\Data`. Later installs reuse your catalogue, settings and study workspace. |
+| **Portable ZIP** | Extract the **entire ZIP** to a writable folder. Open that folder and double-click **TwinPALS.exe**. Keep its companion files and folders together. | The `data` folder beside the executable. |
+
+Both downloads include the scientific runtime, Geant4 data and desktop interface. When the browser opens, start in **Module 1** to set up the source and the two detectors. If you close the browser tab, click the TwinPALS icon in the Windows notification area (near the clock, sometimes under the hidden-icons arrow) and choose **Open desktop in browser**.
+
+### The Windows tray
+
+The tray gives you one place to find the desktop, the study service and any connected MCP clients. **Status and paths** identifies the installation and workspace. With the study service running, **Open study observer** opens the read-only view of agent work. Closing a browser tab leaves the underlying service running. The menu also lets you disconnect a client or stop a service.
+
+[![TwinPALS tray menu with the desktop ready, one active study step and a connected MCP client](docs/screenshots/windows-tray.png)](docs/screenshots/windows-tray.png)
+
+## Run a study with an AI agent
+
+Suppose you want to know which timing settings give the narrowest prompt peak. Ask an assistant such as Codex, Claude or GitHub Copilot to replay one pulse stream at different constant-fraction levels. Through its MCP connection, the agent can look up your detector settings, submit each combination to TwinPALS, compare the resulting spectra and write a report with the run IDs behind its conclusions.
 
 ### Connect TwinPALS to Codex
 
-1. Open **Status and paths** from the TwinPALS tray icon to find the program folder. In that folder, run this in PowerShell.
+1. Open the folder containing **TwinPALS-MCP.exe**. In File Explorer, type `powershell` in the address bar and press Enter. Run the following command to print the configuration for this copy.
 
-   ```powershell
+   ~~~powershell
    .\TwinPALS-MCP.exe --print-config codex
-   ```
+   ~~~
 
-   Your command prints the paths for your installation. The example below uses the screenshot's program folder and a custom workspace selected with `--data-dir D:\TwinPALS\Data`.
+2. In Codex, open the **MCP server settings**, add a local **STDIO** server named `twinpals` and enter the executable and arguments printed above. Each argument gets its own field. Alternatively, copy the printed TOML section into your Codex configuration.
+3. Save and enable the connection, start a new chat and ask **“Call TwinPALS capabilities and show me the study workspace.”** Check the returned data directory before submitting a study.
 
-   ```toml
-   [mcp_servers.twinpals]
-   command = "C:\\Tools\\TwinPALS\\TwinPALS-MCP.exe"
-   args = ["--data-dir", "D:\\TwinPALS\\Data"]
-   ```
+<details>
+<summary>See the Codex settings and the enabled server</summary>
 
-2. In Codex, open **Plugins → MCPs → Add**, choose a local **STDIO** server and name it `twinpals`. Enter the executable path under **Command to launch**. Under **Arguments**, add `--data-dir` and the data folder as two separate entries. TOML escapes each backslash as `\\`. In the form, enter ordinary Windows paths such as `D:\TwinPALS\Data`, without quotes. Leave the environment and working directory fields empty.
-3. Save, enable the server and open a new chat. Ask **“Call TwinPALS capabilities and show my study workspace.”** The returned data directory identifies the catalogue and studies this connection uses. [Codex MCP documentation](https://developers.openai.com/codex/mcp/)
+[![Codex local server form with the TwinPALS executable and two separate arguments](docs/screenshots/codex-mcp-command.png)](docs/screenshots/codex-mcp-command.png)
 
-| Command and arguments · example paths | Enabled server in Codex |
-| :--- | :--- |
-| [![Local server form with the TwinPALS executable and two separate arguments](docs/screenshots/codex-mcp-command.png)](docs/screenshots/codex-mcp-command.png) | [![TwinPALS enabled in the Codex MCP server list](docs/screenshots/codex-mcp-servers.png)](docs/screenshots/codex-mcp-servers.png) |
+[![TwinPALS enabled in the Codex MCP server list](docs/screenshots/codex-mcp-servers.png)](docs/screenshots/codex-mcp-servers.png)
+
+</details>
+
+**Setup guides** · [Codex, including a TOML example](docs/mcp/CLIENTS.md#codex) · [Claude Desktop](docs/mcp/CLIENTS.md#claude-desktop) · [Claude Code](docs/mcp/CLIENTS.md#claude-code) · [GitHub Copilot CLI](docs/mcp/CLIENTS.md#github-copilot-cli) · [GitHub Copilot in VS Code](docs/mcp/CLIENTS.md#github-copilot-in-vs-code)
+
+### What the study observer shows
+
+The **study observer** lets you inspect what TwinPALS is computing while the agent works. For instance, when the agent says it is testing a new timing setting, you can see which run it submitted, check the actual setting and inspect the spectrum as soon as it is available. Open **Open study observer** from the tray when the MCP study service is running.
+
+The left column lists the study steps and their progress. Select a step to inspect its measurements, plots or recorded settings in the centre. The activity feed on the right shows which runs started and when TwinPALS saved their results. The view is read-only, so you can explore the results or close the tab while the study continues. [Study tools, saved results and recovery](docs/mcp/README.md)
+
+[![Live study observer with a completed CF setting pinned, two settings running and further steps queued](docs/screenshots/observer-cf-study.png)](docs/screenshots/observer-cf-study.png)
+
+*The timing scan below, photographed during a small pilot with 256 simulated pulse pairs. The selected run used 10% CF on both channels. Two other settings were running. This view illustrates how to follow the calculation. The pilot count is too small to select a best setting from this plot.*
 
 ### Try a zero-lifetime timing study
 
@@ -78,492 +139,36 @@ a new independent seed. Save a Markdown report with uncertainties and run IDs.
 
 ## Component catalogue
 
-| Photomultiplier tube | Sample material |
-| :--- | :--- |
-| [![Hamamatsu R329-02 window and photocathode geometry](docs/screenshots/photomultiplier-catalogue.png)](docs/screenshots/photomultiplier-catalogue.png) | [![Aluminium composition and lifetime tabs in the material editor](docs/screenshots/sample-material-catalogue.png)](docs/screenshots/sample-material-catalogue.png) |
+Build a setup by selecting the parts you would choose at the bench. Each selection brings its stored properties into the model. For example, **BC-418** supplies a light yield of **10,200 photons/MeV** and a **1.4 ns** scintillation decay. A **Hamamatsu R329-02** supplies its photocathode response, gain curve and timing, including **1.1 ns FWHM** transit-time spread. A **PSI DRS4 V5** preset at **5.12 GS/s** selects a 1,024-sample record and a ±500 mV input range.
 
 <!-- factory-catalogue:start -->
-The factory catalogue contains **396 entries**. Expand a family to see every supplied material, tube or acquisition preset.
+The factory catalogue contains **396 entries** across eight families.
 
-| Included | Catalogue family | Entries | Use |
-| :---: | :--- | ---: | :--- |
-| ✓ | Scintillators | 15 | Light generation and optical transport |
-| ✓ | Optical coupling | 2 | Interface between crystal and PMT window |
-| ✓ | Photomultiplier tubes | 16 | Photocathode and anode response |
-| ✓ | Digitizer presets | 41 | Sampling and voltage-range configurations |
-| ✓ | Reflector wrappings | 2 | Crystal surface and reflectance |
-| ✓ | Sample materials | 309 | Source sandwich and positron lifetimes |
-| ✓ | Encapsulation foils | 6 | Source encapsulation and foil lifetimes |
-| ✓ | Shielding materials | 5 | Particle transport through shielding |
-
-<details>
-<summary>Scintillators (15)</summary>
-
-| Entry | Model light yield (photons/MeV) |
-| :--- | ---: |
-| BaF₂ | 11500 |
-| BC-418 | 10200 |
-| BC-422Q 0.5% | 2900 |
-| BC-422Q 1% | 1700 |
-| BC-422Q 2% | 770 |
-| BC-422Q 3% | 610 |
-| BC-422Q 5% | 460 |
-| CeBr₃ | 60000 |
-| EJ-232 | 8400 |
-| EJ-232Q 0.5% | 2900 |
-| EJ-232Q 1% | 1700 |
-| EJ-232Q 2% | 770 |
-| EJ-232Q 3% | 610 |
-| EJ-232Q 5% | 460 |
-| LYSO:Ce | 33200 |
-
-</details>
-
-<details>
-<summary>Optical coupling (2)</summary>
-
-| Entry | Density (g/cm³) |
-| :--- | ---: |
-| Air | 0.00120479 |
-| EJ-550 silicone grease | 1.06 |
-
-</details>
-
-<details>
-<summary>Photomultiplier tubes (16)</summary>
-
-| Entry | Model rise time (ns) |
-| :--- | ---: |
-| ET Enterprises 9214B | 3 |
-| Hamamatsu R11265U-100 | 1.3 |
-| Hamamatsu R11265U-20 | 1.3 |
-| Hamamatsu R11265U-200 | 1.3 |
-| Hamamatsu R11265U-300 | 1.3 |
-| Hamamatsu R1450 | 1.8 |
-| Hamamatsu R1828-01 | 1.3 |
-| Hamamatsu R2059 | 1.3 |
-| Hamamatsu R2083 | 0.8 |
-| Hamamatsu R329-02 | 2.6 |
-| Hamamatsu R3377 | 0.8 |
-| Hamamatsu R5320 | 0.7 |
-| Hamamatsu R7400U-06 | 0.78 |
-| Hamamatsu R9800 | 1 |
-| Photonis XP2020 | 1.5 |
-| Photonis XP2020Q | 1.5 |
-
-</details>
-
-<details>
-<summary>Digitizer presets (41)</summary>
-
-| Entry | ADC resolution (bits) |
-| :--- | ---: |
-| Acqiris DP240-002 · 0.5 GS/s · ±100 mV | 8 |
-| Acqiris DP240-002 · 0.5 GS/s · ±1000 mV | 8 |
-| Acqiris DP240-002 · 0.5 GS/s · ±25 mV | 8 |
-| Acqiris DP240-002 · 0.5 GS/s · ±250 mV | 8 |
-| Acqiris DP240-002 · 0.5 GS/s · ±2500 mV | 8 |
-| Acqiris DP240-002 · 0.5 GS/s · ±50 mV | 8 |
-| Acqiris DP240-002 · 0.5 GS/s · ±500 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±100 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±1000 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±25 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±250 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±2500 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±50 mV | 8 |
-| Acqiris DP240-003 · 1 GS/s · ±500 mV | 8 |
-| Acqiris SA220P · 1 GS/s · ±1250 mV | 14 |
-| Acqiris SA220P · 1 GS/s · ±250 mV | 14 |
-| Acqiris SA220P · 2 GS/s · ±1250 mV | 14 |
-| Acqiris SA220P · 2 GS/s · ±250 mV | 14 |
-| LeCroy WavePro 960 · 8 GS/s · ±500 mV | 8 |
-| PSI DRS4 V5 · 1.00721 GS/s | 14 |
-| PSI DRS4 V5 · 1.98194 GS/s | 14 |
-| PSI DRS4 V5 · 5.12 GS/s | 14 |
-| Teledyne LeCroy WavePro 254HD · 20 GS/s · ±200 mV | 12 |
-| Teledyne LeCroy WavePro 254HD · 20 GS/s · ±400 mV | 12 |
-| Teledyne LeCroy WavePro 404HD · 20 GS/s · ±200 mV | 12 |
-| Teledyne LeCroy WavePro 404HD · 20 GS/s · ±400 mV | 12 |
-| Teledyne LeCroy WavePro 604HD · 20 GS/s · ±200 mV | 12 |
-| Teledyne LeCroy WavePro 604HD · 20 GS/s · ±400 mV | 12 |
-| Teledyne LeCroy WavePro 804HD · 20 GS/s · ±200 mV | 12 |
-| Teledyne LeCroy WavePro 804HD · 20 GS/s · ±400 mV | 12 |
-| Teledyne LeCroy WaveRunner 9254 · 20 GS/s · ±200 mV | 8 |
-| Teledyne LeCroy WaveRunner 9254 · 20 GS/s · ±400 mV | 8 |
-| Teledyne LeCroy WaveRunner 9254M · 40 GS/s · ±200 mV | 8 |
-| Teledyne LeCroy WaveRunner 9254M · 40 GS/s · ±400 mV | 8 |
-| Teledyne LeCroy WaveRunner 9404 · 20 GS/s · ±200 mV | 8 |
-| Teledyne LeCroy WaveRunner 9404 · 20 GS/s · ±400 mV | 8 |
-| Teledyne LeCroy WaveRunner 9404M · 40 GS/s · ±200 mV | 8 |
-| Teledyne LeCroy WaveRunner 9404M · 40 GS/s · ±400 mV | 8 |
-| Teledyne SP Devices ADQ14DC-2A · 0.5 GS/s · ±250 mV | 14 |
-| Teledyne SP Devices ADQ14DC-2C · 1 GS/s · ±250 mV | 14 |
-| Teledyne SP Devices ADQ14DC-2X · 2 GS/s · ±500 mV | 14 |
-
-</details>
-
-<details>
-<summary>Reflector wrappings (2)</summary>
-
-| Entry |
-| :--- |
-| PTFE powder — reflectance model |
-| PTFE — measured LUT |
-
-</details>
-
-<details>
-<summary>Sample materials (309)</summary>
-
-87 of 309 entries include positron-lifetime components. A dash indicates that this entry supplies composition only.
-
-| Entry | Lifetime data |
-| :--- | ---: |
-| 1,2-Dichlorobenzene | — |
-| 1,2-Dichloroethane | — |
-| A-150 Tissue | — |
-| Ac | ✓ |
-| Acetone | — |
-| Acetylene | — |
-| Adenine | — |
-| Adipose Tissue Icrp | — |
-| Air | — |
-| Alanine | — |
-| Aluminium | ✓ |
-| Aluminum Oxide | — |
-| Am | ✓ |
-| Amber | — |
-| Ammonia | — |
-| Aniline | — |
-| Anthracene | — |
-| Ar | ✓ |
-| As | ✓ |
-| At | — |
-| B | — |
-| B-100 Bone | — |
-| Ba | ✓ |
-| Bakelite | — |
-| Barium Fluoride | — |
-| Barium Sulfate | — |
-| Benzene | — |
-| Beryllium | ✓ |
-| Beryllium Oxide | — |
-| Bgo | — |
-| Bismuth | ✓ |
-| Bk | ✓ |
-| Blood Icrp | — |
-| Bone Compact Icru | — |
-| Bone Cortical Icrp | — |
-| Boron Carbide | — |
-| Boron Oxide | — |
-| Br | ✓ |
-| Brain Icrp | — |
-| Brass | — |
-| Bronze | — |
-| Butane | — |
-| C | ✓ |
-| C-552 | — |
-| Ca | ✓ |
-| Cadmium | ✓ |
-| Cadmium Telluride | — |
-| Cadmium Tungstate | — |
-| Calcium Carbonate | — |
-| Calcium Fluoride | — |
-| Calcium Oxide | — |
-| Calcium Sulfate | — |
-| Calcium Tungstate | — |
-| Carbon Dioxide | — |
-| Carbon Tetrachloride | — |
-| Ce | ✓ |
-| Cellulose Butyrate | — |
-| Cellulose Cellophane | — |
-| Cellulose Nitrate | — |
-| Ceric Sulfate | — |
-| Cesium Fluoride | — |
-| Cesium Iodide | — |
-| Cf | — |
-| Chlorobenzene | — |
-| Chloroform | — |
-| Chromium | ✓ |
-| Cl | ✓ |
-| Cm | ✓ |
-| Cobalt | ✓ |
-| Concrete | — |
-| Copper | ✓ |
-| Cr39 | — |
-| Cs | ✓ |
-| Cyclohexane | — |
-| Cytosine | — |
-| Dacron | — |
-| Deoxyribose | — |
-| Dichlorodiethyl Ether | — |
-| Diethyl Ether | — |
-| Dimethyl Sulfoxide | — |
-| Dna Adenine | — |
-| Dna Cytosine | — |
-| Dna Deoxyribose | — |
-| Dna Guanine | — |
-| Dna Phosphate | — |
-| Dna Thymine | — |
-| Dna Uracil | — |
-| Dy | ✓ |
-| Er | ✓ |
-| Ethane | — |
-| Ethyl Alcohol | — |
-| Ethyl Cellulose | — |
-| Ethylene | — |
-| Eu | ✓ |
-| Eye Lens Icrp | — |
-| F | — |
-| Ferric Oxide | — |
-| Ferroboride | — |
-| Ferrous Oxide | — |
-| Ferrous Sulfate | — |
-| Fr | — |
-| Freon-12 | — |
-| Freon-12B2 | — |
-| Freon-13 | — |
-| Freon-13B1 | — |
-| Freon-13I1 | — |
-| Gadolinium Oxysulfide | — |
-| Galactic | — |
-| Gallium | ✓ |
-| Gallium Arsenide | — |
-| Gd | ✓ |
-| Ge | ✓ |
-| Gel Photo Emulsion | — |
-| Glass Lead | — |
-| Glass Plate | — |
-| Glutamine | — |
-| Glycerol | — |
-| Gold | ✓ |
-| Graphite | — |
-| Graphite Porous | — |
-| Guanine | — |
-| Gypsum | — |
-| H | — |
-| Hafnium | ✓ |
-| He | — |
-| Hg | ✓ |
-| Ho | ✓ |
-| I | ✓ |
-| Indium | ✓ |
-| Ir | ✓ |
-| Iron | ✓ |
-| K | ✓ |
-| Kapton | — |
-| Kevlar | — |
-| Kr | ✓ |
-| La | ✓ |
-| Lanthanum Oxybromide | — |
-| Lanthanum Oxysulfide | — |
-| Lar | — |
-| Lbr | — |
-| Lead | ✓ |
-| Lead Oxide | — |
-| Lh2 | — |
-| Li | ✓ |
-| Lithium Amide | — |
-| Lithium Carbonate | — |
-| Lithium Fluoride | — |
-| Lithium Hydride | — |
-| Lithium Iodide | — |
-| Lithium Oxide | — |
-| Lithium Tetraborate | — |
-| Lkr | — |
-| Ln2 | — |
-| Lo2 | — |
-| Lpropane | — |
-| Lu | ✓ |
-| Lucite | — |
-| Lung Icrp | — |
-| Lxe | — |
-| M3 Wax | — |
-| Magnesium | ✓ |
-| Magnesium Carbonate | — |
-| Magnesium Fluoride | — |
-| Magnesium Oxide | — |
-| Magnesium Tetraborate | — |
-| Manganese | ✓ |
-| Mercuric Iodide | — |
-| Methane | — |
-| Methanol | — |
-| Mix D Wax | — |
-| Molybdenum | ✓ |
-| Ms20 Tissue | — |
-| Muscle Skeletal Icrp | — |
-| Muscle Striated Icru | — |
-| Muscle With Sucrose | — |
-| Muscle Without Sucrose | — |
-| Mylar | — |
-| N | — |
-| N,N-Dimethyl Formamide | — |
-| N-Butyl Alcohol | — |
-| N-Heptane | — |
-| N-Hexane | — |
-| N-Pentane | — |
-| N-Propyl Alcohol | — |
-| Na | ✓ |
-| Naphthalene | — |
-| Nd | ✓ |
-| Ne | ✓ |
-| Neoprene | — |
-| Nickel | ✓ |
-| Niobium | ✓ |
-| Nitrobenzene | — |
-| Nitrous Oxide | — |
-| Np | ✓ |
-| Nylon-11 Rilsan | — |
-| Nylon-6-10 | — |
-| Nylon-6-6 | — |
-| Nylon-8062 | — |
-| O | — |
-| Octadecanol | — |
-| Octane | — |
-| Os | ✓ |
-| P | ✓ |
-| Pa | ✓ |
-| Palladium | ✓ |
-| Paraffin | — |
-| Pbwo4 | — |
-| Phosphoric Acid | — |
-| Photo Emulsion | — |
-| Plastic Sc Vinyltoluene | — |
-| Platinum | ✓ |
-| Plexiglass | — |
-| Plutonium Dioxide | — |
-| Pm | ✓ |
-| Po | ✓ |
-| Polyacrylonitrile | — |
-| Polycarbonate | — |
-| Polychlorostyrene | — |
-| Polyethylene | — |
-| Polyoxymethylene | — |
-| Polypropylene | — |
-| Polystyrene | — |
-| Polytrifluorochloroethylene | — |
-| Polyvinyl Acetate | — |
-| Polyvinyl Alcohol | — |
-| Polyvinyl Butyral | — |
-| Polyvinyl Chloride | — |
-| Polyvinyl Pyrrolidone | — |
-| Polyvinylidene Chloride | — |
-| Polyvinylidene Fluoride | — |
-| Potassium Iodide | — |
-| Potassium Oxide | — |
-| Pr | ✓ |
-| Propane | — |
-| Pu | ✓ |
-| Pyrex Glass | — |
-| Pyridine | — |
-| Ra | ✓ |
-| Rb | ✓ |
-| Re | ✓ |
-| Rh | ✓ |
-| Rn | — |
-| Ru | ✓ |
-| Rubber Butyl | — |
-| Rubber Natural | — |
-| Rubber Neoprene | — |
-| S | — |
-| Sb | ✓ |
-| Sc | ✓ |
-| Se | ✓ |
-| Si | ✓ |
-| Silicon Dioxide | — |
-| Silver | ✓ |
-| Silver Bromide | — |
-| Silver Chloride | — |
-| Silver Halides | — |
-| Silver Iodide | — |
-| Skin Icrp | — |
-| Sm | ✓ |
-| Sodium Carbonate | — |
-| Sodium Iodide | — |
-| Sodium Monoxide | — |
-| Sodium Nitrate | — |
-| Sr | ✓ |
-| Stainless-Steel | — |
-| Stilbene | — |
-| Sucrose | — |
-| Tantalum | ✓ |
-| Tb | ✓ |
-| Tc | ✓ |
-| Te | ✓ |
-| Teflon | — |
-| Terphenyl | — |
-| Testis Icrp | — |
-| Tetrachloroethylene | — |
-| Th | ✓ |
-| Thallium Chloride | — |
-| Thymine | — |
-| Tin | ✓ |
-| Tissue Soft Icrp | — |
-| Tissue Soft Icru-4 | — |
-| Tissue-Methane | — |
-| Tissue-Propane | — |
-| Titanium | ✓ |
-| Titanium Dioxide | — |
-| Tl | ✓ |
-| Tm | ✓ |
-| Toluene | — |
-| Trichloroethylene | — |
-| Triethyl Phosphate | — |
-| Tungsten | ✓ |
-| Tungsten Hexafluoride | — |
-| U | ✓ |
-| Uracil | — |
-| Uranium Dicarbide | — |
-| Uranium Monocarbide | — |
-| Uranium Oxide | — |
-| Urea | — |
-| Valine | — |
-| Vanadium | ✓ |
-| Viton | — |
-| Water | — |
-| Water Vapor | — |
-| Xe | ✓ |
-| Xylene | — |
-| Y | ✓ |
-| Yb | ✓ |
-| Zinc | ✓ |
-| Zirconium | ✓ |
-
-</details>
-
-<details>
-<summary>Encapsulation foils (6)</summary>
-
-6 of 6 entries include positron-lifetime components. A dash indicates that this entry supplies composition only.
-
-| Entry | Lifetime data |
-| :--- | ---: |
-| Aluminium | ✓ |
-| Gold | ✓ |
-| Kapton | ✓ |
-| Lead | ✓ |
-| Nickel | ✓ |
-| Silver | ✓ |
-
-</details>
-
-<details>
-<summary>Shielding materials (5)</summary>
-
-| Entry | Density (g/cm³) |
-| :--- | ---: |
-| Aluminium | 2.699 |
-| Gold | 19.32 |
-| Lead | 11.35 |
-| Nickel | 8.902 |
-| Silver | 10.5 |
-
-</details>
+| Family | Entries | What you select |
+| --- | ---: | --- |
+| [Scintillators](docs/COMPONENTS.md#scintillators) | 15 | Light yield, emission spectrum and decay components |
+| [Optical coupling](docs/COMPONENTS.md#optical-coupling) | 2 | Optical properties between crystal and PMT window |
+| [Photomultiplier tubes](docs/COMPONENTS.md#photomultiplier-tubes) | 16 | Photocathode response, gain and timing |
+| [Digitizer presets](docs/COMPONENTS.md#digitizer-presets) | 41 | Sampling, ADC range and electronic response |
+| [Reflector wrappings](docs/COMPONENTS.md#reflector-wrappings) | 2 | Surface finish and reflection model |
+| [Sample materials](docs/COMPONENTS.md#sample-materials) | 309 | Sample composition, density and available lifetime references |
+| [Encapsulation foils](docs/COMPONENTS.md#encapsulation-foils) | 6 | Source foil composition and lifetime references |
+| [Shielding materials](docs/COMPONENTS.md#shielding-materials) | 5 | Composition and density for gamma transport |
 <!-- factory-catalogue:end -->
+
+The **[complete component catalogue](docs/COMPONENTS.md)** lists every factory entry with comparable properties and units. Open **Database** in the workbench to inspect curves, reference conditions and model assumptions, edit a record, or import and export your own catalogue. Lifetime references are available for a subset of samples and for all six encapsulation foils.
+
+[![Hamamatsu R329-02 record showing window and photocathode geometry](docs/screenshots/photomultiplier-catalogue.png)](docs/screenshots/photomultiplier-catalogue.png)
+
+*PMT records describe the optical entrance, sensitive area and electrical response.*
+
+[![Aluminium sample in the database editor with composition and positron lifetime data](docs/screenshots/sample-material-catalogue.png)](docs/screenshots/sample-material-catalogue.png)
+
+*Sample records connect the material used for transport with the available positron-lifetime references.*
 
 ## Build from source
 
-On Windows x64 with Python 3.12, Node.js/npm, CMake and Visual Studio 2022 C++ tools, run this from the repository root.
+Build from source to inspect or change the simulation engines and workbench. On Windows x64 with Python 3.12, Node.js/npm, CMake and Visual Studio 2022 C++ tools, run the following commands from the repository root.
 
 ```powershell
 .\scripts\build-workbench.ps1

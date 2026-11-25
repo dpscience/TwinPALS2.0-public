@@ -9,11 +9,13 @@ import json
 import multiprocessing
 import os
 import sys
+import threading
 import time
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from backend.app import application_root, default_data_directory
+from backend.windows_tray import TrayRegistration
 from . import VERSION
 from . import platform
 from . import knowledge
@@ -122,17 +124,51 @@ def rpc(message,connection):
     return {**reply,'result':result}
 
 
-def stdio(connection):
-    for line in sys.stdin.buffer:
+def stdio(connection, source, sink, tray):
+    for line in source:
         try:
             req=json.loads(line)
         except (ValueError,UnicodeDecodeError):
             response={'jsonrpc':'2.0','id':None,'error':{'code':-32700,'message':'Parse error'}}
         else:
             response=rpc(req,connection)
+            if isinstance(req, dict) and req.get('method') == 'initialize' and 'result' in (response or {}):
+                client = req['params'].get('clientInfo', {}) if 'params' in req else {}
+                name = client.get('name') if isinstance(client, dict) else None
+                if isinstance(name, str):
+                    tray.client = ''.join(ch for ch in name if ch.isprintable()).strip()[:48]
         if response is not None:
-            sys.stdout.buffer.write(json.dumps(response,ensure_ascii=False,allow_nan=False).encode()+b'\n')
-            sys.stdout.buffer.flush()
+            sink.write(json.dumps(response,ensure_ascii=False,allow_nan=False).encode()+b'\n')
+            sink.flush()
+
+
+def client_session(connection):
+    with TrayRegistration('client', connection.data) as tray:
+        if tray.thread is None:
+            stdio(connection, sys.stdin.buffer, sys.stdout.buffer, tray)
+            return
+        finished = threading.Event()
+        errors = []
+
+        def exchange():
+            # A host can keep either pipe open indefinitely. Private streams let
+            # the bridge exit without waiting for a blocked read/write at shutdown.
+            try:
+                with open(sys.stdin.fileno(), 'rb', closefd=False) as source, \
+                        open(sys.stdout.fileno(), 'wb', closefd=False) as sink:
+                    stdio(connection, source, sink, tray)
+            except BrokenPipeError:
+                pass
+            except Exception as exc:
+                errors.append(exc)
+            finally:
+                finished.set()
+
+        tray.attach(lambda: '', lambda _: None, finished.set, lambda: True)
+        threading.Thread(target=exchange, daemon=True, name='MCP stdio').start()
+        finished.wait()
+        if errors:
+            raise errors[0]
 
 
 def main():
@@ -151,6 +187,8 @@ def main():
     data=args.data_dir.resolve()
     connection=Connection(data,args.no_logon_resume)
     if args.print_config:
+        if not sys.stdout.isatty():
+            sys.stdout.reconfigure(encoding='utf-8')
         cmd=[*platform.command(),'--data-dir',str(data)]
         if args.no_logon_resume:
             cmd.append('--no-logon-resume')
@@ -176,7 +214,7 @@ def main():
     elif args.observer:
         print(connection.call('observer_open',{'open_browser':True})['url'])
     else:
-        stdio(connection)
+        client_session(connection)
     return 0
 
 if __name__=='__main__':

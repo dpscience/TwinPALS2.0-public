@@ -86,8 +86,14 @@ english.DeleteIncomplete=TwinPALS could not completely remove the following fold
 german.DeleteIncomplete=TwinPALS konnte den folgenden Ordner nicht vollständig entfernen. Prüfe, ob er noch von einem anderen Prozess verwendet wird.
 english.UnsafeDir=Choose an empty program folder, or the original folder of this installation. Portable copies and user data need a separate folder.
 german.UnsafeDir=Wähle einen leeren Programmordner oder den bisherigen Ordner dieser Installation. Portable Kopien und Nutzerdaten benötigen einen eigenen Ordner.
-english.Busy=Stop the desktop service, study service and workers through the tray or your MCP client before continuing.
-german.Busy=Beende vor dem Fortfahren den Desktopdienst, den Studiendienst und laufende Worker über das Tray oder den MCP-Client.
+english.Busy=Files in this installation are still in use. Close its desktop and study services and disconnect its MCP clients before continuing.
+german.Busy=Dateien dieser Installation werden noch verwendet. Beende ihre Desktop- und Studiendienste und trenne ihre MCP-Verbindungen.
+english.StopToUninstall=Close TwinPALS processes to continue?
+german.StopToUninstall=TwinPALS-Prozesse zum Fortfahren beenden?
+english.StopInfo=Open MCP connections will disconnect and active work in this installation will stop. Unfinished MCP study steps can resume the next time the study service starts.
+german.StopInfo=Offene MCP-Verbindungen werden getrennt und laufende Arbeiten dieser Installation gestoppt. Unfertige MCP-Studienschritte können beim nächsten Start des Studiendiensts fortgesetzt werden.
+english.StopAndContinue=Close processes and continue
+german.StopAndContinue=Prozesse beenden und fortfahren
 english.NetRequired=The tray needs Microsoft .NET Framework 4.x. Install the Microsoft runtime and run Setup again.
 german.NetRequired=Das Tray benötigt Microsoft .NET Framework 4.x. Installiere die Microsoft-Laufzeit und starte das Setup erneut.
 english.NetConsent=The tray needs Microsoft .NET Framework. Download the Microsoft .NET Framework 4.8 installer and open it now? Windows may request administrator approval.
@@ -312,10 +318,28 @@ begin
 end;
 
 function InitializeUninstall(): Boolean;
-var Choice: Integer; Dir, Listed: String;
+var Choice, I: Integer; Dir, Listed: String;
 begin
-  Result := not ServicesBusy();
-  if not Result then begin SuppressibleMsgBox(CustomMessage('Busy'), mbError, MB_OK, IDOK); exit; end;
+  Result := False;
+  if ServicesBusy() then begin
+    if UninstallSilent then begin Log(CustomMessage('Busy')); exit; end;
+    Choice := TaskDialogMsgBox(CustomMessage('StopToUninstall'), CustomMessage('StopInfo'),
+      mbConfirmation, MB_OKCANCEL, [CustomMessage('StopAndContinue')], 0);
+    if Choice <> IDOK then exit;
+  end;
+  { Held through removal. Each process observes only its own installation. }
+  CreateMutex('Local\TwinPALS.Uninstall.' + Lowercase(GetSHA256OfString(Utf8Encode(Uppercase(ExpandConstant('{app}'))))));
+  while ServicesBusy() do begin
+    for I := 1 to 100 do begin
+      Sleep(100);
+      if not ServicesBusy() then break;
+    end;
+    if ServicesBusy() then begin
+      if UninstallSilent then exit;
+      if MsgBox(CustomMessage('Busy'), mbError, MB_RETRYCANCEL) <> IDRETRY then exit;
+    end;
+  end;
+  Result := True;
   if UninstallSilent then exit;
   Choice := TaskDialogMsgBox(CustomMessage('ChooseRetention'), CustomMessage('RetentionInfo'),
     mbConfirmation, MB_YESNOCANCEL, [CustomMessage('KeepData'), CustomMessage('SelectData')], 0);

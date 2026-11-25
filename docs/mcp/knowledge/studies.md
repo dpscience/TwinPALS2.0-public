@@ -4,7 +4,7 @@ Start with a measurable objective, constraints, isotope and acquisition gate. Re
 
 Use study_submit with a stable request_id. Repeating the identical request reuses the study. Reusing the ID with a different specification is rejected. Independent steps can run concurrently within the study's max_parallel and cpu_budget and the coordinator's total CPU budget. An input_from dependency waits for its upstream result. Reuse transport inputs for a digitizer comparison and waveform inputs for an analysis-only comparison when applicable.
 
-The agent uses local stdio. The Windows tray displays the observer's loopback IP and assigned HTTP port. Use Open study observer in the tray or observer_open through MCP to obtain authorized access to the browser view.
+The agent uses local stdio. On Windows, each open adapter has an MCP connection row in the shared tray. It can stay connected after the study service stops. Disconnect MCP client closes the selected adapter. When the coordinator is running, its separate row shows the observer's loopback IP and assigned HTTP port. Use Open study observer in the tray or observer_open through MCP to obtain authorized access to the browser view.
 
 Closing the client or read-only observer leaves the coordinator running. On service recovery, unfinished steps replay from saved inputs and seeds in a new attempt. Receipt-committed results can be reused. Cancellation is recorded; dependent steps can be blocked. Use study_status to distinguish completed, partial, failed, blocked, cancelled and pending work.
 
