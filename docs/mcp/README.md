@@ -1,8 +1,10 @@
 # TwinPALS study server
 
-TwinPALS-MCP.exe and the TwinPALS 2.0 study observer use the same 2.0.1 engines as the application. Extract the entire portable folder to a writable local drive. Keep both executables beside the shared _internal, .runtime, frontend, legal and seed directories.
+TwinPALS-MCP.exe and the TwinPALS 2.0 study observer use the same 2.0.2 engines as the application. Extract the entire portable folder to a writable local drive. Keep both executables beside the shared _internal, .runtime, frontend, legal and seed directories.
 
 ## Connect a client
+
+For a first connection, follow the [illustrated TwinPALS example](../../README.md#connect-twinpals-to-codex) or the [setup instructions for all five clients](CLIENTS.md). Each guide ends with a request that checks which local study workspace the agent can see.
 
 With the Windows installer, open the installed program folder instead. The default is `%LOCALAPPDATA%\Programs\TwinPALS 2.0`. The generated configuration uses the installed workspace under `%LOCALAPPDATA%\TwinPALS\Data`; a portable copy uses its adjacent `data` directory. Stop the coordinator before updating. Reinstalling restores access to studies from the same workspace.
 
@@ -32,7 +34,11 @@ Call `knowledge_read` with `{"topic":"overview"}` for the module map. Search wit
 
 Use the recorded profile and run receipt for experiment-specific claims. The source metadata reports the public repository and exact official release URL once available. Unpublished builds can have an empty release field. The tagged source links in each chapter refer to the implementation for that published version.
 
-The Windows tray shows the local coordinator after the first tool connects to it. The **Observer** address shows the loopback IP and the HTTP port assigned for this session. The agent communicates over stdio. Choose **Open study observer** to open the authorized browser view. Windows can also show an observer shortcut when a study first starts or a step fails. Closing the observer or disconnecting the assistant leaves local work running. **Stop MCP service** requests confirmation while steps are active or queued. Unfinished attempts replay from their saved inputs on restart. The stop commands for both services appear at the bottom of the tray menu.
+The Windows tray shows one **MCP connection** for each open client, including an idle client waiting on stdio. After the handshake, the row shows the name the client supplied. **Disconnect MCP client** closes that connection. The client can reconnect later.
+
+The **MCP study service** appears when a tool needs the coordinator. Its **Observer** address gives the loopback IP and assigned HTTP port. **Open study observer** opens the authorized browser view. Closing the observer or disconnecting a client leaves studies running. **Stop MCP service** requests confirmation while steps are active or queued. Unfinished attempts replay from their saved inputs on restart.
+
+During interactive Windows uninstallation, **Close processes and continue** disconnects clients and stops services belonging to the installation being removed. Silent uninstallation requires these processes to have exited first. Data retention is a separate choice.
 
 1. Use profile_get to inspect each module's saved settings and validation schema. Use catalogue_list and catalogue_get for physical properties, curves, units and references. stream_list and stream_inspect discover existing input files.
 2. Submit a study using study_submit. Supply a stable request_id and a name. Each step has a key, module, optional complete profile and individual JSON Pointer changes. The source may be Na-22 or Co-60. A later step can reuse an earlier step's output through input_from. Multiple variants can share the same M1 or M2 input files.

@@ -32,6 +32,22 @@ def helper_path():
     return Path(__file__).resolve().parents[1]/'release/_internal/TwinPALS.Tray.exe'
 
 
+def mutex_exists(name):
+    from ctypes import wintypes as w
+    kernel = ctypes.windll.kernel32
+    kernel.OpenMutexW.restype = w.HANDLE
+    handle = kernel.OpenMutexW(0x100000, False, name)
+    if handle:
+        kernel.CloseHandle(w.HANDLE(handle))
+    return bool(handle)
+
+
+def uninstall_mutex():
+    if os.name == 'nt' and getattr(sys, 'frozen', False):
+        folder = str(Path(sys.executable).parent).upper().encode('utf-8')
+        return 'Local\\TwinPALS.Uninstall.' + hashlib.sha256(folder).hexdigest()
+
+
 def process_birth(pid):
     from ctypes import wintypes as w
     kernel = ctypes.WinDLL('kernel32', use_last_error=True)
@@ -108,6 +124,8 @@ class TrayRegistration:
         self.phase = 'Starting'
         self.notice = None
         self.open_pending = False
+        self.maintenance = uninstall_mutex()
+        self.client = ''
 
     def __enter__(self):
         if self.base and self.helper.is_file():
@@ -115,10 +133,14 @@ class TrayRegistration:
                 self.base.mkdir(parents=True, exist_ok=True)
                 self.birth = process_birth(os.getpid())
                 write_json(self.base/(self.key+'.json'), self._state(''))
-                self.thread = threading.Thread(target=self._run, daemon=True, name='TwinPALS tray')
-                self.thread.start()
             except OSError:
+                self.base = None
                 logging.exception('Windows notification area unavailable')
+        else:
+            self.base = None
+        if self.base or self.maintenance:
+            self.thread = threading.Thread(target=self._run, daemon=True, name='TwinPALS tray')
+            self.thread.start()
         return self
 
     def attach(self, activity, open_ui, stop, is_ready):
@@ -129,12 +151,14 @@ class TrayRegistration:
 
     def _state(self, activity):
         return dict(role=self.role, pid=os.getpid(), birth=self.birth, data=str(self.data),
-                    exe=sys.executable, port=self.port, phase=self.phase, activity=activity, notice=self.notice)
+                    exe=sys.executable, port=self.port, phase=self.phase, activity=activity, notice=self.notice,
+                    client=self.client)
 
     def __exit__(self, *_):
         self.stopped.set()
         if self.thread:
             self.thread.join(timeout=2)
+        if self.base:
             self._remove()
 
     def _remove(self):
@@ -146,13 +170,8 @@ class TrayRegistration:
 
     def _ensure_host(self):
         # Session-local kernel object. The helper also arbitrates simultaneous launches.
-        from ctypes import wintypes as w
-        kernel = ctypes.windll.kernel32
-        kernel.OpenMutexW.restype = w.HANDLE
         namespace = hashlib.sha256(str(self.base).upper().encode()).hexdigest()[:16].upper()
-        handle = kernel.OpenMutexW(0x100000, False, 'Local\\TwinPALS.Tray.' + self.base.name + '.' + namespace)
-        if handle:
-            kernel.CloseHandle(w.HANDLE(handle))
+        if mutex_exists('Local\\TwinPALS.Tray.' + self.base.name + '.' + namespace):
             return
         args = [str(self.helper)]
         opts = dict(stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
@@ -165,10 +184,20 @@ class TrayRegistration:
     def _run(self):
         previous = None
         next_host = 0
-        path = self.base/(self.key+'.json')
+        path = self.base/(self.key+'.json') if self.base else None
         while not self.stopped.is_set():
             try:
                 ready = self.ready and self.ready[3]()
+                if self.maintenance and mutex_exists(self.maintenance):
+                    if ready and self.phase != 'Stopping':
+                        self.phase = 'Stopping'
+                        self.ready[2]()
+                    if self.stopped.wait(.15):
+                        break
+                    continue
+                if path is None:
+                    self.stopped.wait(.55)
+                    continue
                 if ready and self.phase == 'Starting':
                     self.phase = 'Ready'
                 activity = self.ready[0]() if ready else ''

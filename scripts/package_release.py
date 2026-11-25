@@ -252,7 +252,8 @@ def public_materials(destination: Path) -> None:
         if name == "README.md" and (ROOT / "maintenance/public/README.md").is_file():
             source = ROOT / "maintenance/public/README.md"
         shutil.copy2(source, destination / name)
-    for name in ("STREAM_FORMAT.md", "MODULE2_STREAM.md", "PORTABLE_RELEASE.md", "BUILD.md", "mcp/README.md"):
+    for name in ("STREAM_FORMAT.md", "MODULE2_STREAM.md", "PORTABLE_RELEASE.md", "BUILD.md",
+                 "COMPONENTS.md", "mcp/README.md", "mcp/CLIENTS.md"):
         target = destination / "docs" / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / "docs" / name, target)

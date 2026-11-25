@@ -114,7 +114,7 @@ internal class TrayControls {
             Save(menu,Path.Combine(output,name));
             foreach (var action in menu.Items.OfType<ToolStripMenuItem>().Where(i=>i.Enabled)) action.PerformClick();
             var ready=entries.Where(r=>r.phase=="Ready").ToArray();
-            var expected=ready.Select(r=>r.role+".open").Concat(new[]{"paths"}).Concat(ready.Select(r=>r.role+".stop"));
+            var expected=ready.Where(r=>!r.IsClient).Select(r=>r.role+".open").Concat(new[]{"paths"}).Concat(ready.Select(r=>r.role+".stop"));
             if (!actions.SequenceEqual(expected)) throw new InvalidOperationException("Unexpected menu command order.");
         }
     }
@@ -156,7 +156,7 @@ internal class TrayControls {
             }
             return 0;
         }
-        if(entries.Count!=2 || !entries[0].Desktop || entries[1].Desktop) return 1;
+        if(entries.Count<2 || !entries[0].Desktop || entries[1].role!="mcp") return 1;
         CheckMenu(entries,output,"tray-menu.png");
         CheckMenu(entries.Take(1).ToList(),output,"tray-desktop.png");
         CheckMenu(entries.Skip(1).ToList(),output,"tray-mcp.png");
@@ -172,7 +172,7 @@ internal class TrayControls {
             form.ShowInTaskbar=false; form.Show(); Application.DoEvents();
             var cards=body.Controls.OfType<TableLayoutPanel>().ToArray();
             for(int i=0;i<entries.Count;i++) {
-                if(!cards[i].Controls.OfType<TextBox>().Any(box=>box.ReadOnly && box.Text==entries[i].Address))
+                if(!entries[i].IsClient && !cards[i].Controls.OfType<TextBox>().Any(box=>box.ReadOnly && box.Text==entries[i].Address))
                     throw new InvalidOperationException("Missing address in Status and paths.");
                 if(!entries[i].Desktop && !cards[i].Controls.OfType<TextBox>().Any(box=>box.Text=="stdio"))
                     throw new InvalidOperationException("Missing MCP transport in Status and paths.");

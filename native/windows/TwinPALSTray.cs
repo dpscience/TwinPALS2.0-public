@@ -31,9 +31,11 @@ internal class TrayEntry {
     public string data { get; set; }
     public string exe { get; set; }
     public string activity { get; set; }
+    public string client { get; set; }
     public TrayNotice notice { get; set; }
     public bool Desktop { get { return role == "desktop"; } }
-    public string Name { get { return Desktop ? "Desktop" : "MCP study service"; } }
+    public bool IsClient { get { return role == "client"; } }
+    public string Name { get { return Desktop ? "Desktop" : IsClient ? "MCP connection" : "MCP study service"; } }
     public string Status { get { return String.IsNullOrEmpty(activity) ? phase : activity; } }
     public string Address { get { return port > 0 && port <= 65535 ? "127.0.0.1:" + port : "Address unavailable"; } }
 }
@@ -49,7 +51,8 @@ internal sealed class ServiceHeading : ToolStripLabel {
     internal ServiceHeading(TrayEntry entry, bool showPid, int unit, Font bold) {
         service = entry.Name + (showPid ? " (PID " + entry.pid + ")" : "");
         state = entry.Status;
-        address = (entry.Desktop ? "Desktop UI" : "Observer") + "  ·  " + entry.Address;
+        address = entry.IsClient ? (String.IsNullOrWhiteSpace(entry.client) ? "MCP client" : entry.client) + "  ·  stdio" :
+            (entry.Desktop ? "Desktop UI" : "Observer") + "  ·  " + entry.Address;
         ready = entry.phase == "Ready";
         busy = !String.IsNullOrEmpty(entry.activity);
         inset = unit;
@@ -179,7 +182,7 @@ internal sealed class TrayContext : ApplicationContext {
                     if(stream.Length>65536) continue;
                     entry=new JavaScriptSerializer().Deserialize<TrayEntry>(reader.ReadToEnd());
                 }
-                if(entry==null || (entry.role!="desktop" && entry.role!="mcp") || String.IsNullOrEmpty(entry.data)) continue;
+                if(entry==null || (entry.role!="desktop" && entry.role!="mcp" && !entry.IsClient) || String.IsNullOrEmpty(entry.data)) continue;
                 bool live=false;
                 try {
                     using(Process p=Process.GetProcessById(entry.pid))
@@ -194,12 +197,15 @@ internal sealed class TrayContext : ApplicationContext {
             } catch(IOException) {} catch(UnauthorizedAccessException) {} catch(ArgumentException) {}
               catch(InvalidOperationException) {} catch(System.ComponentModel.Win32Exception) {}
         }
-        return result.OrderBy(r=>r.Desktop?0:1).ThenBy(r=>r.data).ToList();
+        return result.OrderBy(r=>r.Desktop?0:r.IsClient?2:1).ThenBy(r=>r.data).ThenBy(r=>r.pid).ToList();
     }
 
     internal static readonly int Session=Process.GetCurrentProcess().SessionId;
 
     void RefreshEntries() {
+        // Another installation's registrations can share this icon. Its own
+        // helper takes over when the installation hosting this copy is removed.
+        if (Uninstalling()) { ExitThread(); return; }
         try { entries=ReadEntries(directory); } catch(IOException) { return; } catch(UnauthorizedAccessException) { return; }
         if(entries.Count==0) {
             icon.Visible=false;
@@ -246,14 +252,14 @@ internal sealed class TrayContext : ApplicationContext {
                 if (target.Items.Count>0) target.Items.Add(new ToolStripSeparator());
                 target.Items.Add(new ServiceHeading(entry, list.Count(other=>other.role==entry.role)>1, inset, MenuHeading));
                 bool enabled=entry.phase=="Ready";
-                Command(target, entry.Desktop ? "Open desktop in browser" : "Open study observer",
+                if (!entry.IsClient) Command(target, entry.Desktop ? "Open desktop in browser" : "Open study observer",
                         (s,e)=>send(entry,"open",""), inset, enabled);
             }
             target.Items.Add(new ToolStripSeparator());
             Command(target,"Status and paths…",(s,e)=>status(),inset);
             target.Items.Add(new ToolStripSeparator());
             foreach (TrayEntry entry in list) {
-                string label = entry.Desktop ? "Stop desktop service" : "Stop MCP service";
+                string label = entry.Desktop ? "Stop desktop service" : entry.IsClient ? "Disconnect MCP client" : "Stop MCP service";
                 if (list.Count(other=>other.role==entry.role)>1) label += " (PID " + entry.pid + ")";
                 Command(target, label + "…", (s,e)=>send(entry,"stop",""), inset, entry.phase=="Ready");
             }
@@ -291,8 +297,10 @@ internal sealed class TrayContext : ApplicationContext {
             var title=new Label { Text=r.Name+"   ·   "+r.Status, ForeColor=Teal, AutoSize=true,
                 Font=Heading,Margin=new Padding(0,0,0,10) };
             card.Controls.Add(title,0,0); card.SetColumnSpan(title,2);
-            string[] labels=r.Desktop ? new[]{"Desktop UI","Executable","Database"} : new[]{"Observer","MCP transport","Executable","Database"};
-            string[] values=r.Desktop ? new[]{r.Address,r.exe,Path.Combine(r.data,"catalogue.tpdb")} :
+            string[] labels=r.IsClient ? new[]{"Client","Transport","Process ID","Executable","Workspace"} :
+                r.Desktop ? new[]{"Desktop UI","Executable","Database"} : new[]{"Observer","MCP transport","Executable","Database"};
+            string[] values=r.IsClient ? new[]{String.IsNullOrEmpty(r.client) ? "Awaiting client information" : r.client,
+                "stdio",r.pid.ToString(),r.exe,r.data} : r.Desktop ? new[]{r.Address,r.exe,Path.Combine(r.data,"catalogue.tpdb")} :
                 new[]{r.Address,"stdio",r.exe,Path.Combine(r.data,"catalogue.tpdb")};
             for(int i=0;i<labels.Length;i++) {
                 card.Controls.Add(new Label { Text=labels[i],ForeColor=Ink,AutoSize=true,Margin=new Padding(0,4,16,4) },0,i+1);
@@ -305,7 +313,7 @@ internal sealed class TrayContext : ApplicationContext {
     }
 
     void UpdateDetails() {
-        string fingerprint=String.Join("\n",entries.Select(r=>r.key+"\t"+r.Status+"\t"+r.Address));
+        string fingerprint=String.Join("\n",entries.Select(r=>r.key+"\t"+r.Status+"\t"+r.Address+"\t"+r.client));
         if(fingerprint==detailsState) return;
         detailsState=fingerprint;
         details.SuspendLayout();
@@ -331,7 +339,7 @@ internal sealed class TrayContext : ApplicationContext {
 
     [STAThread] static void Main() {
         string basePath=Environment.GetEnvironmentVariable("LOCALAPPDATA");
-        if(String.IsNullOrEmpty(basePath)||Session==0) return;
+        if(String.IsNullOrEmpty(basePath)||Session==0||Uninstalling()) return;
         string directory=Path.Combine(basePath,"TwinPALS","Tray",Session.ToString());
         bool first;
         using(var mutex=new Mutex(true,@"Local\TwinPALS.Tray."+Session+"."+Namespace(directory),out first)) {
@@ -342,6 +350,17 @@ internal sealed class TrayContext : ApplicationContext {
             File.WriteAllText(pidFile,Process.GetCurrentProcess().Id.ToString(CultureInfo.InvariantCulture));
             try { using(var context=new TrayContext(directory)) Application.Run(context); }
             finally { File.Delete(pidFile); }
+        }
+    }
+
+    static bool Uninstalling() {
+        string folder=Directory.GetParent(Path.GetDirectoryName(Application.ExecutablePath)).FullName;
+        using(var sha=System.Security.Cryptography.SHA256.Create()) {
+            string hash=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(folder.ToUpperInvariant()))).Replace("-","").ToLowerInvariant();
+            Mutex guard;
+            if(!Mutex.TryOpenExisting(@"Local\TwinPALS.Uninstall."+hash,out guard)) return false;
+            guard.Dispose();
+            return true;
         }
     }
 
