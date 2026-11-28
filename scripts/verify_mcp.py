@@ -193,6 +193,7 @@ def main():
 
         tube_ref=cli.call('catalogue_list',category='pmt')[0]
         tube=cli.call('catalogue_get',id=tube_ref['id'])
+        assert cli.call('catalogue_factory_optics',id=tube_ref['id'])=={'available':False}
         tube.update(id='mcp-qa-photomultiplier',name='MCP verification tube')
         created=cli.call('catalogue_save',entry=tube)
         assert created['revision']==1
@@ -207,7 +208,8 @@ def main():
         spec=dict(request_id='portable-physics',name='Portable physics study',objective='Check provenance and acquisition',max_parallel=2,cpu_budget=2,steps=[
             dict(key='reference',module=1,changes=c1),dict(key='cascade',module=1,changes={'/source':'co60','/run/events':18000}),
             dict(key='acquire',module=2,input_from='reference',changes={'/waveform_pairs':8,'/activity_Bq':10000,'/acquisition/trigger':'either','/channels/0/threshold_mV':1,'/channels/1/threshold_mV':1},queries=[dict(name='features',path='/api/m2/analysis',body={'bins':40})]),
-            dict(key='lifetime',module=3,input_from='acquire')])
+            dict(key='lifetime',module=3,input_from='acquire'),
+            dict(key='alternate-cfd',module=3,input_from='acquire',changes={'/channels/0/cfd_percent':35,'/channels/1/cfd_percent':35})])
         study=cli.call('study_submit',**spec)
         study_id=study['id']
         interrupted_file=data/'studies'/study_id/study['runs'][1]['id']/'attempt-001/primary-1.tpstream.part'
@@ -253,7 +255,8 @@ def main():
         assert cli.call('study_status',study_id=study_id,manifest=True)==before
         jobs=cli.call('study_status',study_id=study_id)['runs']
         receipts=[cli.call('run_result',run_id=j['id']) for j in jobs]
-        a,b,pulse,life=receipts
+        a,b,pulse,life,alternate=receipts
+        assert alternate['inputs']==life['inputs'] and alternate['metrics']['total_processed']==8
         for output in (a['outputs'][0],pulse['outputs'][0]):
             location=Path(output['path'])
             inventory=cli.call('stream_list',directory=str(location.parent))

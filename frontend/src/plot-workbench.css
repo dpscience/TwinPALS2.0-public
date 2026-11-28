@@ -73,3 +73,20 @@
 .outcome-overlay .outcome-rows dd span,.analysis-outcomes .outcome-rows dd span{min-width:46px}
 .light-births summary .help,.detector-patterns summary .help{display:inline-flex;vertical-align:middle;margin-left:4px;color:#8096a6}
 input[aria-invalid=true]{border-color:#be6666}
+
+.plot-heading:has(.reflection-scope) { flex-wrap: wrap; }
+.plot-heading:has(.reflection-scope) .plot-tools { margin-left: auto; }
+.plot-heading h3:has(.reflection-scope) { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; }
+.plot-heading .reflection-scope { width: auto; max-width: 100%; min-height: 1.6rem; padding: .1rem .35rem; font: inherit; font-weight: 400; }
+
+.factory-optics-review { margin: 1rem; padding: .75rem 1rem; border: 1px solid #cbdde1; border-radius: .4rem; background: #f4f9f9; }
+.factory-optics-review h3 { margin: 0; }
+.factory-optics-review p { max-width: 70ch; margin: .45rem 0 .65rem; }
+
+.analysis-content.has-session > .analysis-scroll { container-type: inline-size; container-name: m1-plots; }
+@container m1-plots (max-width: 820px) {
+  .analysis-scroll > .analysis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: minmax(245px, 1fr); overflow-y: auto; align-content: start; }
+}
+@container m1-plots (max-width: 560px) {
+  .analysis-scroll > .analysis-grid { grid-template-columns: minmax(0, 1fr); }
+}

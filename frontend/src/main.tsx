@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import {ConfirmationProvider} from './Confirm';
 import './styles.css';
+import './pmtOptics.css';
 import './workbench.css';
 import './module2.css';
 import './plot-workbench.css';

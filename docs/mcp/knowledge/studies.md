@@ -12,3 +12,11 @@ For optimization, compare the reference and candidate on a common workload, then
 
 For a manuscript, retrieve run_result for each cited run. Record the run and attempt, status, profile hash, inputs, isotope, timing convention, units and analysis configuration. Save result tables and a methods section via the study tools. Cite the versioned software release when present, the scientific basis, and the actual component sources. The methods handbook describes the program. The run receipt supports a numerical result.
 
+
+## Reading the observer
+
+The selected step shows the submitted objective, its position in the study and its input step or stream. Follow keeps the same active run on screen during parallel work. Select another step to pin it. A study-specific observer link stays within that study.
+
+For Module 1, compare crystal interactions, events with a signal on either anode and events with signals on both anodes against the event count for each primary. New attempts show the deposited-energy distribution for positive deposits. A sampled trajectory illustrates one event. Module 2 offers pulse height, area and the B minus A peak-time difference. Module 3 shows the accepted fraction of all pairs read. Choose a direction to see the lifetime distribution and its own in-range and outside-range counts. Before and after filters are shown together when area or shape cuts are active. Compact lifetime previews retain bin edges and state the displayed bin width.
+
+When a step has saved named queries, Measurement opens its first saved query. Choose Module overview to inspect the standard distributions. The original query JSON is available even when its result has no chart representation. Study results compares inputs, differing run settings and committed counts among steps of the same module and operation. For lifetime steps, select a second run and a common result to overlay their counts. The plot requires a matching direction, time grid and selection. Choose the filter stage when both runs provide it. Open a saved report or study document there for conclusions such as an IRF fit. A partial import describes only its readable records. A pending or unsuccessful attempt has no committed result.

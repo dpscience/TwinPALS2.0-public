@@ -92,7 +92,7 @@ def histogram(snapshots, request, cancel=None, cache=None, index=None):
         low,high=chosen or bounds
         if not math.isfinite(low):low,high=0.,1.
         elif low==high:
-            half=.5 if metric in ('photon_count','reflections') else max(abs(low)*.01,.0005)
+            half=.5 if metric in ('photon_count','reflections','cathode_reflections') else max(abs(low)*.01,.0005)
             low,high=low-half,high+half
         edges=np.array([float(low+(high-low)*i/bins) for i in range(bins+1)])
         edgekey=(low,high,bins)

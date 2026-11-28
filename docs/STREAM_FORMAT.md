@@ -1,4 +1,4 @@
-# TwinPALS analog event stream 6
+# TwinPALS analog event stream 7
 
 Current development format only. Explicit little endian, no C++ ABI layout and
 no old-format adapter. Completed files end `.tpstream`; active/interrupted files
@@ -6,8 +6,8 @@ end `.tpstream.part`. Only complete CRC-verified event pairs are analysed.
 
 ## Header and framing
 
-The header is `TPSTRM06` (8 bytes), uint32 JSON length, then UTF-8 JSON (maximum
-64 MiB). It includes version 6, source role, run/stream IDs, the frozen M1 profile
+The header is `TPSTRM07` (8 bytes), uint32 JSON length, then UTF-8 JSON (maximum
+64 MiB). It includes version 7, source role, run/stream IDs, the frozen M1 profile
 (version 8), canonical settings SHA-256, runtime material names, detector front
 points/axes, `pmt_snapshot` and two immutable `analog_response` records. These
 contain order/tau, charge, gain, operating HV, polarity, effective load, voltage
@@ -43,7 +43,17 @@ Coordinates originate as float32 mm; their exact stored values are used on
 reload. They lie in the active surface, centred on the tube axis. The row count
 must equal the detector's QE count, and the mean raw arrival must agree with
 its optical mean. Onsets/positions stay in corresponding PE order. The current
-is the signed sum of unit-area Erlang kernels times eG; voltage is current times
+is the signed sum of unit-area gamma kernels, each scaled by its electron's anode charge.
+Integer orders retain the Erlang snapshot identifiers. Fractional orders use
+`gamma-fixed-charge-v1` or `gamma-truncated-gaussian-charge-v1`. The stored
+order and time constant determine the kernel during replay. Both channels carry
+their own response and retain the existing photoelectron frame layout.
+The original `erlang-fixed-charge-v1` model assigns eG to every kernel. The
+`erlang-truncated-gaussian-charge-v1` snapshot stores the relative charge spread
+(100 × standard deviation / mean), the cutoff and scale of the unit-mean positive
+Gaussian, and the detector/role seed. Charge draws use the event ID and stable
+chronological onset rank, so indexed and sequential reads recover the same pulse.
+Both models use identical PE frames. Voltage is current times
 the stored effective resistive load. This specifies the complete infinite-tail
 analog pulse without storing digitizer samples or truncating a physical tail.
 Numerical plotting/acquisition support uses a declared 1e-12 tail-charge bound.
@@ -78,7 +88,7 @@ the browser. M2 copies referenced transport records into its own stream for M3.
 
 ## Compact event summary
 
-`EVNT` is 324 bytes, without padding:
+`EVNT` is 340 bytes, without padding:
 
 | Field | Encoding |
 | --- | --- |
@@ -87,15 +97,15 @@ the browser. M2 copies referenced transport records into its own stream for M3.
 | Source position | 3 float64, mm |
 | Primary directions | 9 float64, three xyz vectors |
 | Primary emission offsets | 3 float64, all zero ns |
-| Detector A | 96 bytes |
-| Detector B | 96 bytes |
+| Detector A | 104 bytes |
+| Detector B | 104 bytes |
 
-Prefix struct `<QI15d` (132 bytes); detector `<IQ7dQI2d` (96 bytes):
+Prefix struct `<QI15d` (132 bytes); detector `<IQ7dQI2dQ` (104 bytes):
 flags:uint32, QE count:uint64, energy:float64 keV, optical mean:float64 ns,
 first gamma interaction xyz:3float64 mm, interaction time:float64 ns,
 mean accepted optical track length:float64 mm, reflection count:uint64,
 gamma reentries:uint32, analog minimum/maximum:2float64 mV (including baseline
-zero). The absolute pulse height is max(-minimum, maximum).
+zero), active photocathode reflection count:uint64. The absolute pulse height is max(-minimum, maximum).
 
 Flags: bit 0 mean-valid; bit 1 interaction-valid; bit 2 deposited energy >= the
 saved `minimum_energy_keV`; bit 3 non-optical entry into this crystal; bits 4/5
@@ -111,7 +121,7 @@ their validity bit unset, never NaN. The optical mean includes gamma flight,
 scintillation timing and optical transport, **before PMT transit/TTS**.
 Interaction depth projects the earliest gamma-interaction position from the
 front plane along the crystal axis; it is not a gamma path length. Reflections
-cover tracked optical photons of the primary ancestry, not only accepted ones.
+cover tracked optical photons of the primary ancestry, not only accepted ones. The crystal/window counter uses the starting volume of each reflected step. The photocathode counter uses the active film boundary, including incidence from a vacuum gap. A reflection from the window at the film contributes to both counters. Each histogram uses one counter per event.
 
 Both detector records are always present, including scattering between them or
 zero response in either. One primary event is counted once: any interaction or
@@ -151,7 +161,7 @@ run. Windows shared file handles permit the final rename while analysis reads.
 
 Live analysis receives packed summaries plus local-hit batches directly from
 the worker. It never tails the output for plotting. Summary RAM is approximately
-324 MB per million events. Hit positions use bounded RAM and a private spill
+340 MB per million events. Hit positions use bounded RAM and a private spill
 file per detector/role. Cached 2D histograms update from new hits only; a bin
 change reuses exact positions. Imported files are scanned once, rebuilding the
 same summary/hit cache. M2 memory-maps APLS offsets for pulse superposition.

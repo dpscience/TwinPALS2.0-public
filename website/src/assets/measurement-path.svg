@@ -1,0 +1,359 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 461" role="img" aria-labelledby="path-title path-desc">
+  <title id="path-title">From a source–sample sandwich to the lifetime spectrum</title>
+  <desc id="path-desc">Two gamma rays leave the sandwich and deposit energy inside opposing scintillators. Light crosses the optical coupling and entrance window. At the photocathode an absorbed photon can release a photoelectron toward the first dynode. Separate coaxial cables carry the anode pulses to the digitizer. The laptop accumulates accepted start–stop time differences in the lifetime spectrum.</desc>
+  <defs>
+    <radialGradient id="tp-field"><stop stop-color="#193b40"/><stop offset=".77" stop-color="#10292f"/><stop offset="1" stop-color="#0e242a"/></radialGradient>
+    <linearGradient id="tp-glass" x1="0" y1="0" x2=".2" y2="1">
+      <stop stop-color="#9ababa" stop-opacity=".66"/><stop offset=".17" stop-color="#29494c" stop-opacity=".85"/>
+      <stop offset=".49" stop-color="#102a31" stop-opacity=".8"/><stop offset=".82" stop-color="#406263" stop-opacity=".7"/><stop offset="1" stop-color="#829c98" stop-opacity=".41"/>
+    </linearGradient>
+    <linearGradient id="tp-crystal" x2=".25" y2="1">
+      <stop stop-color="#c8ffef" stop-opacity=".65"/><stop offset=".23" stop-color="#53c4b4" stop-opacity=".46"/>
+      <stop offset=".55" stop-color="#174e53" stop-opacity=".86"/><stop offset="1" stop-color="#72d2c4" stop-opacity=".42"/>
+    </linearGradient>
+    <linearGradient id="tp-sample" x2="1" y2=".7"><stop stop-color="#b6cac4"/><stop offset=".45" stop-color="#627d7c"/><stop offset="1" stop-color="#314c52"/></linearGradient>
+    <linearGradient id="tp-foil" x2="1" y2="1"><stop stop-color="#ffe1a2"/><stop offset=".45" stop-color="#b5803f"/><stop offset="1" stop-color="#6d4e34"/></linearGradient>
+    <linearGradient id="tp-case" x2="0" y2="1"><stop stop-color="#304c51"/><stop offset="1" stop-color="#142d34"/></linearGradient>
+    <radialGradient id="tp-glow"><stop stop-color="#ffe6a3" stop-opacity=".65"/><stop offset=".25" stop-color="#ffc96a" stop-opacity=".32"/><stop offset="1" stop-color="#ffc96a" stop-opacity="0"/></radialGradient>
+    <linearGradient id="tp-flight-ink"><stop stop-color="#ffb652" stop-opacity="0"/><stop offset=".65" stop-color="#ffc76a"/><stop offset="1" stop-color="#fff7d4"/></linearGradient>
+    <radialGradient id="tp-impact-ink"><stop stop-color="#fffde2"/><stop offset=".2" stop-color="#c4ffe5" stop-opacity=".95"/><stop offset=".58" stop-color="#77efd1" stop-opacity=".48"/><stop offset="1" stop-color="#60e2d0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="pc-glass" x1="0" x2="1" y2=".18"><stop stop-color="#4b878d"/><stop offset=".14" stop-color="#8cb8b6"/><stop offset=".24" stop-color="#517f84"/><stop offset=".72" stop-color="#294953"/><stop offset="1" stop-color="#619490"/></linearGradient>
+    <linearGradient id="pc-wall" x2=".05" y2="1"><stop stop-color="#aac2b7"/><stop offset=".18" stop-color="#536d70"/><stop offset=".6" stop-color="#273e47"/><stop offset=".95" stop-color="#74918b"/></linearGradient>
+    <linearGradient id="pc-vacuum" x2="1" y2=".2"><stop stop-color="#203c40"/><stop offset=".55" stop-color="#132c33"/><stop offset="1" stop-color="#14292f"/></linearGradient>
+    <linearGradient id="pc-dynode" x2=".6" y2=".9"><stop stop-color="#d7d7c6"/><stop offset=".26" stop-color="#95a9a1"/><stop offset=".52" stop-color="#385259"/><stop offset=".77" stop-color="#637c79"/><stop offset="1" stop-color="#b9c6b6"/></linearGradient>
+    <linearGradient id="pc-ray"><stop stop-color="#80e7d5" stop-opacity="0"/><stop offset=".35" stop-color="#80e7d5" stop-opacity=".56"/><stop offset="1" stop-color="#c4ffe9" stop-opacity=".9"/></linearGradient>
+    <pattern id="pc-hatch" width="6" height="6" patternUnits="userSpaceOnUse"><path d="m-1 1 2-2m-1 7 6-6m-1 7 2-2" fill="none" stroke="#cae1d5" stroke-width=".65" opacity=".38"/></pattern>
+    <g id="tp-gamma-packet">
+      <path d="M-32 0Q-15-1.1-4-2.4Q3-2.8 4 0Q3 2.8-4 2.4Q-15 1.1-32 0Z" fill="url(#tp-flight-ink)"/>
+      <ellipse rx="3.4" ry="1.9" fill="#fffbe4"/>
+    </g>
+    <g id="tp-impact-flash">
+      <circle r="24" fill="url(#tp-impact-ink)"/>
+      <path d="m-13-6 10 4-2-11 5 10 7-8-5 10 12 3-12 1 4 10-7-9-7 7 5-9Z" fill="#e8fff0"/>
+    </g>
+    <marker id="tp-ray-tip" viewBox="0 0 7 6" refX="6" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 .5 6.5 3 0 5.5 1.7 3Z" fill="#ffcf75"/></marker>
+    <g id="tp-sample-slice" stroke-linejoin="round" stroke-width="1.25">
+      <path d="M-8 -27 4 -38 11 26 -2 38Z" fill="url(#tp-sample)" stroke="#bbd0c7"/>
+      <path d="M4 -38 9 -36 16 28 11 26Z" fill="#667e7c" stroke="#9cb2ac"/>
+      <path d="m-2 38 5 1 13-11-5-2Z" fill="#364f53" stroke="#839c97"/>
+      <path d="m-4 -18 6 -5m-4 11 6 -5m-3 11 6 -5" fill="none" stroke="#92a8a2" stroke-width=".65"/>
+    </g>
+    <g id="tp-foil-slice" stroke-linejoin="round">
+      <path d="M-7 -24 3 -32 9 24 -1 32Z" fill="url(#tp-foil)" fill-opacity=".89" stroke="#f4c987" stroke-width="1.15"/>
+      <path d="m-5 -19 6 -5 5 46" fill="none" stroke="#ffe4b5" stroke-width=".8" opacity=".65"/>
+    </g>
+    <g id="tp-scintillator" stroke-linejoin="round">
+      <path d="M102 -21 150 -35 A10 35 0 0 1 150 35 L102 21Z" fill="url(#tp-crystal)" stroke="#a2e4d4" stroke-width="1.6"/>
+      <ellipse cx="150" rx="10" ry="35" fill="#4e9f99" fill-opacity=".23" stroke="#88d6ca" stroke-width="1.3"/>
+      <path d="m107 -18 39 -12m-33 46 37 12" fill="none" stroke="#d9fff2" stroke-opacity=".55"/>
+      <ellipse cx="102" rx="7" ry="21" fill="#346665" stroke="#a8e6d6" stroke-width="1.4"/>
+      <path d="m114 -2 9 -11 7 26 11 -19 10 8m-36 -3 15 -15 11 10 10 -2" stroke="#96f3d9" stroke-width="1.25" fill="none" opacity=".88"/>
+      <circle cx="114" cy="-2" r="2.7" fill="#e6fff0"/>
+    </g>
+    <g id="tp-couplant">
+      <path d="M174 -34h4a9 34 0 0 1 0 68h-4Z" fill="#b5e2d7" fill-opacity=".62" stroke="#d6f6e8"/>
+      <ellipse cx="174" rx="9" ry="34" fill="#9acdc6" fill-opacity=".38" stroke="#d7f5e8" stroke-width="1.5"/>
+      <path d="M173 -29q-7 6 -6 29" fill="none" stroke="#edfff4" stroke-width="1.5"/>
+    </g>
+    <g id="tp-multiplier" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M197 -36h14c18 0 27 14 44 15h45c5 0 8 6 8 21s-3 21-8 21h-45c-17 1-26 15-44 15h-14Z"
+        fill="url(#tp-glass)" stroke="currentColor" stroke-width="1.65"/>
+      <ellipse cx="197" rx="10" ry="36" fill="#24494d" stroke="currentColor" stroke-width="1.7"/>
+      <path d="M197 -30q12 11 0 60" stroke="#efcc87" stroke-width="2.4" fill="none"/>
+      <path d="M203 -33h8c18 1 27 15 45 15h40m-91 48h10c15-2 24-14 39-15h39" fill="none" stroke="#d6ece0" stroke-opacity=".52"/>
+      <g fill="#65807b" stroke="#9fb5a8" stroke-width="1.25">
+        <path d="m214 -17 10 4 4 6-4 1-4-5-7-2Z"/><path d="m231 10 5 4 7-5-2-3-5 3-3-3Z"/>
+        <path d="m246 -11 6-3 6 8-3 1-4-4-4 2Z"/><path d="m260 9 6 4 6-6-2-2-4 3-4-2Z"/>
+        <path d="m274 -10 6-3 5 6-2 2-4-4-4 2Z"/>
+      </g>
+      <path d="M202 0 219 -10 235 9 251 -9 265 8 279 -8 293 0" fill="none" stroke="#e8d4a3" stroke-width="1.05" stroke-dasharray="2.5 3"/>
+      <path d="M293 -10v20m4 -17V7" stroke="#c8c5a4" stroke-width="1.3"/>
+      <path d="M300 -22h12a6 22 0 0 1 0 44h-12Z" fill="#2d464b" stroke="currentColor" stroke-width="1.45"/>
+      <ellipse cx="312" rx="6" ry="22" fill="#243a41" stroke="currentColor"/>
+      <path d="m303 -18 0 36m4 -37 0 38" stroke="currentColor" opacity=".5"/>
+      <path d="M313 -6h11q4 0 4 6t-4 6h-11Z" fill="#7b8b83" stroke="#c5cfc0"/>
+      <ellipse cx="324" rx="3" ry="6" fill="#465b5b" stroke="#b8c8ba"/>
+    </g>
+
+    <linearGradient id="tp-metal" x2=".22" y2="1"><stop stop-color="#bacbc6"/><stop offset=".28" stop-color="#839d9b"/><stop offset=".63" stop-color="#516b72"/><stop offset="1" stop-color="#304950"/></linearGradient>
+    <linearGradient id="tp-top" x2=".8" y2=".9"><stop stop-color="#7d9495"/><stop offset=".42" stop-color="#465f66"/><stop offset="1" stop-color="#283e46"/></linearGradient>
+    <linearGradient id="tp-face" x2=".16" y2="1"><stop stop-color="#344e57"/><stop offset=".43" stop-color="#233b43"/><stop offset="1" stop-color="#182d34"/></linearGradient>
+    <linearGradient id="tp-screen" x2=".8" y2="1"><stop stop-color="#1e3d44"/><stop offset="1" stop-color="#10272d"/></linearGradient>
+    <linearGradient id="tp-bin-ink" x2="0" y2="1"><stop stop-color="#a6f2d9"/><stop offset="1" stop-color="#418d8c"/></linearGradient>
+    <radialGradient id="tp-floor"><stop stop-color="#020b0e" stop-opacity=".65"/><stop offset="1" stop-color="#061719" stop-opacity="0"/></radialGradient>
+    <pattern id="tp-vents" width="6" height="9" patternUnits="userSpaceOnUse"><rect x="1" y="1" width="2.5" height="7" rx="1" fill="#142b31"/></pattern>
+    <pattern id="tp-keys" width="12" height="4" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)"><rect x=".5" y=".5" width="10.2" height="2.7" rx=".7" fill="#172e35" stroke="#536769" stroke-width=".35"/></pattern>
+    <!-- These centerlines serve both the cable jackets and travelling signal highlights. -->
+    <path id="tp-wire-a" pathLength="100" d="M109 166H72Q55 166 55 183V219Q55 237 73 237H217Q234 237 234 254V296"/>
+    <path id="tp-wire-b" pathLength="100" d="M791 166H828Q845 166 845 183V228Q845 247 826 247H360Q342 247 342 265V296"/>
+    <path id="tp-link" pathLength="100" d="M427 364H471Q480 364 480 373V380Q480 389 489 389H531"/>
+    <g id="tp-coax-plug" stroke-linejoin="round">
+      <ellipse cy="15" rx="12" ry="4.2" fill="#172c33" stroke="#91a39e"/>
+      <path d="M-8 8 -5 5H5L8 8V14Q0 19 -8 14Z" fill="url(#tp-metal)" stroke="#a5b7af" stroke-width=".9"/>
+      <path d="M-5 -8H5V8Q0 11 -5 8Z" fill="url(#tp-metal)" stroke="#9daea7" stroke-width=".8"/>
+      <path d="M-5 -3H5M-5 0H5M-5 3H5" stroke="#334c50" stroke-width="1.1"/>
+      <path d="M-2.7 -15H2.7L4-8H-4Z" fill="currentColor"/>
+    </g>
+    <path id="tp-scope-a" pathLength="100" d="M219 345h18l3 1.5 3 10 3-6 4-4.4 7-1.1h52"/>
+    <path id="tp-scope-b" pathLength="100" d="M219 352h40l2 2 3 10 3-6.5 4-4.5 6-1h32"/>
+  </defs>
+  <style>
+    .hardware-label { fill:#e7eee8; font: 550 17px 'Segoe UI',Arial,sans-serif; }
+    .fine-label { fill:#adc3be; font: 13px 'Segoe UI',Arial,sans-serif; }
+    .leader { fill:none; stroke:#75918e; stroke-width:1; }
+    svg[data-closeup] .leaders, svg[data-closeup] .device-labels { visibility:hidden; }
+    .wire { fill:none; stroke-linejoin:round; stroke-linecap:round; }
+    .packet,.emission,.source-focus,.gamma-focus,.gamma-shot,.gamma-impact { opacity:0; pointer-events:none; }
+    .cathode-detail, svg[data-phase="cathode"] .instrument-overview { display:none; }
+    svg[data-phase="cathode"] .cathode-detail { display:inline; }
+    .section-labels { fill:#e1eae4; font:550 17px 'Segoe UI',Arial,sans-serif; }
+    .section-labels path { fill:none; stroke:#8da69d; stroke-width:1; }
+    .incident-photon { transform:translateX(-93px); }
+    .photoelectron { transform:translate(116px,-16px); }
+    .film-flash { opacity:0; }
+    @media(max-width:600px) { .section-labels { font-size:22px; } }
+    .bins rect { transform-box:fill-box; transform-origin:center bottom; }
+    svg[data-animated]:not([data-phase="spectrum"]) .bins rect { transform:scaleY(.12); }
+    svg[data-animated][data-phase="digitizer"] .bins rect { transform:scaleY(.22); }
+    svg[data-animated]:not([data-phase="digitizer"]):not([data-phase="spectrum"]) .scope-trace,
+    svg[data-animated]:not([data-phase="digitizer"]):not([data-phase="spectrum"]) .adc-samples { opacity:.27; }
+    svg[data-phase="source"] .source-focus, svg[data-phase="gamma"] .gamma-focus { opacity:1; }
+    svg[data-phase="source"] .source-label text, svg[data-phase="gamma"] .crystal-label text { fill:#ffdda3; }
+    svg[data-phase="source"] .source-label .leader, svg[data-phase="gamma"] .crystal-label .leader { stroke:#e9bf78; }
+    svg[data-phase="source"] .gamma-rays { opacity:.3; }
+    svg[data-phase="gamma"] .gamma-rays { stroke:#ffce78; stroke-dasharray:1.5 3.5; }
+    svg[data-phase="light"] .crystals, svg[data-phase="pulse"] .tubes { filter:drop-shadow(0 0 3px #97e4cd80); }
+    svg[data-phase="digitizer"] .scope-edge, svg[data-phase="spectrum"] .screen-edge { stroke:#a8ddcb; }
+    @media (prefers-reduced-motion:no-preference) {
+      svg:is([data-animated],[data-preview])[data-phase="source"] .sample-left { animation: separate-left .85s ease-out both; }
+      svg:is([data-animated],[data-preview])[data-phase="source"] .sample-right { animation: separate-right .85s ease-out both; }
+      svg:is([data-animated],[data-preview])[data-phase="source"] .emission { animation: emit 1.1s .1s ease-out both; }
+      svg:is([data-animated],[data-preview])[data-phase="gamma"] .emission { animation: launch 1.12s ease-out 2; }
+      svg:is([data-animated],[data-preview])[data-phase="gamma"] .gamma-shot { animation: flight 1.12s linear 2; }
+      svg:is([data-animated],[data-preview])[data-phase="gamma"] .gamma-impact { animation: deposit 1.12s ease-out 2; }
+      svg:is([data-animated],[data-preview])[data-phase="cathode"] .incident-photon { animation: reach-film 1.62s linear 2; }
+      svg:is([data-animated],[data-preview])[data-phase="cathode"] .film-flash { animation: convert-photon 1.62s ease-out 2; }
+      svg:is([data-animated],[data-preview])[data-phase="cathode"] .photoelectron { animation: leave-film 1.62s ease-in 2; }
+      svg:is([data-animated],[data-preview])[data-phase="light"] .light-motion,
+      svg[data-animated][data-phase="pulse"] .cable-motion, svg[data-animated][data-phase="pulse"] .electron-motion,
+      svg[data-animated][data-phase="digitizer"] .link-motion {
+        stroke-dasharray:12 88; animation: travel .92s ease-in-out 2;
+      }
+      svg[data-animated][data-phase="pulse"] .cable-motion { animation-delay:.3s; }
+      svg[data-animated][data-phase="digitizer"] .link-motion { animation-delay:.8s; }
+      svg[data-animated][data-phase="digitizer"] .scope-trace { animation: draw .9s ease-out both; }
+      svg[data-animated][data-phase="digitizer"] .adc-samples { animation: samples 1.15s steps(5,end) both; }
+      svg[data-animated][data-phase="spectrum"] .bins rect { animation: count-up 1.95s steps(9,end) var(--lag) both; }
+      svg[data-running="false"]:not([data-preview]) *, svg:not([data-visible]) * { animation-play-state:paused !important; }
+      @keyframes separate-left { from {transform:translateX(24px)} to {transform:translateX(0)} }
+      @keyframes separate-right { from {transform:translateX(-24px)} to {transform:translateX(0)} }
+      @keyframes emit { 0% {opacity:0;transform:scale(.5)} 35% {opacity:.85} 100% {opacity:0;transform:scale(1.4)} }
+      @keyframes launch { 0% {opacity:0;transform:scale(.25)} 12% {opacity:1} 38%,100% {opacity:0;transform:scale(1.65)} }
+      @keyframes flight {
+        0%,12% {opacity:0;transform:translate(0,0) scaleX(.12)}
+        20% {opacity:1;transform:translate(15px,-.25px) scaleX(.55)}
+        51% {opacity:1;transform:translate(114px,-2px) scaleX(1)}
+        58%,100% {opacity:0;transform:translate(114px,-2px) scaleX(.05)}
+      }
+      @keyframes deposit {
+        0%,50% {opacity:0;transform:scale(.22)}
+        56% {opacity:1;transform:scale(.9)}
+        68% {opacity:.9;transform:scale(1.1)}
+        95%,100% {opacity:0;transform:scale(1.27)}
+      }
+      @keyframes reach-film {
+        0% {opacity:0;transform:translateX(-219px)}
+        8% {opacity:1}
+        46% {opacity:1;transform:translateX(0)}
+        49%,100% {opacity:0;transform:translateX(0)}
+      }
+      @keyframes convert-photon { 0%,45% {opacity:0} 50% {opacity:1} 66%,100% {opacity:0} }
+      @keyframes leave-film {
+        0%,48% {opacity:0;transform:translate(0,0)}
+        53% {opacity:1;transform:translate(5px,-.2px)}
+        65% {opacity:1;transform:translate(75px,-7px)}
+        74% {opacity:1;transform:translate(150px,-19px)}
+        84% {opacity:1;transform:translate(225px,-24px)}
+        89%,100% {opacity:0;transform:translate(225px,-24px)}
+      }
+      @keyframes travel { 0% {opacity:0;stroke-dashoffset:14} 16%,79% {opacity:1} 100% {opacity:0;stroke-dashoffset:-98} }
+      @keyframes draw { from {stroke-dasharray:100;stroke-dashoffset:100} to {stroke-dasharray:100;stroke-dashoffset:0} }
+      @keyframes samples { from {opacity:0} to {opacity:1} }
+      @keyframes count-up { from {transform:scaleY(.22)} to {transform:scaleY(1)} }
+    }
+  </style>
+  <rect width="900" height="461" fill="#0e242a"/>
+  <g class="instrument-overview">
+  <ellipse cx="450" cy="204" rx="443" ry="206" fill="url(#tp-field)"/>
+  <g class="leaders" text-anchor="middle">
+    <g><text x="156" y="35" class="hardware-label">Photomultiplier</text><path class="leader" d="M156 49v42l22 42"/></g>
+    <g class="crystal-label"><text x="292" y="70" class="hardware-label">Scintillator</text><path class="leader" d="M292 82v26l18 26"/></g>
+    <g class="source-label"><text x="450" y="35" class="hardware-label">Source–sample sandwich</text><text x="450" y="57" class="fine-label">Sample · foil · source · foil · sample</text><path class="leader" d="M450 69v75"/></g>
+    <g><text x="697" y="66" class="hardware-label">Optical coupling</text><path class="leader" d="M697 79h-45l-22 50"/></g>
+    <g><text x="716" y="226" class="hardware-label">Photocathode</text><path class="leader" d="M698 209h-26l-15-18"/></g>
+  </g>
+  <!-- The coaxial jackets bend in separate lanes and meet upright strain reliefs on the digitizer. -->
+  <g class="wire">
+    <g stroke="#08191f" stroke-width="7.8"><use href="#tp-wire-a"/><use href="#tp-wire-b"/><use href="#tp-link"/></g>
+    <use href="#tp-wire-a" stroke="#8b7353" stroke-width="4.8"/><use href="#tp-wire-a" stroke="#d1b381" stroke-width="1.1"/>
+    <use href="#tp-wire-b" stroke="#487975" stroke-width="4.8"/><use href="#tp-wire-b" stroke="#9bccbd" stroke-width="1.1"/>
+    <use href="#tp-link" stroke="#698187" stroke-width="4.4"/><use href="#tp-link" stroke="#aac0bb" stroke-width="1"/>
+    <use class="packet cable-motion" href="#tp-wire-a" stroke="#ffe3a2" stroke-width="3.1"/>
+    <use class="packet cable-motion" href="#tp-wire-b" stroke="#acffe4" stroke-width="3.1"/>
+    <use class="packet link-motion" href="#tp-link" stroke="#c5e8e2" stroke-width="2.6"/>
+  </g>
+  <g transform="translate(450 166) scale(1.04)">
+    <path d="M-316 0h632" fill="none" stroke="#91aca1" stroke-width=".75" stroke-dasharray="2 6" opacity=".4"/>
+    <g class="tubes"><use href="#tp-multiplier" color="#d8b985" transform="scale(-1 1)"/><use href="#tp-multiplier" color="#8bcbbb"/></g>
+    <g class="crystals"><use href="#tp-couplant" transform="scale(-1 1)"/><use href="#tp-scintillator" transform="scale(-1 1)"/><use href="#tp-couplant"/><use href="#tp-scintillator"/></g>
+    <g class="sandwich">
+      <g class="source-focus">
+        <ellipse rx="75" ry="54" fill="url(#tp-glow)"/>
+        <path d="M-69-32v-11h13m110 0h13v11m0 64v11H54m-110 0h-13V32" fill="none" stroke="#ffd38a" stroke-width="1.7"/>
+      </g>
+      <g class="sample-left"><use href="#tp-sample-slice" x="-54"/><use href="#tp-foil-slice" x="-23"/></g>
+      <circle r="24" fill="url(#tp-glow)"/><path d="M-1-14Q5-12 6 11L2 15Q-3 8-4-9Z" fill="#edb96a" stroke="#ffe5ab" stroke-width="1.5"/>
+      <g class="sample-right"><use href="#tp-foil-slice" x="22"/><use href="#tp-sample-slice" x="48"/></g>
+      <g class="emission"><circle r="25" fill="url(#tp-glow)"/><circle r="17" fill="none" stroke="#ffdb92" stroke-width="1.6"/></g>
+    </g>
+    <g class="gamma-rays wire" stroke="#ddb477" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#tp-ray-tip)">
+      <path d="M-11 2-112-2"/><path d="M12 1 112-2"/>
+    </g>
+    <g class="gamma-focus" fill="none" stroke="#ffdf9f" stroke-width="1.3">
+      <circle cx="-114" cy="-2" r="7"/><circle cx="114" cy="-2" r="7"/>
+    </g>
+    <g transform="scale(-1 1)"><use class="gamma-shot" href="#tp-gamma-packet"/></g>
+    <use class="gamma-shot" href="#tp-gamma-packet"/>
+    <g transform="translate(-114 -2)"><use class="gamma-impact" href="#tp-impact-flash"/></g>
+    <g transform="translate(114 -2)"><use class="gamma-impact" href="#tp-impact-flash"/></g>
+    <g class="wire" stroke-width="3">
+      <path class="packet light-motion" pathLength="100" stroke="#baffeb" d="m-114-2-9-11-7 26-11-19-10 8-45-8"/><path class="packet light-motion" pathLength="100" stroke="#baffeb" d="m114-2 9-11 7 26 11-19 10 8 45-8"/>
+      <path class="packet electron-motion" pathLength="100" stroke="#ffdd95" d="m-201 0-18-10-16 19-16-18-14 17-14-16-14 8"/><path class="packet electron-motion" pathLength="100" stroke="#b6efcb" d="m201 0 18-10 16 19 16-18 14 17 14-16 14 8"/>
+    </g>
+  </g>
+  <!-- Both input plugs are mechanically seated on the top plate; the data output is on the right face. -->
+  <ellipse cx="318" cy="400" rx="166" ry="13" fill="url(#tp-floor)"/>
+  <g class="adc" stroke-linejoin="round">
+    <path d="M189 324 212 305H435l-23 19Z" fill="url(#tp-top)" stroke="#a5b8b2"/>
+    <path d="M412 324 435 305v68l-23 20Z" fill="#263c44" stroke="#647f80"/>
+    <rect x="189" y="324" width="223" height="69" rx="2.5" fill="url(#tp-face)" stroke="#91a6a3" stroke-width="1.2"/>
+    <path d="M194 328h212m-208 60h204" fill="none" stroke="#75908e" stroke-opacity=".55"/>
+    <path d="M201 394h18v4h-18Zm181 0h18v4h-18Z" fill="#112328"/>
+    <use href="#tp-coax-plug" x="234" y="311" color="#caae81"/>
+    <use href="#tp-coax-plug" x="342" y="311" color="#83bcb1"/>
+    <path d="M232 317h-12m122 0h12" stroke="#cad8d1" stroke-width="1"/>
+    <g font-family="Consolas, monospace" font-size="10" font-weight="bold"><text x="208" y="320" fill="#ffe0a8">A</text><text x="357" y="320" fill="#b9f1dc">B</text></g>
+    <rect class="scope-edge" x="213" y="334" width="104" height="42" rx="3" fill="#0c252c" stroke="#678380"/>
+    <path d="M219 349h91m-91 12h91m-73-23v34m22-34v34m22-34v34" fill="none" stroke="#385556" stroke-width=".75"/>
+    <g class="wire" stroke-width="1.75"><use class="scope-trace" href="#tp-scope-a" stroke="#efc989"/><use class="scope-trace" href="#tp-scope-b" stroke="#92dfca"/></g>
+    <g class="adc-samples" fill="#c5ffed"><circle cx="259" cy="352" r="1.4"/><circle cx="261" cy="354" r="1.4"/><circle cx="264" cy="364" r="1.4"/><circle cx="267" cy="357.5" r="1.4"/><circle cx="271" cy="353" r="1.4"/></g>
+    <rect x="331" y="341" width="56" height="17" rx="2" fill="url(#tp-vents)"/><circle cx="335" cy="370" r="2.2" fill="#a3dec5"/>
+    <path d="M343 370h25" stroke="#667e7c"/>
+    <g fill="#1f343a" stroke="#7e9592"><circle cx="197" cy="332" r="2"/><circle cx="404" cy="385" r="2"/></g>
+    <path d="m418 363 9-7v10l-9 7Z" fill="#132930" stroke="#89a3a1"/><path d="m422 362 7-4 4 3v5l-7 3-4-2Z" fill="#678084" stroke="#97aaa6"/>
+  </g>
+  <!-- The laptop shows an illustrative time-difference histogram, with many entries in each populated bin. -->
+  <ellipse cx="650" cy="399" rx="155" ry="15" fill="url(#tp-floor)"/>
+  <g class="laptop" stroke-linejoin="round">
+    <path d="M551 266q0-5 5-5h183q5 0 5 5l-4 105H547Z" fill="url(#tp-metal)" stroke="#94aaa8" stroke-width="1.1"/>
+    <path d="M555 267h183l-4 100H551Z" fill="#13272d" stroke="#23393f"/>
+    <rect class="screen-edge" x="558" y="275" width="172" height="84" rx="2" fill="url(#tp-screen)" stroke="#516f70"/>
+    <circle cx="646" cy="268" r="1.25" fill="#95aaa5"/>
+    <g transform="translate(565 349)">
+      <path d="M0-62V0h156m-156-20h156m-156-20h156" fill="none" stroke="#58726f" stroke-width=".7" opacity=".55"/>
+      <path d="M3.7 -2 L7.5 -3 L11.4 -3 L15.2 -4 L19.1 -6 L22.9 -10 L26.8 -19 L30.6 -34 L34.5 -49 L38.3 -55 L42.2 -51 L46.0 -45 L49.9 -40 L53.7 -35 L57.6 -31 L61.4 -28 L65.3 -25 L69.1 -23 L73.0 -21 L76.8 -19 L80.7 -16 L84.5 -14 L88.4 -13 L92.2 -12 L96.1 -10 L99.9 -10 L103.8 -8 L107.6 -8 L111.5 -7 L115.3 -6 L119.2 -6 L123.0 -5 L126.9 -4 L130.7 -4 L134.6 -3 L138.4 -3 L142.3 -3 L146.1 -2 L150.0 -2 L153.8 -2" fill="none" stroke="#74ab9d" stroke-opacity=".24" stroke-width=".9"/>
+      <g class="bins" fill="url(#tp-bin-ink)">
+          <rect x="2" y="-2" width="3.35" height="2" style="--lag:0ms"/>
+          <rect x="5.85" y="-3" width="3.35" height="3" style="--lag:187ms"/>
+          <rect x="9.7" y="-3" width="3.35" height="3" style="--lag:51ms"/>
+          <rect x="13.55" y="-4" width="3.35" height="4" style="--lag:238ms"/>
+          <rect x="17.4" y="-6" width="3.35" height="6" style="--lag:102ms"/>
+          <rect x="21.25" y="-10" width="3.35" height="10" style="--lag:289ms"/>
+          <rect x="25.1" y="-19" width="3.35" height="19" style="--lag:153ms"/>
+          <rect x="28.95" y="-34" width="3.35" height="34" style="--lag:17ms"/>
+          <rect x="32.8" y="-49" width="3.35" height="49" style="--lag:204ms"/>
+          <rect x="36.65" y="-55" width="3.35" height="55" style="--lag:68ms"/>
+          <rect x="40.5" y="-51" width="3.35" height="51" style="--lag:255ms"/>
+          <rect x="44.35" y="-45" width="3.35" height="45" style="--lag:119ms"/>
+          <rect x="48.2" y="-40" width="3.35" height="40" style="--lag:306ms"/>
+          <rect x="52.050000000000004" y="-35" width="3.35" height="35" style="--lag:170ms"/>
+          <rect x="55.9" y="-31" width="3.35" height="31" style="--lag:34ms"/>
+          <rect x="59.75" y="-28" width="3.35" height="28" style="--lag:221ms"/>
+          <rect x="63.6" y="-25" width="3.35" height="25" style="--lag:85ms"/>
+          <rect x="67.45" y="-23" width="3.35" height="23" style="--lag:272ms"/>
+          <rect x="71.3" y="-21" width="3.35" height="21" style="--lag:136ms"/>
+          <rect x="75.15" y="-19" width="3.35" height="19" style="--lag:0ms"/>
+          <rect x="79" y="-16" width="3.35" height="16" style="--lag:187ms"/>
+          <rect x="82.85000000000001" y="-14" width="3.35" height="14" style="--lag:51ms"/>
+          <rect x="86.7" y="-13" width="3.35" height="13" style="--lag:238ms"/>
+          <rect x="90.55" y="-12" width="3.35" height="12" style="--lag:102ms"/>
+          <rect x="94.4" y="-10" width="3.35" height="10" style="--lag:289ms"/>
+          <rect x="98.25" y="-10" width="3.35" height="10" style="--lag:153ms"/>
+          <rect x="102.10000000000001" y="-8" width="3.35" height="8" style="--lag:17ms"/>
+          <rect x="105.95" y="-8" width="3.35" height="8" style="--lag:204ms"/>
+          <rect x="109.8" y="-7" width="3.35" height="7" style="--lag:68ms"/>
+          <rect x="113.65" y="-6" width="3.35" height="6" style="--lag:255ms"/>
+          <rect x="117.5" y="-6" width="3.35" height="6" style="--lag:119ms"/>
+          <rect x="121.35000000000001" y="-5" width="3.35" height="5" style="--lag:306ms"/>
+          <rect x="125.2" y="-4" width="3.35" height="4" style="--lag:170ms"/>
+          <rect x="129.05" y="-4" width="3.35" height="4" style="--lag:34ms"/>
+          <rect x="132.9" y="-3" width="3.35" height="3" style="--lag:221ms"/>
+          <rect x="136.75" y="-3" width="3.35" height="3" style="--lag:85ms"/>
+          <rect x="140.6" y="-3" width="3.35" height="3" style="--lag:272ms"/>
+          <rect x="144.45000000000002" y="-2" width="3.35" height="2" style="--lag:136ms"/>
+          <rect x="148.3" y="-2" width="3.35" height="2" style="--lag:0ms"/>
+          <rect x="152.15" y="-2" width="3.35" height="2" style="--lag:187ms"/>
+      </g>
+    </g>
+    <path d="M547 371h193l-16 21H518Z" fill="url(#tp-metal)" stroke="#9badab"/>
+    <path d="m555 374 172 .2-6 9H542Z" fill="url(#tp-keys)"/>
+    <path d="M607 384h37l-3 5h-41Z" fill="#50676c" stroke="#8d9f9a" stroke-width=".55"/>
+    <path d="M518 392h206l16-21v5l-15 21H522l-4-2Z" fill="#314850" stroke="#718886" stroke-width=".9"/>
+    <path d="M523 389h10l3-3h-10Z" fill="#10272e"/><path d="M515 387h13v4h-13Z" fill="#708487" stroke="#a6b5ae" stroke-width=".7"/>
+  </g>
+  <g class="device-labels" text-anchor="middle">
+    <text x="310" y="429" class="hardware-label">Digitizer</text>
+    <text x="639" y="429" class="hardware-label">Lifetime spectrum</text>
+    <text x="310" y="448" class="fine-label">Synchronous waveform sampling</text>
+    <text x="639" y="448" class="fine-label">Counts vs time difference</text>
+  </g>
+  </g>
+  <!-- An enlarged meridional section through the entrance face of one PMT. -->
+  <g class="cathode-detail">
+    <ellipse cx="466" cy="224" rx="365" ry="166" fill="url(#tp-field)"/>
+    <path d="M368 114H577Q618 114 654 135L738 177V256l-83 41q-40 20-81 20H368Z" fill="url(#pc-vacuum)"/>
+    <g fill="url(#pc-wall)" stroke="#809599" stroke-width="1">
+      <path id="pc-wall-top" d="M328 104h246q43 0 83 22l86 45-5 9-85-43q-37-20-78-20H328Z"/>
+      <path id="pc-wall-bottom" d="M328 315h248q39 0 78-20l84-41 5 8-84 43q-43 23-85 23H328Z"/>
+    </g>
+    <g fill="url(#pc-hatch)"><use href="#pc-wall-top"/><use href="#pc-wall-bottom"/></g>
+    <path d="M331 115Q346 209 331 315h41q15-100 0-200Z" fill="url(#pc-glass)" stroke="#89aaa8" stroke-width="1.4"/>
+    <path d="M334 118q15 95 0 194m6-194q12 95 0 193" fill="none" stroke="#d4efe2" stroke-opacity=".53" stroke-width="1.1"/>
+    <path d="M372 116q15 99 0 198" fill="none" stroke="#9f7951" stroke-width="3.8"/>
+    <path d="M373 116q15 99 0 198" fill="none" stroke="#f6d799" stroke-width="1.45"/>
+    <path d="M619 172l57 2 39 17-1 5-42-14-53 1Z" fill="url(#pc-wall)" stroke="#536c70"/>
+    <path d="m573 145 15-6q3 32 52 57l-9 12q-49-21-58-63Z" fill="url(#pc-dynode)" stroke="#9daea6" stroke-width="1.2"/>
+    <path d="M573 145q9 42 58 63l5-6q-47-20-58-59Z" fill="#658482" stroke="#b6c4b7" stroke-width=".9"/>
+    <path d="M580 148q8 28 41 47m-34-45q8 24 31 37" fill="none" stroke="#dfdfca" stroke-opacity=".45" stroke-width=".85"/>
+    <path d="M139 178 380 212" fill="none" stroke="url(#pc-ray)" stroke-width="1.5"/>
+    <path d="M380 212c65 0 144-26 225-24" fill="none" stroke="#d7b580" stroke-opacity=".44" stroke-width="1.3" stroke-dasharray="3 5"/>
+    <g transform="translate(380 212) rotate(8)">
+      <g class="incident-photon">
+        <path d="M-49 0q3 0 5-3t6 3q3 10 7 0t8 0q3 7 6 0t5 0h12" fill="none" stroke="#b2ffe5" stroke-width="2.5" stroke-linecap="round"/>
+        <circle r="2.5" fill="#edfff1"/>
+      </g>
+    </g>
+    <g transform="translate(380 212)">
+      <circle class="film-flash" r="27" fill="url(#tp-glow)"/>
+      <g class="photoelectron"><circle r="6" fill="#ffd58c" stroke="#805f3e" stroke-width=".8"/><path d="M-2.7 0h5.4" stroke="#4b382b" stroke-width="1.35"/></g>
+    </g>
+    <g class="section-labels">
+      <text x="180" y="64">Entrance glass</text><path d="M248 75h40l59 65"/>
+      <text x="388" y="64" fill="#f2d6a3">Photocathode</text><path d="M439 75h-29l-32 72"/>
+      <text x="592" y="64">First dynode</text><path d="M642 75v26l-41 48"/>
+      <text x="116" y="269" fill="#a6efda">Scintillation photon</text><path d="M209 246v-24l21-27"/>
+      <text x="456" y="271" fill="#ffdc9d">Photoelectron</text><path d="M509 247v-26l-10-16"/>
+      <text x="405" y="362" fill="#9eb5b1">PMT vacuum</text><path d="M448 339v-39"/>
+    </g>
+  </g>
+</svg>

@@ -25,7 +25,7 @@ def event(index, a=(80.,10,2.), b=(0.,0,0.), mask=1, minimum_energy_keV=0):
         interaction=energy>0
         flags=(17 if count else 0)|(2 if interaction else 0)|(4 if energy>=minimum_energy_keV else 0)
         xyz=(12.,0.,0.) if d==0 else (-13.,0.,0.)
-        responses.append(DETECTOR.pack(flags,count,energy,mean,*(xyz if interaction else (0,0,0)),.1 if interaction else 0,4. if count else 0,3,0,-float(count),0.))
+        responses.append(DETECTOR.pack(flags,count,energy,mean,*(xyz if interaction else (0,0,0)),.1 if interaction else 0,4. if count else 0,3,0,-float(count),0.,2))
     return frame(b'EVNT',prefix+b''.join(responses))
 
 def record(row):
@@ -41,7 +41,7 @@ def record(row):
 
 def fixture_header(role='na22_prompt'):
     response=dict(model='erlang-fixed-charge-v1',order=4,tau_ns=1.,charge_C=1e-13,load_ohm=50.,voltage_scale_mV=5.,polarity='negative')
-    return {'format':'twinpals-stream','version':6,'light_components':[dict(id=0,volume='ScintA',label='Crystal A',material='Plastic')],'role':role,'profile':{'name':'fixture','detectors':[{'pmt_id':'fixture-pmt'}]*2},
+    return {'format':'twinpals-stream','version':7,'light_components':[dict(id=0,volume='ScintA',label='Crystal A',material='Plastic')],'role':role,'profile':{'name':'fixture','detectors':[{'pmt_id':'fixture-pmt'}]*2},
             'physics':{'include_cherenkov':True,'minimum_energy_keV':0},
             'analog_response':[response.copy(),response.copy()],
             'pmt_snapshot':[{'id':'fixture-pmt','properties':{'photocathode_shape':'circle','photocathode_diameter_mm':40.}}],

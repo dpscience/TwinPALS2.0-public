@@ -99,6 +99,13 @@ def catalogue_get(s,id,pointer):
             return select(entry,pointer)
     raise ValueError('Unknown catalogue ID.')
 
+@tool('catalogue_factory_optics','Preview missing factory photocathode data held for review on a locally modified tube. To adopt the draft, review its curves and sources and use catalogue_save with its revision.',
+      {'id':(str,...)})
+def catalogue_factory_optics(s,id):
+    entry=catalogue_get(s,id,'')
+    return s.engine.control.store.database.factory_optics(id,entry)
+
+
 @tool('catalogue_save','Create a component or update an existing one in the shared TwinPALS database. Send the full entry and its expected revision on update.',
       {'entry':(dict,...),'expected_revision':(int|None,None)})
 def catalogue_save(s,entry,expected_revision):

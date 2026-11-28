@@ -1,0 +1,36 @@
+/* SPDX-FileCopyrightText: 2026 Danny Petschke <twinpals@proton.me> */
+/* SPDX-License-Identifier: MIT */
+
+.pmt-film, .pmt-shape-controls { display: grid; gap: .65rem; margin-block: .8rem; }
+.pmt-film { border-block-start: 1px solid var(--line, #d9e3ea); padding-block-start: .8rem; }
+/* Keep navigation and source links independently focusable inside one curve row. */
+.pmt-fields .pmt-curve-link {
+ display: grid;
+ grid-template-columns: minmax(0, 1fr) auto;
+ gap: .5rem;
+ padding: 0 .8rem 0 0;
+ border: 1px solid #dcece8;
+ border-radius: 5px;
+}
+.pmt-curve-link > button {
+ justify-content: flex-start;
+ min-width: 0;
+ padding: 11px 0 11px 13px;
+ text-align: left;
+ background: transparent;
+ color: inherit;
+ border: 0;
+}
+.pmt-curve-link > .property-sources { flex-wrap: wrap; justify-content: flex-end; margin: 0; }
+.pmt-response-badges { margin: 0 0 .85rem; }
+.pmt-reflections { margin-bottom: .9rem; }
+.pmt-reflections .toggle { margin: 0; }
+.pmt-reflections .toggle:has(input:disabled) { color: #697e90; }
+.pmt-reflections .field-note { margin: .25rem 0 0 1.6rem; }
+.pmt-shape-controls {
+ grid-template-columns: minmax(0, 1fr) minmax(5.5rem, 30%);
+ align-items: end;
+ column-gap: .8rem;
+}
+.pmt-shape-controls .field, .pmt-shape-controls .toggle { margin: 0; min-width: 0; }
+.pmt-shape-controls .toggle { min-height: 34px; }

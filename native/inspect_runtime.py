@@ -75,6 +75,9 @@ def main():
         version = json.loads(subprocess.run([str(binary_root / "twinpals-worker.exe"), "--version"],
                                            capture_output=True, text=True, check=True).stdout)
         manifest.update(version)
+        if version.get('stream_version') == 7:
+            manifest['event_time_kernel'].update(format='TPSTRM07',record_bytes=340)
+            manifest['parallelism']['event_record_bytes_limit']=340
         manifest["accessed_date"] = datetime.now(timezone.utc).date().isoformat()
         manifest["dependency_audit"].update(missing_non_system_dependencies=[],
             required_local_binaries=len(reachable), os_provided_imports=sorted(systems))

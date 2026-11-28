@@ -1,11 +1,11 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.3",
   "reviewed": "2026-11-24",
   "components": [
     {
       "id": "twinpals",
       "name": "TwinPALS 2.0",
-      "version": "2.0.2",
+      "version": "2.0.3",
       "group": "Project",
       "license": "MIT",
       "note": "Copyright © 2026 Danny Petschke. The MIT license covers original TwinPALS code and documentation. The portable physics data and third-party components have individual terms. G4EMLOW 8.8 is restricted to Geant4 and non-commercial use.",
@@ -24,14 +24,14 @@
         {
           "label": "Software citation",
           "file": "texts/twinpals-3.txt",
-          "sha256": "5dadf595a2244412ab178dc4d537c4cf44ee6cad2526f1b92fe849e9b9c1aeb5"
+          "sha256": "5164fb173db0e0ffcfdf8f3f6c29c2e7788c7597de65fea8b6d7912b52c0b3b9"
         }
       ]
     },
     {
       "id": "twinpals-mcp",
       "name": "TwinPALS 2.0 MCP server and observer",
-      "version": "2.0.2",
+      "version": "2.0.3",
       "group": "Project",
       "license": "MIT",
       "note": "TwinPALS implements the Model Context Protocol using JSON-RPC over standard input and output. The local study service, read-only observer, offline methods handbook and shared Windows notification-area helper and icon are original TwinPALS work covered by the project MIT license. The helper uses the Windows-installed .NET Framework and Windows Forms. Their system assemblies are provided by Windows.",

@@ -1,0 +1,53 @@
+---
+import Shell from '../layouts/Shell.astro';
+import Instrument from '../components/Instrument.astro';
+import DesktopModules from '../components/DesktopModules.astro';
+import Catalogue from '../components/Catalogue.astro';
+import StudyReplay from '../components/StudyReplay.astro';
+import Workflows from '../components/Workflows.astro';
+import Publications from '../components/Publications.astro';
+import {clients, guide, releases} from '../site';
+import {total as recordCount} from '../data/catalogue';
+---
+<Shell>
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow hero-kicker">Positron annihilation lifetime spectroscopy</p>
+        <h1>A lifetime spectrometer <em>on your desktop.</em></h1>
+        <p class="hero-lede">TwinPALS is an event-by-event digital twin. Follow a gamma ray from emission to energy deposition in a scintillator, then follow the light to the photocathode. The resulting photoelectrons generate the anode pulse that the digitizer samples.</p>
+        <p class="hero-detail">Build your setup from <a href="#catalogue">{recordCount} entries in the included component database</a>. Choose from photomultiplier models, scintillator types and sample materials, with reference positron lifetimes for selected materials. Change the shielding, trace gamma backscattering between detectors and see, for example, how much pile-up or accidental coincidences contribute to the lifetime spectrum.</p>
+        <p class="hero-detail">Explore each event in <strong>TwinPALS Desktop</strong>, or connect <strong>TwinPALS MCP</strong> to OpenAI Codex, Claude or GitHub Copilot. Describe the study you want to run and let the agent configure the simulation, run variants in parallel and compare their spectra.</p>
+        <div class="actions"><a class="btn mint" href="#desktop">Explore TwinPALS Desktop</a><a class="btn dark-outline" href="#studies"><span class="play-icon" aria-hidden="true"></span> Explore TwinPALS MCP</a></div>
+      </div>
+      <Instrument />
+    </div>
+    <div class="hero-index"><div class="wrap index-links">
+      <a href="#desktop"><strong>3</strong><span>Measurement modules</span></a>
+      <a href="#catalogue"><strong>{recordCount}</strong><span>Factory catalogue entries</span></a>
+      <a href="#studies"><strong>MCP</strong><span>Parallel studies with AI agents</span></a>
+    </div></div>
+  </div>
+  <Workflows />
+  <DesktopModules />
+  <section id="studies" class="section studies" aria-labelledby="mcp-heading"><div class="wrap">
+    <header class="section-intro mcp-intro">
+      <div><p class="eyebrow">TwinPALS MCP | AI-driven study</p><h2 id="mcp-heading">Run a study from a prompt.</h2></div>
+      <div class="mcp-copy">
+        <p>Your AI client can start TwinPALS MCP through the Model Context Protocol (MCP). It gives the agent access to the same local catalogue and simulation modules you use in TwinPALS Desktop.</p>
+        <p>Describe the setup, the parameter to vary and the spectra to compare. The agent can build the scan, submit runs and analyse the results. The local coordinator runs independent variants in parallel within your CPU budget and starts each analysis when its inputs are ready.</p>
+        <nav aria-label="TwinPALS MCP client setup guides"><h3>Connect your AI client in about 5 minutes</h3>
+          <ul class="client-list">{clients.map(([name, anchor]) => <li><a href={guide + 'docs/mcp/CLIENTS.md#' + anchor} target="_blank" rel="noopener noreferrer">{name}</a></li>)}</ul>
+        </nav>
+      </div>
+    </header>
+    <StudyReplay />
+    <div class="study-foot"><a href={guide + 'docs/mcp/README.md'} target="_blank" rel="noopener noreferrer">TwinPALS MCP guide</a></div>
+  </div></section>
+  <Catalogue />
+  <Publications />
+  <section id="start" class="get-started"><div class="wrap start-grid">
+    <div><p class="eyebrow">Get TwinPALS</p><h2>Open your first setup.</h2><p>Download the Windows x64 installer or extract the portable ZIP. Open TwinPALS Desktop and start your setup inspection. The scientific runtime and component catalogue come with both packages.</p></div>
+    <div class="actions"><a class="btn solid" href={releases} target="_blank" rel="noopener noreferrer">Download for Windows</a><a class="text-link" href={guide + 'README.md#open-twinpals-on-windows'} target="_blank" rel="noopener noreferrer">Read the setup guide</a></div>
+  </div></section>
+</Shell>

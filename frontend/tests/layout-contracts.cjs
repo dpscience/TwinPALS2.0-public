@@ -161,3 +161,16 @@ test('Module 3 exposes intra-steps only for the channel using a curved interpola
   assert.ok(!steps('B').includes('disabled=""')&&steps('B').includes('value="4"'));
  }
 });
+
+test('M1 switches the reflection metric in place for both populations',()=>{
+ const {analysisMetricsFor,emptyHistogram}=require('../src/analysisModel.ts');
+ for(const basis of ['anode','crystal']){
+  const initial={basis,category:'all',origin:'all'};
+  const first=analysisMetricsFor(initial);
+  const second=analysisMetricsFor({...initial,reflection_scope:'cathode_reflections'});
+  assert.equal(first.length,9);
+  assert.deepEqual(second,[...first.slice(0,8),'cathode_reflections']);
+  assert.equal(first[8],'reflections');
+  for(const metric of [first[8],second[8]])assert.equal(emptyHistogram(metric,initial).unavailable,undefined);
+ }
+});

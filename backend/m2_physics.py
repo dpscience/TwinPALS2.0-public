@@ -382,7 +382,7 @@ def event_voltage(times, pulse, resolved):
     relative=np.asarray(times)-pulse['origin']
     bandwidth=resolved['profile']['digitization']['input_bandwidth_MHz']
     tau=1000/(2*np.pi*bandwidth) if bandwidth else 0.
-    return factor*evaluate(onsets,response,relative,filter_tau_ns=tau)
+    return factor*evaluate(onsets,response,relative,filter_tau_ns=tau,event=int(pulse['record']))
 
 
 def analogue(times,pulses,resolved):

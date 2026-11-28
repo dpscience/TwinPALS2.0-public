@@ -16,6 +16,7 @@ from backend.app import create_app
 from backend.m1_store import atomic_json
 from backend.m3_models import SpectrumDisplay
 from backend.m3_spectra import SpectrumJournal
+from .observer import charts
 from .studies import MODELS, fingerprint
 
 # Study starts and output ownership belong to the durable scheduler. Scientific
@@ -102,7 +103,7 @@ class Measurement:
         self.manager={1:state.manager,2:state.pulse_manager,3:state.lifetime_manager}[self.module]
         self.queries=item['queries']
         self.outputs=[]
-        self.plots={}
+        self.charts=[]
         self.display={direction:SpectrumDisplay(individual=True) for direction in ('merged','AB','BA','SS')}
 
     def start(self):
@@ -151,40 +152,26 @@ class Measurement:
             if state:
                 self.manager.stop(state['id'])
 
-    def histogram(self):
+    def histogram(self, *, positive=False):
         if self.module==1:
             query={'metric':'energy','detector':'all','bins':80}
+            if positive:
+                query.update(suppress_zero=['energy'], include_positions=False)
             if self.importing:
                 return self.workspace.request('POST','/api/m1/analysis',{**query,'paths':self.inputs})
             return self.manager.analysis.query(query)[0]
         if self.module==2:
             return self.manager.analysis.query({'bins':100})
-        return self.manager.session.spectra({'merged':SpectrumDisplay(bin_ps=100, low_ns=-5,high_ns=15)})
+        return self.manager.session.spectra(self.display)
 
-    def preview(self,data):
-        if self.module==1:
-            items=data['series']
-            title='Deposited energy'
-            unit=data['unit']
-        elif self.module==2:
-            chart=data['plots'][0]
-            items=chart['series']
-            title=chart['title']
-            unit=chart['unit']
-        else:
-            value=data['comparisons']['merged']['stages'][0]['lifetime']
-            return dict(title='Merged lifetime · before filters',xLabel='Time difference (ns)',yLabel='Pairs / bin',
-                        series=[dict(name='All pairs',color='#198f8c',points=[[-5+(i+.5)*.1,n] for i,n in value['bins']])])
-        colors=['#198f8c','#6987cf','#986aba','#d08628']
-        return dict(title=title,xLabel=f'{title} ({unit})',yLabel='Counts / bin',
-                    series=[dict(name=s.get('label') or s.get('name',''),color=colors[i%len(colors)],
-                                 points=[[(a+b)/2,n] for a,b,n in zip(s['edges'],s['edges'][1:],s['counts'])])
-                            for i,s in enumerate(items)])
+    def observer_charts(self):
+        return charts(self.module, self.histogram(positive=True), displays=self.display, positive=True)
 
     def finish(self):
         results={}
         hist=self.histogram()
-        self.plots=self.preview(hist)
+        self.charts=(self.observer_charts() if self.module==1 else
+                     charts(self.module,hist,displays=self.display))
         if self.module==2:
             # Module 2 has a single combined stream. Keep its verified seek
             # offsets so an agent can inspect one full waveform after restart.
@@ -194,7 +181,6 @@ class Measurement:
             job=self.manager.session
             job.positions.flush()
             shutil.copyfile(job.positions.name,self.folder/'waveform-positions.bin')
-            hist=job.spectra(self.display)
             journal=job.comparison
             count,floors=journal.capture()
             shutil.copyfile(journal.file.name,self.folder/'spectrum-pairs.bin')

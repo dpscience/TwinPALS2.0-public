@@ -1,0 +1,90 @@
+---
+import {Image} from 'astro:assets';
+import transport from '../../../docs/screenshots/detector-transport.png';
+import acquisition from '../../../docs/screenshots/waveform-acquisition.png';
+import analysis from '../../../docs/screenshots/lifetime-analysis.png';
+
+const modules = [
+  {
+    id: 'm1', name: 'Detector response',
+    model: 'Geant4 follows gamma interactions in the assembly and optical photons through the crystal, reflector, coupling and PMT window. Photocathode conversion, gain and transit-time spread determine the anode response in each channel.',
+    settings: 'Choose a sodium-22 or cobalt-60 source. Set the sample and foil thicknesses, shielding geometry, and each detector’s position, crystal and photomultiplier. Include Cherenkov light alongside scintillation.',
+    output: 'An event library with energy deposits, photon histories, photoelectron arrival times and the corresponding anode pulses.',
+    image: transport, alt: 'TwinPALS detector geometry with a gamma track, optical paths in one scintillator and the resulting channel B anode current.',
+    caption: 'A single transport event and its channel B anode pulse.',
+    question: 'When one gamma mimics a coincidence',
+    context: 'A sodium-22 lifetime measurement pairs a prompt gamma with an annihilation gamma. If one gamma scatters from one detector into the other, it can generate both signals. Their separation then reflects the photon’s flight and the detector response.',
+    investigation: 'Follow a shared photon through both crystals. Its interaction positions and scattering angle reveal whether it backscattered. Compare two shielding arrangements to see how often that path occurs.',
+    source: 'Detector geometry study', url: 'https://doi.org/10.1088/1748-0221/20/01/T01009',
+  },
+  {
+    id: 'm2', name: 'Digitizer acquisition',
+    model: 'M1 simulates the detector response to individual events independently of source activity. In M2, the activity sets the mean time between decays. M2 places the saved anode responses on that timeline, sums overlapping signals and applies the cable and digitizer response. The configured trigger determines which waveform pairs are recorded.',
+    settings: 'Set source activity, the positron lifetime components for sodium-22, channel delays, trigger thresholds, coincidence window and dead time. The digitizer preset supplies the sampling and noise characteristics.',
+    output: 'Paired, calibrated voltage traces with a common trigger and a record of the decays contributing to each readout.',
+    image: acquisition, alt: 'Digitized waveforms from detectors A and B with trigger thresholds and the coincidence window.',
+    caption: 'Two sampled voltage traces around the coincidence trigger.',
+    question: 'How does source activity affect pile-up and background?',
+    context: 'At higher activity, independent decays occur closer together. Their pulses can overlap in one detector, or a pulse from each decay can trigger a different detector within the coincidence window. The latter pair contributes accidental background.',
+    investigation: 'Replay the same M1 library at several activities, keeping the trigger and analysis windows fixed. In M3, compare the fractions of accepted lifetime entries attributed to multiple-decay pile-up and to accidental coincidences.',
+  },
+  {
+    id: 'm3', name: 'Lifetime spectrum',
+    model: 'M3 provides the waveform analysis and spectrum-building tools of a digital lifetime acquisition system. It corrects the baseline and interpolates the leading edge to find when each pulse crosses a chosen fraction of its height. Pulse-height windows and optional shape filters select the pairs whose start–stop time differences enter the lifetime spectrum.',
+    settings: 'Choose the baseline correction, peak-selection method, constant-fraction discriminator (CFD) level and leading-edge interpolation. Set the start and stop pulse-height windows and filter on pulse area, rise time or fall time.',
+    output: 'Lifetime and pulse-height spectra with class overlays and counts before and after filtering. Export the comparison as a standalone HTML report.',
+    image: analysis, alt: 'TwinPALS analysis comparing lifetime and pulse-height spectra before and after filtering with colour-coded contribution overlays.',
+    caption: 'Lifetime and pulse-height spectra for the same recorded events.',
+    question: 'Separating pile-up from the lifetime signal',
+    context: 'In sodium-22, the prompt 1275 keV photon and a 511 keV annihilation photon can both deposit energy in the START crystal. Their light adds to give a single pulse with an artificially high amplitude. If the upper edge of the START pulse-height window is set too high, it admits these piled-up pulses. Their shifted start times distort the lifetime spectrum.',
+    investigation: 'Replay the same waveforms with a lower upper limit on start pulse height. Compare how much 1275/511 keV pile-up each window admits and how many intended coincidences it retains.',
+    source: 'Pulse-height window study', url: 'https://doi.org/10.1088/1748-0221/20/10/T10006',
+  },
+];
+---
+<section id="desktop" class="section" aria-labelledby="desktop-heading"><div class="wrap">
+  <header class="section-intro"><div><p class="eyebrow">TwinPALS Desktop</p><h2 id="desktop-heading">Where does the measured lifetime come from?</h2></div>
+    <div class="module-intro"><p>A lifetime spectrum depends on how the detectors respond to gamma rays, which pulses the digitizer records and how the analysis assigns their times. TwinPALS separates these stages into three modules so you can study each contribution independently.</p>
+    <p>Each module saves its output. To test a different source activity, reuse the same M1 detector responses in M2. To test a different timing method, reanalyse the same digitized waveforms in M3. This lets you vary the decay rate or the timing analysis independently of detector transport.</p></div></header>
+  {modules.map((mod, i) => (
+    <article class="module" id={mod.id} aria-labelledby={mod.id + '-title'}>
+      <div class="module-text">
+        <p class="eyebrow">Module {i + 1}</p><h3 id={mod.id + '-title'}>{mod.name}</h3>
+        <p class="model">{mod.model}</p>
+        <dl><dt>What you set</dt><dd>{mod.settings}</dd><dt>What you get</dt><dd>{mod.output}</dd></dl>
+      </div>
+      <div class="module-evidence">
+        <figure>
+          <a class="capture" href={mod.image.src} target="_blank" rel="noreferrer" aria-label={'Open full-size ' + mod.name + ' screenshot'}>
+            <Image src={mod.image} widths={[640, 960, 1440]} sizes="(max-width: 860px) 91vw, (max-width: 1380px) 51vw, 710px" format="webp" quality={92} alt={mod.alt} loading="lazy" />
+            <span aria-hidden="true">Full size ↗</span>
+          </a>
+          <figcaption>{mod.caption}</figcaption>
+        </figure>
+        <div class="investigation"><h4><span>Example:</span> {mod.question}</h4><p>{mod.context}</p><p>{mod.investigation}</p>{mod.url && <a href={mod.url} target="_blank" rel="noopener noreferrer">{mod.source}</a>}</div>
+      </div>
+    </article>
+  ))}
+</div></section>
+<style>
+  .module-intro { max-width: 58ch; color: var(--muted); font-size: clamp(1rem,1.35vw,1.13rem); }
+  .module-intro p + p { margin-top: .65rem; }
+  .investigation h4 span { color: var(--green); }
+  .module { display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr); column-gap: clamp(2rem,5vw,5.3rem); padding-block: clamp(2rem,4.2vw,3.6rem); border-top: 1px solid var(--rule); scroll-margin-top: 1rem; }
+  .module:last-child { padding-bottom: 0; }
+  .module .eyebrow { margin-bottom: .55rem; }
+  .module h3 { font-size: clamp(2rem,3.6vw,3.2rem); line-height: 1.06; }
+  .model { margin-top: 1rem; color: var(--ink); font-size: 1.04rem; }
+  dl { margin: 1.2rem 0 0; }
+  dt { margin-top: 1rem; color: var(--green); font-weight: 730; }
+  dd { margin: .24rem 0 0; line-height: 1.55; color: var(--muted); }
+  .capture { display: block; position: relative; border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; cursor: zoom-in; }
+  .capture img { width: 100%; height: auto; display: block; }
+  .capture span { position: absolute; bottom: .55rem; right: .55rem; background: #183a39; color: white; font-size: .75rem; padding: .25rem .55rem; border-radius: 3px; }
+  figcaption { margin-top: .45rem; color: var(--muted); font-size: .83rem; }
+  .investigation { border-left: 3px solid #629b86; padding-left: 1rem; margin-top: 1.35rem; }
+  .investigation h4 { font-size: 1.13rem; line-height: 1.3; margin: 0; }
+  .investigation p { margin: .35rem 0; line-height: 1.5; color: var(--muted); }
+  .investigation a { font-size: .88rem; color: var(--green); }
+  @media(max-width: 860px) { .module { grid-template-columns: 1fr; gap: 1.25rem; } }
+</style>

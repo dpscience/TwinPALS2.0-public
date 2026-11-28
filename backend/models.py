@@ -18,19 +18,21 @@ class Curve(StrictModel):
     x_unit: str
     y_unit: str
     semantics: str
-    points: list[tuple[float, float]] = Field(min_length=2, max_length=20000)
+    points: list[tuple[float, float]] = Field(max_length=20000)
 
     @model_validator(mode="after")
     def validate_points(self):
-        optical = self.name in ('refractive_index','absorption_length','quantum_efficiency','reflectivity','transmittance') or self.name.startswith('emission')
+        optical = self.name in ('refractive_index','absorption_length','quantum_efficiency','reflectivity','transmittance','cathode_n','cathode_k') or self.name.startswith('emission')
         if optical and self.x_unit not in ('nm','eV'):
             raise ValueError('Optical curves use wavelength in nm or photon energy in eV')
         if self.name.startswith('emission') and self.y_unit in ('1/nm','1/eV') and self.y_unit != '1/'+self.x_unit:
             raise ValueError('Emission density units must match the wavelength or energy axis')
         xs = [p[0] for p in self.points]
+        if len(xs) < 2 and self.name not in ('cathode_n', 'cathode_k'):
+            raise ValueError("A curve requires at least two points")
         if any(b <= a for a, b in zip(xs, xs[1:])):
             raise ValueError("Curve x values must be strictly increasing and unique")
-        if self.x_unit in ("eV", "nm", "keV", "MeV") and min(xs) <= 0:
+        if xs and self.x_unit in ("eV", "nm", "keV", "MeV") and min(xs) <= 0:
             raise ValueError("Energy/wavelength values must be positive")
         ys = [p[1] for p in self.points]
         if self.name == 'gain_hv' and (self.x_unit != 'V' or self.y_unit != '1' or min(xs)<=0 or min(ys)<=0):
@@ -90,6 +92,14 @@ class Entry(StrictModel):
                     value=component.get(key)
                     if not isinstance(value,(int,float)) or isinstance(value,bool) or not math.isfinite(value):
                         raise ValueError(f'Component {key} must be a finite number')
+        if self.category == 'pmt' and self.properties.get('cathode_reflections'):
+            for curve in self.curves:
+                if curve.name in ('cathode_n', 'cathode_k'):
+                    if len(curve.points) < 2:
+                        raise ValueError("Enabled cathode optics require at least two points per curve")
+                    minimum = min(y for _, y in curve.points)
+                    if curve.y_unit not in ('1', 'dimensionless') or minimum < 0 or (curve.name == 'cathode_n' and minimum == 0):
+                        raise ValueError('Cathode optics require dimensionless n > 0 and k ≥ 0.')
         if len({c.name for c in self.curves}) != len(self.curves):
             raise ValueError("Curve names must be unique in one entry")
         for key, value in self.properties.items():

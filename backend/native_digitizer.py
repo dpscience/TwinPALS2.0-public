@@ -9,20 +9,22 @@ from functools import lru_cache
 import numpy as np
 
 from .analog_pmt import native_library
+from .native_acquisition import charge_parameters
 
 
 class Pulse(ct.Structure):
-    _fields_ = [('onsets', ct.c_void_p), ('count', ct.c_int32), ('order', ct.c_int32),
+    _fields_ = [('onsets', ct.c_void_p), ('count', ct.c_int32), ('order', ct.c_double),
                 ('origin', ct.c_double), ('tau', ct.c_double), ('scale', ct.c_double),
-                ('polarity', ct.c_double), ('factor', ct.c_double)]
+                ('polarity', ct.c_double), ('factor', ct.c_double), ('cutoff', ct.c_double), ('width', ct.c_double),
+                ('seed', ct.c_uint64), ('record', ct.c_uint64)]
 
 
 @lru_cache(maxsize=1)
 def binding():
     lib = native_library()
-    if lib is None or not hasattr(lib, 'tp_adc_waveform'):
+    if lib is None or not hasattr(lib, 'tp_adc_waveform_spe_shape'):
         return None
-    fn = lib.tp_adc_waveform
+    fn = lib.tp_adc_waveform_spe_shape
     fn.argtypes = [ct.c_void_p, ct.c_void_p, ct.c_int, ct.POINTER(Pulse), ct.c_int,
                    ct.c_double, ct.c_double, ct.c_double, ct.c_double, ct.c_uint,
                    ct.c_void_p, ct.POINTER(ct.c_int)]
@@ -46,7 +48,7 @@ def sample_channel(fn, times, background, selected, resolved, ch, output):
         arrays.append(onsets)  # retain storage until the native call returns
         descriptors[i] = Pulse(onsets.ctypes.data, len(onsets), response['order'], pulse['origin'],
                                response['tau_ns'], response['voltage_scale_mV'],
-                               -1 if response['polarity']=='negative' else 1, factor)
+                               -1 if response['polarity']=='negative' else 1, factor,*charge_parameters(response),int(pulse['record']))
     levels = 2**resolved['digitizer']['adc_bits']
     bandwidth = settings['input_bandwidth_MHz']
     pole = 1000/(2*np.pi*bandwidth) if bandwidth else 0.

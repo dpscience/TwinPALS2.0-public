@@ -11,7 +11,7 @@ import {PhaseBadge} from './SessionBadges';
 import {SessionEmpty} from './SessionEmpty';
 import {Field,NumberField} from './Fields';
 import {Plot} from './Plot';
-import {analysisMetrics,metricNames,makePlot,emptyHistogram} from './analysisModel';
+import {analysisMetricsFor,makePlot,emptyHistogram} from './analysisModel';
 
 import {roleNames,roleColors} from './Simulation';
 import {number} from './api';
@@ -39,9 +39,13 @@ export default function AnalysisView({analyses,selection,plottedSelection,setSel
    </div>
   </div>
   {error&&<div className="inline-error" role="alert">{error}</div>}
-  <div className={`analysis-content ${hasSession?"has-session":""}`}><div className="analysis-scroll">{!hasSession?<SessionEmpty kind="analysis" open={open} locked={locked}/>:<div className="analysis-grid">{analysisMetrics.map((metric,i)=><div className="analysis-cell" key={i}>
+  <div className={`analysis-content ${hasSession?"has-session":""}`}><div className="analysis-scroll">{!hasSession?<SessionEmpty kind="analysis" open={open} locked={locked}/>:<div className="analysis-grid">{analysisMetricsFor(selection).map((metric,i)=>{
+   const reflection=metric==='reflections'||metric==='cathode_reflections';
+   const index=analyses.findIndex(a=>a.metric===metric);
+   const plot=plots[index]??emptyHistogram(metric,selection);
+   return <div className="analysis-cell" key={i}>
 
-   {<Plot sharedHidden={legend.hidden} hideLegend activity={{active:!!sessionPhase&&["Live","Reading"].includes(sessionPhase)||loading||analyses[i]?.loading===true||(analyses[i]?.total_events??0)<processing.processed,processed:analyses[i]?.total_events??0,total:processing.total}} preferenceKey={`analysis.${selection.basis??'anode'}.${i}.${metric}`} busy={loading} suppressZero={{checked:selection.suppress_zero?.includes(metric)??false,onChange:checked=>setSelection(s=>({...s,suppress_zero:checked?[...(s.suppress_zero??[]).filter(m=>m!==metric),metric]:(s.suppress_zero??[]).filter(m=>m!==metric)}))}} data={plots.find(p=>p.title===metricNames[metric])??emptyHistogram(metric,plottedSelection)}/>}
-  </div>)}</div>}{hasSession&&<SharedLegend legend={legend}/>}</div>{hasSession&&<aside className="analysis-outcomes"><OutcomePanel streams={summaryStreams.map(s=>({...s,label:roleNames[s.role]??s.role,color:roleColors[s.role]}))}/></aside>}</div>
+   {<Plot sharedHidden={legend.hidden} hideLegend activity={{active:!!sessionPhase&&["Live","Reading"].includes(sessionPhase)||loading||analyses[index]?.loading===true||(analyses[index]?.total_events??0)<processing.processed,processed:analyses[index]?.total_events??0,total:processing.total}} preferenceKey={`analysis.${selection.basis??'anode'}.${i}.${metric}`} busy={loading} suppressZero={{checked:selection.suppress_zero?.includes(metric)??false,onChange:checked=>setSelection(s=>({...s,suppress_zero:checked?[...(s.suppress_zero??[]).filter(m=>m!==metric),metric]:(s.suppress_zero??[]).filter(m=>m!==metric)}))}} data={reflection?{...plot,title:'Optical reflections',xLabel:'Reflections per event'}:plot} titleAdornment={reflection&&<select className="reflection-scope" aria-label="Reflection surface" value={metric} onChange={e=>{const scope=e.currentTarget.value==='cathode_reflections'?'cathode_reflections':'reflections';setSelection(s=>({...s,reflection_scope:scope}));}}><option value="reflections">Crystal / window</option><option value="cathode_reflections">Photocathode</option></select>}/>}
+  </div>;})}</div>}{hasSession&&<SharedLegend legend={legend}/>}</div>{hasSession&&<aside className="analysis-outcomes"><OutcomePanel streams={summaryStreams.map(s=>({...s,label:roleNames[s.role]??s.role,color:roleColors[s.role]}))}/></aside>}</div>
  </main>;
 }

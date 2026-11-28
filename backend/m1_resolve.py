@@ -143,7 +143,12 @@ def resolve_profile(raw, materials):
         if reference not in ('external_tube','intrinsic_cathode'): raise ValueError(sensor['name'] + ': declare the QE reference plane')
         coupling_entry=get(d['coupling_id'],['coupling']); coupling=optical(coupling_entry)
         window_entry=pp['window_material']; window=optical(window_entry)
-        if reference == 'external_tube':
+        film = {}
+        if pp.get('cathode_reflections') and d['pmt_cathode_reflections']:
+            from .photocathode_film import resolve_film
+            film['film'] = resolve_film(sensor,window,qe)
+            film['film'].pop('normal')
+        elif reference == 'external_tube':
             window.pop('absorption_length_mm',None)
             window['bulk_attenuation_disabled_for_external_qe']=True
             if pp['window_thickness_mm']>0:
@@ -164,7 +169,7 @@ def resolve_profile(raw, materials):
         front=[d['distance_mm']*math.cos(math.radians(d['azimuth_deg'])),d['distance_mm']*math.sin(math.radians(d['azimuth_deg'])),d['vertical_offset_mm']]
         direction=axis(d['azimuth_deg'],d['tilt_deg'])
         detectors.append({'id':d['id'],'shape':d['shape'],'dimensions':d['dimensions'],'front_mm':front,'axis':direction,'up':[0,1,0],
-                          'material':material,'sensor':{'qe':qe,**aperture('photocathode'),'qe_reference_plane':reference},'coupling':coupling,'window':window,'surface':surface,'pmt':{k:pp[k] for k in ('cathode_gap_mm','tube_shape','tube_diameter_mm','tube_width_mm','tube_length_mm') if k in pp}})
+                          'material':material,'sensor':{'qe':qe,**film,**aperture('photocathode'),'qe_reference_plane':reference},'coupling':coupling,'window':window,'surface':surface,'pmt':{k:pp[k] for k in ('cathode_gap_mm','tube_shape','tube_diameter_mm','tube_width_mm','tube_length_mm') if k in pp}})
     sg=profile['source_geometry']; assembly=profile['assembly']; saxis=axis(assembly['azimuth_deg'],assembly['tilt_deg'])
     source_geometry={'position_mm':[0,0,0],'axis':saxis,'radius_mm':sg['radius_mm'],'thickness_mm':sg['thickness_mm']}
     blocks=[]; sample=profile['sample']
@@ -191,7 +196,8 @@ def resolve_profile(raw, materials):
                        'material':bulk(get(shield['material_id'],['shield']))})
     run=profile['run']; threads=resolve_threads(run['threads'],min(run['events'],run['secondary_events']) if profile['source']=='na22' else run['events'])
     source_profile=next(s for s in source_profiles() if s['id']==profile['source'])
-    response=[operating_point(entries[d['pmt_id']],d['pmt_hv_V'],d['pmt_load_ohm'],d['pmt_polarity']) for d in profile['detectors']]
+    response=[operating_point(entries[d['pmt_id']],d['pmt_hv_V'],d['pmt_load_ohm'],d['pmt_polarity'],
+                              d.get('pmt_shape_factor', 1.) if d.get('pmt_shape_enabled') else 1.) for d in profile['detectors']]
     resolved={'source':profile['source'],'physics':dict(profile['physics']),'events':run['events'],'seed':run['seed'],'threads':threads,'analog_response':response,
               'source_profile':source_profile,'source_geometry':source_geometry,'detectors':detectors,'blocks':blocks,'output':{'trajectory_sample_limit':run['trajectory_sample_limit'],'optical_tracks_per_detector':run['optical_tracks_per_detector']}}
     return resolved,list(dict.fromkeys(warnings))

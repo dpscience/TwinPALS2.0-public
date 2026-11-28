@@ -1,0 +1,88 @@
+.absorber-study {
+  border: 1px solid #355459; border-radius: .8rem; overflow: hidden;
+  background: #122c31; color: #eff7f1;
+}
+.absorber-study button { cursor: pointer; font: inherit; }
+.research-prompt { padding: 1.1rem clamp(1rem,3vw,2rem); border-bottom: 1px solid #355459; background: #17353a; }
+.research-prompt .prompt-label { font-weight: 650; color: #abe6d6; }
+.research-prompt blockquote p + p { margin-top: .55rem; }
+.research-prompt a { color: #a3e8d5; overflow-wrap: anywhere; }
+.research-prompt blockquote { max-width: 85ch; margin: .85rem 0; font: 1rem/1.65 var(--mono); }
+.research-prompt button { border: 1px solid #557170; border-radius: .35rem; padding: .4rem .7rem; color: #dbe9e3; background: transparent; }
+.copy-status { margin-inline-start: .5rem; }
+.scan-grid { display: grid; grid-template-columns: minmax(0,.88fr) minmax(0,1.12fr); }
+.scan-results,.scan-figure { padding: clamp(1rem,3.3vw,2.4rem); min-width: 0; }
+.study-goal h3,.scan-results h3 { margin: 0 0 1rem; font-size: clamp(1.65rem,3vw,2.65rem); line-height: 1.12; letter-spacing: -.05em; }
+.scan-results p { max-width: 42ch; color: #d1dfdc; font-size: 1rem; line-height: 1.65; }
+.scan-results p + p { margin-top: 1rem; }
+.absorber-study :is(button,a):focus-visible { outline: 2px solid #ffd094; outline-offset: 3px; }
+.scan-figure { margin: 0; border-left: 1px solid #355459; align-self: stretch; }
+.scan-figure img { display: block; width: 100%; height: auto; margin-bottom: .75rem; }
+.scan-figure figcaption { color: #a7c0ba; margin-top: .5rem; font-size: .83rem; line-height: 1.55; }
+@media (max-width: 900px) {
+  .scan-grid { grid-template-columns: minmax(0,1fr); }
+  .scan-figure { border-left: 0; border-top: 1px solid #355459; }
+}
+.request-line { padding: 1.35rem clamp(1rem,3vw,2rem) .8rem; background: #17353a; }
+.request-heading { display: flex; gap: .75rem; align-items: center; justify-content: space-between; margin: 0 0 .9rem; }
+.example-heading { color: #a5e5d3; font-size: 1.15rem; letter-spacing: -.015em; margin: 0; }
+.short-request { display: flex; align-items: baseline; gap: .6ch; max-width: 65ch; font: clamp(1.05rem,1.6vw,1.45rem)/1.45 var(--mono); color: #eef8f2; }
+.request-chevron { color: #9be1cc; }
+.request-copy { position: relative; }
+.typed-request { display: none; }
+.short-request[data-typing] [data-short] { opacity: 0; }
+.short-request[data-typing] .typed-request { display: block; position: absolute; inset: 0; pointer-events: none; user-select: none; }
+.request-motion { display: grid; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: .35rem; color: #abcac2; background: transparent; }
+.request-motion:hover { background: #24474b; color: #edf8f3; }
+.request-motion span { width: .55rem; height: .67rem; border-inline: 2px solid currentColor; }
+.request-motion[data-paused="true"] span { width: 0; height: 0; border: solid transparent; border-width: .35rem 0 .35rem .55rem; border-left-color: currentColor; }
+.prompt-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem 1rem; margin-top: 1rem; }
+.agent-working { display: inline-flex; align-items: center; gap: .55em; color: #aec7c1; font-size: .94rem; font-weight: 600; }
+.agent-working::before { content: ''; width: .45em; height: .45em; border-radius: 50%; background: #93d4c3; }
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  [data-motion-enabled] .agent-working {
+    color: transparent; background: linear-gradient(105deg,#adc4bf 35%,#f5fffb 50%,#adc4bf 65%) 100% 50% / 250% 100%;
+    background-clip: text; animation: working-shimmer 2s linear infinite;
+  }
+  @keyframes working-shimmer { to { background-position: 0% 50%; } }
+}
+.research-prompt { padding-top: .25rem; }
+
+.study-geometry { padding: clamp(1rem,3.3vw,2.4rem); border-bottom: 1px solid #355459; scroll-margin-top: 6rem; }
+.study-geometry h3 { margin: 0 0 .6rem; font-size: clamp(1.5rem,2.6vw,2.2rem); line-height: 1.15; letter-spacing: -.035em; }
+.study-geometry > p { max-width: 77ch; color: #d1dfdc; line-height: 1.6; }
+.geometry-key { display: flex; flex-wrap: wrap; gap: .45rem 1.4rem; margin: 1.2rem 0; color: #c4d6d1; font-size: .85rem; }
+.geometry-key span { display: inline-flex; align-items: center; gap: .45rem; }
+.geometry-key span::before { content: ''; display: block; }
+.source-key::before { width: .52rem; height: .52rem; border-radius: 50%; background: #ffe4a7; }
+.prompt-key::before,.pair-key::before { width: 1.5rem; border-top: 2px solid #ffbc70; }
+.pair-key::before { border-top: 2px dashed #8ce1cd; }
+.geometry-panels { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem 2rem; }
+.geometry-panels figure { margin: 0; border-top: 1px solid #355459; padding-top: .9rem; }
+.geometry-panels h4 { margin: 0; font-size: 1.1rem; }
+.geometry-panels img { display: block; width: 100%; height: auto; margin-inline: auto; }
+.geometry-panels figcaption { color: #c3d4cf; line-height: 1.55; font-size: .95rem; }
+@media (max-width: 620px) {
+  .geometry-panels { grid-template-columns: minmax(0,1fr); }
+}
+
+.scan-results p a { color: #a3e8d5; }
+
+.study-goal { padding: clamp(1rem,3.3vw,2.4rem); border-bottom: 1px solid #355459; }
+.study-goal > div { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem 2rem; }
+.study-goal p { color: #d1dfdc; line-height: 1.65; }
+.study-goal a { color: #a3e8d5; }
+@media(max-width: 760px) { .study-goal > div { grid-template-columns: 1fr; } }
+.scan-table { border-top: 1px solid #355459; padding: clamp(1rem,3.3vw,2.4rem); }
+.comparison-values { width: 100%; border-collapse: collapse; font-size: .94rem; font-variant-numeric: tabular-nums; }
+.comparison-values caption { text-align: left; font-weight: 650; font-size: 1.15rem; margin-bottom: .7rem; }
+.comparison-values th,.comparison-values td { padding: .45rem .5rem; text-align: right; border-bottom: 1px solid #355459; }
+.comparison-values th:first-child { text-align: left; }
+.comparison-values thead { color: #bcd7d0; }
+.comparison-values tbody th { font-weight: 500; }
+.comparison-values .control { background: #1c3a3f; }
+.scan-figure picture { display: block; }
+@media(max-width: 480px) {
+  .comparison-values { font-size: .82rem; }
+  .comparison-values :is(th,td) { padding-inline: .25rem; }
+}

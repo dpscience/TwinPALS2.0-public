@@ -1,0 +1,20 @@
+---
+import WorkerSchedule from './WorkerSchedule.astro';
+import {Image} from 'astro:assets';
+import observer from '../assets/start-absorber-observer.webp';
+---
+<section class="architecture" id="architecture" aria-labelledby="worker-heading">
+  <WorkerSchedule />
+  <div class="agent-details">
+    <div><h3>Look in on a running study</h3><p>Open the read-only observer to see which runs are ready, which settings they use and which spectra are available. Submitted steps keep running if you close the AI client.</p>
+    </div>
+    <details open class="observer-detail"><summary>View the observer capture from this scan</summary><a href={observer.src} target="_blank" rel="noopener noreferrer"><Image src={observer} alt="TwinPALS study observer captured during transport. Four detector runs share sixteen CPU workers, with the bare 180° geometry selected." format="webp" width={900} loading="lazy" /></a></details>
+  </div>
+</section>
+<style>
+  .architecture {
+    background: var(--paper);
+    color: var(--ink);
+    padding: clamp(1rem,3.3vw,2.4rem);
+  }
+</style>

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663
 
-"""Bounded, CRC-checked readers and histogram analysis for TPSTRM06.
+"""Bounded, CRC-checked readers and histogram analysis for TPSTRM07.
 
 Every analysis holds file handles at their initial sizes for both passes. Appended
 events are picked up by the next analysis; an incomplete last .part frame is not
@@ -21,16 +21,16 @@ import struct
 from typing import BinaryIO, Iterator
 import zlib
 
-MAGIC = b'TPSTRM06'
+MAGIC = b'TPSTRM07'
 PREFIX = struct.Struct('<QI15d')
-DETECTOR = struct.Struct('<IQ7dQI2d')
+DETECTOR = struct.Struct('<IQ7dQI2dQ')
 EVENT_BYTES = PREFIX.size + 2*DETECTOR.size
 FRAME = struct.Struct('<4sII')
 MAX_HEADER = 64 * 1024 * 1024
 MAX_FRAME = 16 * 1024 * 1024
 METRICS = {'energy': 'keV', 'mean_arrival': 'ns', 'photon_count': 'photoelectrons',
            'depth': 'mm', 'polar_angle': 'deg', 'azimuth': 'deg',
-           'track_length': 'mm', 'reflections': 'reflections', 'pulse_height': 'mV'}
+           'track_length': 'mm', 'reflections': 'reflections', 'cathode_reflections': 'reflections', 'pulse_height': 'mV'}
 ROLES = {'na22_prompt': 'Na-22 1275 keV', 'na22_annihilation': 'Na-22 511 keV pair',
          'co60_1173': 'Co-60 1173 keV', 'co60_1332': 'Co-60 1332 keV'}
 
@@ -107,13 +107,30 @@ def _open_shared_read(path):
         raise
     return os.fdopen(descriptor, 'rb')
 
+def response_calibration(responses):
+    """Two optical roles share the tube calibration but have independent charge draws."""
+    return [{k:v for k,v in r.items() if k!='charge_seed'} for r in responses]
+
+
 def validate_analog_responses(responses):
     """Shared M1/M2 immutable analytic-response contract."""
     if not isinstance(responses,list) or len(responses)!=2: raise StreamError('The stream requires both analog PMT response snapshots')
+    from .analog_pmt import MODEL, SPE_MODEL, GAMMA_MODEL, GAMMA_SPE_MODEL, WEIGHTED_MODELS, charge_law
     for r in responses:
-        if (not isinstance(r,dict) or r.get('model')!='erlang-fixed-charge-v1'
-                or type(r.get('order')) is not int or not 2<=r['order']<=32
+        if (not isinstance(r,dict) or r.get('model') not in (MODEL,SPE_MODEL,GAMMA_MODEL,GAMMA_SPE_MODEL)
+                or type(r.get('order')) not in (float,int) or not 2<=r['order']<=32
+                or (r['model'] in (MODEL,SPE_MODEL) and type(r['order']) is not int)
                 or r.get('polarity') not in ('positive','negative')): raise StreamError('Invalid analog PMT model')
+        if r['model'] in WEIGHTED_MODELS:
+            spread=r.get('spe_charge_spread_percent')
+            if (type(spread) not in (float,int) or not 0<spread<100 or
+                    type(r.get('charge_seed')) is not int or not 0<=r['charge_seed']<2**53):
+                raise StreamError('Invalid single-photoelectron charge spread or seed')
+            for k,expected in zip(('charge_cutoff','charge_scale'),charge_law(spread)):
+                if type(r.get(k)) not in (int,float) or not math.isclose(r[k],expected,rel_tol=1e-10,abs_tol=1e-12 if k=='charge_cutoff' else 0.):
+                    raise StreamError('Invalid single-photoelectron charge distribution')
+        elif any(k in r for k in ('charge_cutoff','charge_scale','charge_seed')):
+            raise StreamError('Fixed-charge PMT snapshot contains parameters for a different charge model')
         for key in ('tau_ns','charge_C','load_ohm','voltage_scale_mV'):
             if not isinstance(r.get(key),(int,float)) or not math.isfinite(r[key]) or r[key]<=0: raise StreamError('Invalid analog PMT parameter: '+key)
         if not math.isclose(r['voltage_scale_mV'],r['charge_C']*r['load_ohm']*1e12,rel_tol=1e-10): raise StreamError('PMT charge and voltage/load reference disagree')
@@ -135,12 +152,12 @@ def minimum_energy(header):
 def _header(file: BinaryIO, limit: int):
     file.seek(0)
     if limit < 12 or file.read(8) != MAGIC:
-        raise StreamError('This file is not a current TwinPALS analog stream. Run Module 1 again to save individual photoelectrons and the analog PMT response.')
+        raise StreamError('This file is not a current TwinPALS analog stream. Generate a new Module 1 stream to record separate crystal/window and photocathode reflection counts.')
     length, = struct.unpack('<I', file.read(4))
     if length > MAX_HEADER or length + 12 > limit:
         raise StreamError('Invalid or incomplete stream header')
     header = _json(file.read(length))
-    if header.get('format') != 'twinpals-stream' or header.get('version') != 6:
+    if header.get('format') != 'twinpals-stream' or header.get('version') != 7:
         raise StreamError('Unsupported stream format or version')
     components=header.get('light_components')
     if not isinstance(components,list) or not 1<=len(components)<=256 or any(not isinstance(c,dict) or c.get('id')!=i or not all(isinstance(c.get(k),str) and c[k] for k in ('volume','label','material')) for i,c in enumerate(components)):
@@ -344,7 +361,7 @@ class _Snapshot:
                         raise StreamError('Photoelectron times disagree with DetectorInfo count/mean')
                     from .light_origin import validate
                     validate(analog[i],flags,self.header)
-                    if not all(math.isfinite(v) for v in d[11:]) or d[11]>0 or d[12]<0 or (not hits and any(d[11:])):
+                    if not all(math.isfinite(v) for v in d[11:13]) or d[11]>0 or d[12]<0 or (not hits and any(d[11:13])):
                         raise StreamError('Invalid analog voltage extrema')
                     if (self.header['analog_response'][i]['polarity']=='negative' and d[12]!=0) or (self.header['analog_response'][i]['polarity']=='positive' and d[11]!=0):raise StreamError('Anode extrema disagree with pulse polarity')
                     observed[i]=max(observed[i],-d[11],d[12])
@@ -442,6 +459,7 @@ def _values(metric, prefix, d, role, pose, origin="all"):
     if metric == 'photon_count': return (d[1],)
     if metric == 'pulse_height': return (max(-d[11],d[12]),)
     if metric == 'reflections': return (d[9],)
+    if metric == 'cathode_reflections': return (d[13],)
     if metric == 'mean_arrival': return (d[3],) if d[0] & 1 else ()
     if metric == 'track_length': return (d[8],) if d[0] & 1 else ()
     if metric == 'depth':
@@ -514,7 +532,7 @@ def analyze(paths, requestdict, cancel=None):
         if chosen_range is not None: low,high=chosen_range
         elif low == math.inf: low,high=0.,1.
         elif low == high:
-            half = .5 if metric in ('photon_count','reflections') else max(abs(low)*.01, .0005)
+            half = .5 if metric in ('photon_count','reflections','cathode_reflections') else max(abs(low)*.01, .0005)
             low,high=low-half,high+half
         edges = [float(low+(high-low)*i/bins) for i in range(bins+1)]
         for row in series.values(): row['edges'] = edges

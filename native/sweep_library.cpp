@@ -153,7 +153,7 @@ void metadata(std::string& out,const Settings& s,uint64_t serial,const Crossing&
 
 SWEEP_API void* tp_sweep_cache_create(){try{return new sweep_shape::Cache;}catch(...){return nullptr;}}
 SWEEP_API void tp_sweep_cache_destroy(sweep_shape::Cache* cache){delete cache;}
-SWEEP_API int tp_accepted_sweeps_v2(const sweeps::Settings* settings,const sweeps::Input* maps,
+SWEEP_API int tp_accepted_sweeps_v4(const sweeps::Settings* settings,const sweeps::Input* maps,
         const acquisition_scan::Response* response,const double* baseAxes,const sweeps::Pulse* pulses,
         int pulseCount,const uint64_t* addresses,double maximumTail,double filterTail,double known,
         const sweeps::Crossing* crossings,const uint64_t* seeds,uint64_t serial,int batch,
@@ -193,7 +193,7 @@ SWEEP_API int tp_accepted_sweeps_v2(const sweeps::Settings* settings,const sweep
                 }
                 const auto& r=response[2*p->role+p->channel];
                 signals[p->channel].push_back({onsets,static_cast<int>(addr[1]),r.order,p->origin,r.tau,r.scale,
-                                               static_cast<double>(r.polarity),r.factor});
+                                               static_cast<double>(r.polarity),r.factor,nullptr,r.charge,p->record});
                 if(cache){
                     auto& signal=signals[p->channel].back();
                     tables.push_back(cache->get(p->record,p->role,p->channel,signal,s.filter));

@@ -16,7 +16,7 @@ using Table=adc_waveform::SampledResponse;
 using Entry=std::shared_ptr<const Table>;
 
 inline Entry build(const adc_waveform::Pulse& p,double filter){
-    if(p.order<12||p.order>24||p.count<16||p.count>65536||!(p.tau>0)||
+    if(p.order!=std::floor(p.order)||p.order<12||p.order>24||p.count<16||p.count>65536||!(p.tau>0)||
        (filter>0&&(filter/p.tau<.25||filter/p.tau>4||std::abs(filter/p.tau-1)<1e-5)))return {};
     std::vector<double> sorted(p.onsets,p.onsets+p.count);
     if(!std::is_sorted(sorted.begin(),sorted.end()))std::sort(sorted.begin(),sorted.end());
@@ -27,7 +27,8 @@ inline Entry build(const adc_waveform::Pulse& p,double filter){
     auto table=std::make_shared<Table>();
     table->first=first;table->inverseStep=1./step;table->last=first+cells*step;
     analog_pmt::Response shape;shape.order=p.order;shape.tau=p.tau;shape.filterTau=filter;
-    analog_pmt::Chain chain(sorted.data(),sorted.size(),shape,true);
+    auto weights=p.charge.weights(sorted.size(),p.event);
+    analog_pmt::Chain chain(sorted.data(),sorted.size(),shape,true,weights.empty()?nullptr:weights.data());
     table->knots.resize(static_cast<size_t>(cells)+8);
     for(size_t i=3;i<table->knots.size();++i)
         table->knots[i]=chain.at(first+(i-3)*step);
@@ -38,7 +39,10 @@ inline Entry build(const adc_waveform::Pulse& p,double filter){
     // the coordinate subtraction, and the positive binary64 chain sums.
     const double rounding=512*std::numeric_limits<double>::epsilon()*
         (p.order*(8192.+cells)+p.count+64+(std::abs(first)+std::abs(sorted.back())+tail)/p.tau);
-    table->unitError=p.count/p.tau*(2.23e-9+rounding);
+    double total=p.count;
+    if(!weights.empty()){total=0;for(double w:weights)total+=w;}
+    table->chargeSum=total;
+    table->unitError=total/p.tau*(2.23e-9+rounding);
     return table;
 }
 

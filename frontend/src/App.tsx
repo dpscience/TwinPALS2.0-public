@@ -7,7 +7,7 @@ import ReleaseUpdates from './ReleaseUpdates';
 import {outcomeProgress} from './processingProgress';
 import {percent} from './api';
 import {ImportWorkers} from './ImportWorkers';
-import {analysisMetrics} from './analysisModel';
+import {analysisMetricsFor} from './analysisModel';
 import {mergeRunUpdate} from './runUpdates';
 import type {RunUpdate} from './runUpdates';
 import {lockBackground} from './modalInert';
@@ -130,11 +130,11 @@ function Workbench(){
   if(!analysisPaths.length&&(!run||active(run)&&run.completed===0))return;
   if(!force&&analysisAbort.current&&!analysisAbort.current.signal.aborted)return;
   analysisAbort.current?.abort();const controller=new AbortController();analysisAbort.current=controller;const cacheKey=JSON.stringify([analysisPaths,run?.id,selection]);const cached=analysisCache.current.get(cacheKey);if(force){if(cached){setAnalyses(cached);setPlottedSelection(selection);}setAnalysisLoading(!cached);}setAnalysisError('');
-  try{const data=await api<Analysis[]>('/m1/analysis/batch',{method:'POST',signal:controller.signal,body:JSON.stringify({...selection,basis:selection.basis??'anode',include_positions:false,metrics:analysisMetrics,...(analysisPaths.length?{paths:analysisPaths}:{run_id:run!.id})})});if(!controller.signal.aborted&&analysisAbort.current===controller){setAnalyses(data);setPlottedSelection(selection);analysisCache.current.delete(cacheKey);analysisCache.current.set(cacheKey,data);while(analysisCache.current.size>24)analysisCache.current.delete(analysisCache.current.keys().next().value!);
+  try{const data=await api<Analysis[]>('/m1/analysis/batch',{method:'POST',signal:controller.signal,body:JSON.stringify({...selection,basis:selection.basis??'anode',include_positions:false,metrics:analysisMetricsFor(selection),...(analysisPaths.length?{paths:analysisPaths}:{run_id:run!.id})})});if(!controller.signal.aborted&&analysisAbort.current===controller){setAnalyses(data);setPlottedSelection(selection);analysisCache.current.delete(cacheKey);analysisCache.current.set(cacheKey,data);while(analysisCache.current.size>24)analysisCache.current.delete(analysisCache.current.keys().next().value!);
    const alternate:AnalysisSelection={...selection,basis:selection.basis==='crystal'?'anode':'crystal',origin:'all'};
    const alternateKey=JSON.stringify([analysisPaths,run?.id,alternate]);
    setAnalysisLoading(false);
-   try{const prepared=await api<Analysis[]>('/m1/analysis/batch',{method:'POST',signal:controller.signal,body:JSON.stringify({...alternate,include_positions:false,metrics:analysisMetrics,...(analysisPaths.length?{paths:analysisPaths}:{run_id:run!.id})})});
+   try{const prepared=await api<Analysis[]>('/m1/analysis/batch',{method:'POST',signal:controller.signal,body:JSON.stringify({...alternate,include_positions:false,metrics:analysisMetricsFor(alternate),...(analysisPaths.length?{paths:analysisPaths}:{run_id:run!.id})})});
     if(!controller.signal.aborted)analysisCache.current.set(alternateKey,prepared);
    }catch{/* Background preparation never invalidates the visible result. */}
   }}

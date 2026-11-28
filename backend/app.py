@@ -242,6 +242,14 @@ def create_app(data_dir=None, project_root=None, catalogue_path=None):
             require_shared_idle(); store.put_entry(raw['entry'],raw.get('expected_revision'))
         return materials()
 
+    @app.get('/api/materials/{key}/factory-optics')
+    def available_factory_optics(key:str):
+        return store.database.factory_optics(key)
+
+    @app.post('/api/materials/{key}/factory-optics')
+    def preview_factory_optics(key:str,raw:dict):
+        return store.database.factory_optics(key,raw)
+
     @app.delete('/api/materials/{key}')
     def delete_material(key:str,expected_revision:int):
         with controls:
@@ -428,10 +436,16 @@ def create_app(data_dir=None, project_root=None, catalogue_path=None):
     async def analysis_batch(request:Request,raw:dict):
         return await run_in_threadpool(JSONResponse,await scan(request,raw,batch=True))
 
+    @app.post('/api/m1/cathode-optics')
+    def cathode_optics(raw:dict):
+        from .material_database import validated_entry
+        from .photocathode_film import normal_incidence_plot
+        return normal_incidence_plot(validated_entry(raw))
+
     @app.post('/api/m1/pmt-response')
     def pmt_response(raw:dict):
         from .analog_pmt import operating_point
-        return operating_point(raw['entry'],raw.get('hv_V'),raw.get('load_ohm',50),raw.get('polarity','negative'))
+        return operating_point(raw['entry'],raw.get('hv_V'),raw.get('load_ohm',50),raw.get('polarity','negative'),raw.get('shape_factor',1.))
 
     def pulse_previews(raw):
         source=analysis_store(raw)
@@ -519,7 +533,7 @@ def create_app(data_dir=None, project_root=None, catalogue_path=None):
         from .cathode_arrivals import arrival_plot
         onsets,arrivals,responses,event,role,origins,components=event_optics(raw,include_arrivals=True)
         from .light_origin import NAMES
-        from .analog_pmt import evaluate
+        from .analog_pmt import evaluate, spe_weights
         import numpy as np
         pulse=pulse_plot(onsets,responses,event,role)
         provenance=[];contributions=[]
@@ -530,8 +544,14 @@ def create_app(data_dir=None, project_root=None, catalogue_path=None):
             ids,ns=np.unique(tags[tags[:,0]==2,1],return_counts=True)
             provenance.append(dict(detector='AB'[d],kind=NAMES[code],scintillation=counts[0],cherenkov=counts[1],births=[dict(**components[int(i)],photons=int(n)) for i,n in zip(ids,ns)]))
             x=np.asarray(pulse['series'][d]['points'])[:,0]
+            weights=spe_weights(onsets[d],responses[d],event)
             for mechanism,name,color in ((1,'Scintillation','#198f8c'),(2,'Cherenkov','#dc8b26')):
-                if counts[mechanism-1]:contributions.append(dict(name=f'{name} · {"AB"[d]}',color=color,dashed=bool(d),points=np.column_stack((x,evaluate(np.asarray(onsets[d])[tags[:,0]==mechanism],responses[d],x,current=True))).tolist()))
+                if counts[mechanism-1]:
+                    selected = tags[:,0]==mechanism
+                    current = evaluate(np.asarray(onsets[d])[selected], responses[d], x, current=True, event=event,
+                                       weights=None if weights is None else weights[selected])
+                    contributions.append(dict(name=f'{name} · {"AB"[d]}',color=color,dashed=bool(d),
+                                              points=np.column_stack((x,current)).tolist()))
         # A single response always binds both views to the same immutable event.
         return dict(pulse=pulse,contributions=contributions,provenance=provenance,
                     arrivals=arrival_plot(arrivals,event,role,raw.get('bins',120)))

@@ -54,7 +54,7 @@ def register(app,store,manager,controls,require_shared_idle):
         x=np.linspace(lo,hi,1000);rail=p['digitization']['full_range_mV']/2
         series=[]
         for ch,(a,r,c) in enumerate(zip(onsets,responses,p['channels'])):
-            y=evaluate(a,r,x-c['cable_delay_ns'],filter_tau_ns=tau)*10**(-c['attenuation_dB']/20)
+            y=evaluate(a,r,x-c['cable_delay_ns'],filter_tau_ns=tau,event=event)*10**(-c['attenuation_dB']/20)
             series.append(dict(name='Channel '+'AB'[ch],color=('#198f8c','#9870ca')[ch],points=np.column_stack((x,y)).tolist()))
         return dict(title=f'Digitizer input · event {event}',xLabel='Time after gamma emission (ns)',yLabel='Voltage (mV)',series=series,
             levels=[dict(y=-rail,label='Negative rail'),dict(y=rail,label='Positive rail')],

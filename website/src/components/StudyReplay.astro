@@ -1,0 +1,133 @@
+---
+import {Image} from 'astro:assets';
+import Architecture from './Architecture.astro';
+import data from '../data/absorber-summary.json';
+import comparisonPlot from '../assets/start-comparison.png';
+import compactPlot from '../assets/start-comparison-compact.png';
+import opposedSetup from '../assets/start-opposed.png';
+import perpendicularSetup from '../assets/start-perpendicular.png';
+import './replay.css';
+const bare = data.rows.find(row => row.key === 'bare180')!;
+const reference = data.rows.find(row => row.key === 'ref90')!;
+const tungsten = data.rows.find(row => row.key === 'w120')!;
+const timeChange = (percent: number) => new Intl.NumberFormat('en-US', {
+  style: 'percent', signDisplay: 'exceptZero', maximumFractionDigits: 1
+}).format(percent / 100);
+const comparisonRows = [bare, reference, ...data.rows.filter(row => row.material).sort((a,b) => a.mm - b.mm || a.material.localeCompare(b.material))];
+const thesis = 'https://doi.org/10.25972/OPUS-37663';
+---
+<section class="absorber-study" id="mcp-example" aria-labelledby="example-heading" data-absorber>
+  <div class="request-line">
+    <div class="request-heading">
+      <h3 class="example-heading" id="example-heading">TwinPALS MCP | Example study</h3>
+      <button type="button" class="request-motion" data-motion-toggle hidden aria-label="Pause example animation" title="Pause example animation"><span aria-hidden="true"></span></button>
+    </div>
+    <p class="short-request"><span class="request-chevron" aria-hidden="true">›</span><span class="request-copy"><span data-short>At equal solid angles, how much shielding at 180° brings START pile-up (1275/511 keV) close to the 90° reference?</span><span class="typed-request" aria-hidden="true"></span></span></p>
+  </div>
+  <div class="research-prompt"><p class="prompt-label">Agent prompt</p>
+    <blockquote><p>Use the digitizer and detector assembly from the Boras high-purity aluminium setup. Model the PSI DRS4 and both BC-422Q (0.5%) truncated cones with the 19 mm entrance, 40 mm rear and 27.9 mm length. Use PTFE wrapping, silicone coupling and R3377 photomultipliers. Take the sample and lifetime inputs from §5.4.6.2 and Table 22 of the <a href={thesis} target="_blank" rel="noopener noreferrer">Boras dissertation (DOI 10.25972/OPUS-37663)</a>.</p>
+      <p>Adapt the arrangements in Figs. 85 and 87 to keep the geometric solid angle of each crystal entrance fixed. Face A (START) and B (STOP) towards the sodium-22 point source and keep both active front faces 15 mm away. Compare bare 180° with 90° and its lead separator. At 180°, insert Pb or W in front of START at 0.5, 1, 1.5, 4.2, 8 and 12 mm. Hold the detector positions fixed as the plates thicken towards the source. Include attenuation and scattering in the shielding.</p>
+      <p>Hold source activity, digitizer settings and analysis windows fixed. Compare same-decay START pile-up (1275/511 keV) and the percentage change in measurement time for equal A→B spectrum counts, using bare 180° as the time reference.</p></blockquote>
+    <div class="prompt-footer">
+      <span class="agent-working" aria-hidden="true">Working</span>
+      <div><button type="button" data-copy-prompt>Copy prompt</button><span class="copy-status" role="status"></span></div>
+    </div>
+  </div>
+  <section class="study-geometry" id="study-geometry" aria-labelledby="study-geometry-heading">
+    <h3 id="study-geometry-heading">The same solid angle at 180° and 90°</h3>
+    <p>Each 19 mm crystal entrance faces the source from 15 mm away. The shaded cones show the resulting 32.35° half-angle. The arrows trace one possible decay.</p>
+    <div class="geometry-key" aria-hidden="true"><span class="source-key">Source in sample</span><span class="prompt-key">1275 keV prompt photon</span><span class="pair-key">511 keV annihilation pair</span></div>
+    <div class="geometry-panels">
+      <figure>
+        <h4>180° · Opposed detectors</h4>
+        <Image src={opposedSetup} width={840} loading="lazy" alt="Both crystal faces are 15 mm from the source. B (STOP) is on the left and A (START) on the right. The dashed 511 keV paths point into opposite detectors. The solid prompt path also enters START."/>
+        <figcaption>The partner photon heads towards START, where it can add to the prompt pulse. The outlined plate marks where Pb or W is added for the shielding scan.</figcaption>
+      </figure>
+      <figure>
+        <h4>90° · Perpendicular detectors</h4>
+        <Image src={perpendicularSetup} width={840} loading="lazy" alt="Detector B (STOP) is above the source and detector A (START) is to its right. One 511 keV photon enters STOP and its partner travels down, missing START. A lead separator lies between the detectors."/>
+        <figcaption>The partner photon travels away from START. The independently emitted prompt photon can still reach START and form a lifetime coincidence with STOP.</figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="study-goal" id="study-goal" aria-labelledby="study-goal-heading">
+    <h3 id="study-goal-heading">Goal of the study</h3>
+    <div>
+      <p>Many positron lifetime spectrometers use a 180° geometry. The detectors can sit close to the source and cover a large solid angle, shortening the time needed to collect a spectrum. When a 511 keV photon reaches STOP, its partner can enter START alongside the 1275 keV prompt photon. Their light can overlap in one pulse and shift the measured start time. Boras and colleagues showed how this pile-up biases lifetimes measured in aluminium. <a href="https://doi.org/10.1088/1748-0221/20/10/T10006" target="_blank" rel="noopener noreferrer">Boras et al., JINST (2025)</a></p>
+      <p>At 90°, the partner photon travels away from START. We use that geometry as a low-pile-up reference and keep each crystal at the same source distance and solid angle in both setups. At 180°, a lead or tungsten plate preferentially attenuates 511 keV photons, but it also removes some useful prompt photons. How close can shielding bring the START pile-up fraction to the 90° level, and how much extra measurement time does that cost at equal A→B counts?</p>
+    </div>
+  </section>
+  <section class="scan-grid" id="study-results" aria-labelledby="study-results-heading">
+    <div class="scan-results">
+      <h3 id="study-results-heading">Results</h3>
+      <p>At matched solid angles, moving from bare 180° to 90° reduced the START pile-up fraction from {bare.fraction.toFixed(1)}% to {reference.fraction.toFixed(2)}%. Both geometries took nearly the same measurement time to collect equal A→B spectrum counts.</p>
+      <p>At 180°, 12 mm of tungsten gave the lowest residual pile-up among the tested plates ({tungsten.fraction.toFixed(2)}%) and increased measurement time by {timeChange(tungsten.penalty).replace('+','')}. Lead at the same thickness retained more pile-up and required less measurement time.</p>
+    </div>
+    <figure class="scan-figure">
+      <picture>
+        <source media="(max-width: 560px)" srcset={compactPlot.src} />
+        <Image src={comparisonPlot} width={1200} loading="lazy" alt="START pile-up decreases as the START absorber thickens, while measurement time generally increases. The separate reference region shows bare 180° and the 90° setup."/>
+      </picture>
+      <figcaption>Read START pile-up on the left axis and the change in measurement time on the right. Both use {bare.counts} accepted A→B entries per geometry. Bare 180° sets the 0% time baseline.</figcaption>
+    </figure>
+  </section>
+  <div class="scan-table">
+    <table class="comparison-values">
+      <caption>All configurations at equal A→B counts</caption>
+      <thead><tr><th scope="col">Geometry and START absorber</th><th scope="col">START pile-up</th><th scope="col">Measurement time change</th></tr></thead>
+      <tbody>{comparisonRows.map(row => <tr class:list={[{control: !row.material}]}><th scope="row">{row.material ? `180° · ${row.mm} mm ${row.material}` : row.label}</th><td>{row.fraction.toFixed(2)}%</td><td>{timeChange(row.penalty)}</td></tr>)}</tbody>
+    </table>
+  </div>
+  <Architecture />
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-absorber]').forEach(root=>{
+    const request = root.querySelector<HTMLElement>('.short-request')!;
+    const original = request.querySelector('[data-short]')!.textContent!;
+    const typed = request.querySelector<HTMLElement>('.typed-request')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-motion-toggle]')!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let paused = false;
+    let inView = false;
+    let timer: number | undefined;
+    let length = 0;
+
+    function typeNext() {
+      length = length === original.length ? 1 : length + 1;
+      typed.textContent = original.slice(0, length);
+      timer = window.setTimeout(typeNext, length === original.length ? 3000 : 30);
+    }
+
+    function syncMotion() {
+      window.clearTimeout(timer);
+      const enabled = !paused && !reduced.matches;
+      const typing = enabled && inView && !document.hidden;
+      root.toggleAttribute('data-motion-enabled', enabled);
+      request.toggleAttribute('data-typing', typing);
+      toggle.hidden = reduced.matches;
+      toggle.dataset.paused = String(paused);
+      toggle.title = paused ? 'Resume example animation' : 'Pause example animation';
+      toggle.setAttribute('aria-label', toggle.title);
+      length = 0;
+      if (typing) typeNext();
+    }
+
+    toggle.addEventListener('click', () => {
+      paused = !paused;
+      syncMotion();
+    });
+    reduced.addEventListener('change', syncMotion);
+    document.addEventListener('visibilitychange', syncMotion);
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      syncMotion();
+    }).observe(request);
+    syncMotion();
+    root.querySelector<HTMLButtonElement>('[data-copy-prompt]')?.addEventListener('click',async()=>{
+      const prompt=root.querySelector('blockquote')!;
+      const status=root.querySelector<HTMLElement>('.copy-status')!;
+      try {await navigator.clipboard.writeText(prompt.innerText.trim());status.textContent='Copied.';}
+      catch {const range=document.createRange();range.selectNodeContents(prompt);const selection=window.getSelection();selection?.removeAllRanges();selection?.addRange(range);status.textContent='Prompt selected for copying.';}
+    });
+  });
+</script>

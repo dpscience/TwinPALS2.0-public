@@ -205,7 +205,8 @@ class Engine:
             for source in inputs:
                 if source!=fingerprint(source['path']):
                     raise ValueError('An input changed during the measurement: '+source['path'])
-            preview={'plot':science.plots,'trajectories':state.pop('trajectories',[])}
+            preview={'version':2,'charts':science.charts,'plot':science.charts[0] if science.charts else None,
+                     'trajectories':state.pop('trajectories',[])}
             atomic_json(folder/'preview.json',preview)
             receipt=dict(run_id=run['id'],study_id=run['study'],attempt=run['attempt'],module=run['module'],
                          status=state['status'],started=started,finished=time.time(),workers=run['workers'],

@@ -5,8 +5,7 @@
 """Charge-normalized effective PMT response, independent of any digitizer.
 
 The stored representation is a sum of Erlang kernels with double-precision PE
-onsets, not sampled voltages. Its tail is infinite and its integral is exactly
-N_PE e G. The dynode-count/order identification is an explicit model convention.
+onsets, not sampled voltages. Each accepted electron has mean charge e G. The dynode-count/order identification is an explicit model convention.
 """
 from functools import lru_cache
 import math
@@ -18,6 +17,84 @@ import sys
 E_CHARGE = 1.602176634e-19
 FWHM_SIGMA = math.sqrt(8 * math.log(2))
 MODEL = 'erlang-fixed-charge-v1'
+SPE_MODEL = 'erlang-truncated-gaussian-charge-v1'
+GAMMA_MODEL = 'gamma-fixed-charge-v1'
+GAMMA_SPE_MODEL = 'gamma-truncated-gaussian-charge-v1'
+WEIGHTED_MODELS = (SPE_MODEL, GAMMA_SPE_MODEL)
+_MASK = (1 << 64) - 1
+
+
+@lru_cache(maxsize=128)
+def charge_law(percent):
+    """Lower cutoff and scale of a positive Gaussian with mean 1 and the requested CV."""
+    if not 0 < percent < 100:
+        raise ValueError('Single-photoelectron charge spread must be between 0 and 100%.')
+    # Below binary64 resolution the weight is indistinguishable from unity.
+    cv = max(percent / 100., 2.**-54)
+    if cv < .1:
+        return -1. / cv, cv  # omitted negative tail below 8e-24
+
+    def moments(a):
+        if a < 3.:
+            hazard = math.sqrt(2/math.pi)*math.exp(-a*a/2)/math.erfc(a/math.sqrt(2))
+            mean = hazard-a
+            return mean, math.sqrt(1-hazard*mean)/mean
+        # Continued fraction for the mean excess above a. Its negative
+        # derivative is the variance, avoiding cancellation in the upper tail.
+        tail = derivative = 0.
+        for k in range(80, 1, -1):
+            den = a+tail
+            derivative = -k*(1+derivative)/(den*den)
+            tail = k/den
+        return 1/(a+tail), math.sqrt(1+derivative)
+
+    lo, hi = -1/cv-1, max(4., 2/math.sqrt(1-cv))
+    for _ in range(65):
+        mid = (lo+hi)/2
+        if moments(mid)[1] < cv: lo = mid
+        else: hi = mid
+    return mid, 1/moments(mid)[0]
+
+
+def event_charge_seed(response, event):
+    return (response['charge_seed'] ^ ((int(event)+1)*0xd1b54a32d192ed03)) & _MASK
+
+
+def stream_responses(responses, seed, role_index):
+    return [dict(r, charge_seed=int(seed)*4+2*role_index+ch)
+            if r['model'] in WEIGHTED_MODELS else r for ch,r in enumerate(responses)]
+
+
+def spe_weights(onsets, response, event):
+    """Return weights in input order using stable chronological rank for tied times."""
+    if response.get('model') not in WEIGHTED_MODELS: return None
+    cutoff, scale = response['charge_cutoff'], response['charge_scale']
+    state = event_charge_seed(response, event)
+    ranked = np.empty(len(onsets))
+    lib = native_library()
+    if lib is not None:
+        lib.tp_spe_weights(len(onsets), cutoff, scale, state, ranked)
+    else:
+        def uniform():
+            nonlocal state
+            state = (state+0x9e3779b97f4a7c15) & _MASK
+            z = state
+            z = ((z^(z>>30))*0xbf58476d1ce4e5b9) & _MASK
+            z = ((z^(z>>27))*0x94d049bb133111eb) & _MASK
+            return (((z^(z>>31))>>11)+.5)*2**-53
+        for i in range(len(onsets)):
+            while True:
+                if cutoff < 0:
+                    y = math.sqrt(-2*math.log(uniform()))*math.cos(2*math.pi*uniform())-cutoff
+                    if y > 0: break
+                else:
+                    rate = (cutoff+math.hypot(cutoff,2))/2
+                    y = -math.log(uniform())/rate
+                    if uniform() <= math.exp(-.5*(y-1/rate)**2): break
+            ranked[i] = y*scale
+    weights = np.empty_like(ranked)
+    weights[np.argsort(onsets,kind='stable')] = ranked
+    return weights
 
 
 @lru_cache(maxsize=1)
@@ -26,17 +103,28 @@ def native_library():
     path=root/'.runtime/bin/twinpals-analog.dll'
     if not path.exists(): return None
     lib=ctypes.CDLL(str(path))
+    if not hasattr(lib,'tp_analog_evaluate_shape'):
+        raise RuntimeError('Rebuild the native TwinPALS runtime for the current PMT response model.')
     vector=np.ctypeslib.ndpointer(dtype=np.float64,ndim=1,flags='C_CONTIGUOUS')
-    lib.tp_analog_evaluate.argtypes=[vector,ctypes.c_int,vector,ctypes.c_int,ctypes.c_int,ctypes.c_double,ctypes.c_double,vector]
-    lib.tp_analog_evaluate.restype=ctypes.c_int
-    lib.tp_analog_peak.argtypes=[vector,ctypes.c_int,ctypes.c_int,ctypes.c_double]
-    lib.tp_analog_peak.restype=ctypes.c_double
-    if hasattr(lib,'tp_persistence_batch'):
-        lib.tp_persistence_batch.argtypes=[
+    lib.tp_analog_evaluate_shape.argtypes=[vector,ctypes.c_int,vector,ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.c_double,vector]
+    lib.tp_analog_evaluate_shape.restype=ctypes.c_int
+    lib.tp_analog_peak_shape.argtypes=[vector,ctypes.c_int,ctypes.c_double,ctypes.c_double]
+    lib.tp_analog_peak_shape.restype=ctypes.c_double
+    if not hasattr(lib,'tp_spe_weights'):
+        raise RuntimeError('Rebuild the native TwinPALS runtime for single-photoelectron charge support.')
+    lib.tp_spe_weights.argtypes=[ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.c_uint64,vector]
+    lib.tp_spe_weights.restype=None
+    lib.tp_analog_weighted_shape.argtypes=[vector,vector,ctypes.c_int,vector,ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.c_double,vector]
+    lib.tp_analog_weighted_shape.restype=ctypes.c_int
+    if hasattr(lib,'tp_persistence_batch_shape'):
+        lib.tp_persistence_batch_shape.argtypes=[
             ctypes.c_char_p,ctypes.c_size_t,np.ctypeslib.ndpointer(np.uint64,ndim=2,flags='C_CONTIGUOUS'),ctypes.c_int,
-            vector,ctypes.c_int,ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.c_double,
+            vector,ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.c_double,ctypes.c_double,
             np.ctypeslib.ndpointer(np.int64,ndim=3,flags='C_CONTIGUOUS')]
-        lib.tp_persistence_batch.restype=ctypes.c_int
+        lib.tp_persistence_batch_shape.restype=ctypes.c_int
+        if hasattr(lib,'tp_persistence_spe_batch_shape'):
+            lib.tp_persistence_spe_batch_shape.argtypes=lib.tp_persistence_batch_shape.argtypes+[ctypes.c_double,ctypes.c_double,ctypes.c_uint64]
+            lib.tp_persistence_spe_batch_shape.restype=ctypes.c_int
     if hasattr(lib,'tp_stream_crc32'):
         lib.tp_stream_crc32=ctypes.PYFUNCTYPE(ctypes.c_uint32,ctypes.c_void_p,ctypes.c_size_t)(('tp_stream_crc32',lib))
     if hasattr(lib,'tp_transport_validate'):
@@ -121,6 +209,9 @@ def validate_response(p):
         allow_zero = key in ('tts_ns','calibration_flash_fwhm_ns')
         if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value < 0 or (not allow_zero and value==0):
             raise ValueError(f'PMT response → {key.replace("_"," ")}: enter a finite {"nonnegative" if allow_zero else "positive"} value.')
+    spread = p.get('spe_charge_spread_percent', 0.)
+    if type(spread) not in (float,int) or not 0 <= spread < 100:
+        raise ValueError('Single-photoelectron charge spread must be a percentage from 0 to below 100.')
     if 'dynodes' in p and (int(p['dynodes']) != p['dynodes'] or not 2 <= p['dynodes'] <= 32):
         raise ValueError('PMT response → Dynodes: enter an integer from 2 to 32.')
     if p.get('tts_convention','fwhm') not in ('fwhm','sigma'):
@@ -135,7 +226,7 @@ def validate_response(p):
         calibrate(int(p['dynodes']),p['rise_ns'],sigma,p['calibration_flash_fwhm_ns'])
 
 
-def operating_point(entry, hv=None, load_ohm=50., polarity='negative'):
+def operating_point(entry, hv=None, load_ohm=50., polarity='negative', shape_factor=1.):
     p = entry['properties']
     missing = [key for key in RESPONSE_FIELDS if key not in p]
     if missing: raise ValueError(f'{entry["name"]}: missing PMT response fields: '+', '.join(missing))
@@ -160,10 +251,24 @@ def operating_point(entry, hv=None, load_ohm=50., polarity='negative'):
     # Calibrate at the rise-time measurement HV, then scale the intrinsic tube
     # response. A fixed laboratory flash must not scale with operating HV.
     ref_sigma = p['tts_ns']/(FWHM_SIGMA if p['tts_convention']=='fwhm' else 1)*math.sqrt(p['tts_hv_V']/p['rise_hv_V'])
-    cal = calibrate(int(p['dynodes']),p['rise_ns'],ref_sigma,p['calibration_flash_fwhm_ns'])
+    if type(shape_factor) not in (int,float) or not math.isfinite(shape_factor):
+        raise ValueError('PMT shape factor must be finite.')
+    order = int(p['dynodes']) * shape_factor
+    if not 2 <= order <= 32:
+        raise ValueError(f"PMT shape factor × {p['dynodes']} dynodes must give an effective order between 2 and 32.")
+    if order == int(order): order = int(order)
+    cal = calibrate(order,p['rise_ns'],ref_sigma,p['calibration_flash_fwhm_ns'])
     scale = math.sqrt(p['rise_hv_V']/voltage)
-    return dict(model=MODEL, pmt_id=entry['id'], hv_V=voltage, gain=gain,
-        order=int(p['dynodes']), tau_ns=cal['tau_ns']*scale,
+    charge = {}
+    spread = p.get('spe_charge_spread_percent', 0.)
+    if spread:
+        cutoff, width = charge_law(spread)
+        charge = dict(spe_charge_spread_percent=spread, charge_cutoff=cutoff, charge_scale=width, charge_seed=0)
+    model = SPE_MODEL if spread else MODEL
+    if isinstance(order,float):
+        model = GAMMA_SPE_MODEL if spread else GAMMA_MODEL
+    return dict(model=model, **charge, pmt_id=entry['id'], hv_V=voltage, gain=gain,
+        order=order, tau_ns=cal['tau_ns']*scale,
         transit_ns=transit, tts_sigma_ns=sigma, rise_ns=rise,
         onset_delay_ns=transit-cal['calibration_peak_ns']*scale,
         charge_C=E_CHARGE*gain, load_ohm=float(load_ohm), polarity=polarity,
@@ -176,6 +281,8 @@ def operating_point(entry, hv=None, load_ohm=50., polarity='negative'):
 @lru_cache(maxsize=256)
 def tail_span(order, tau, fraction=1e-12):
     """Time containing 1-fraction of each PE's charge; representation stays exact."""
+    # The next integer order bounds the fractional distribution's upper tail.
+    order = math.ceil(order)
     def survival(x): return math.exp(-x)*sum(x**k/math.factorial(k) for k in range(order))
     lo,hi = float(order),max(100.,order*4.)
     for _ in range(60):
@@ -185,19 +292,24 @@ def tail_span(order, tau, fraction=1e-12):
     return (lo+hi)/2*tau
 
 
-def evaluate(onsets, response, times, *, current=False, filter_tau_ns=0.):
+def evaluate(onsets, response, times, *, current=False, filter_tau_ns=0., event=0, weights=None):
     """Exact kernel sum at arbitrary requested coordinates; bounded temporary RAM."""
     times = np.asarray(times,dtype=float)
     out = np.zeros_like(times)
     onsets = np.asarray(onsets,dtype=float)
+    if weights is None: weights=spe_weights(onsets,response,event)
     lib=native_library()
     if lib is not None and len(times)>0 and np.all(np.diff(times)>=0):
-        rc=lib.tp_analog_evaluate(np.ascontiguousarray(onsets),len(onsets),np.ascontiguousarray(times),len(times),response['order'],response['tau_ns'],filter_tau_ns,out)
+        fn=lib.tp_analog_evaluate_shape if weights is None else lib.tp_analog_weighted_shape
+        args=[np.ascontiguousarray(onsets)] if weights is None else [np.ascontiguousarray(onsets),np.ascontiguousarray(weights)]
+        rc=fn(*args,len(onsets),np.ascontiguousarray(times),len(times),response['order'],response['tau_ns'],filter_tau_ns,out)
         if rc: raise ValueError('Analog response evaluation failed: '+str(rc))
     else:
         if filter_tau_ns: raise ValueError('The native analog library is required for the digitizer input filter. Build the current native runtime.')
         for first in range(0,len(onsets),128):
-            out += kernel(times[:,None]-onsets[None,first:first+128],response['order'],response['tau_ns']).sum(axis=1)
+            terms = kernel(times[:,None]-onsets[None,first:first+128],response['order'],response['tau_ns'])
+            if weights is not None: terms *= weights[first:first+128]
+            out += terms.sum(axis=1)
     scale = response['charge_C']*1e12 if current else response['voltage_scale_mV']
     return out*scale*(-1 if response['polarity']=='negative' else 1)  # mA or mV
 
@@ -213,4 +325,4 @@ def pulse_plot(onsets_by_detector, responses, event_id, role, points=800):
     x = np.linspace(start,end,points)
     return dict(title='Anode current I(t)',xLabel='Time after gamma emission (ns)',yLabel='Anode current (mA)',
         event_id=event_id,role=role,series=[dict(name=f'Detector {"AB"[i]}',color=('#198f8c','#688aca')[i],dashed=bool(i),
-        points=np.column_stack((x,evaluate(a,r,x,current=True))).tolist()) for i,(a,r) in enumerate(zip(onsets_by_detector,responses))])
+        points=np.column_stack((x,evaluate(a,r,x,current=True,event=event_id))).tolist()) for i,(a,r) in enumerate(zip(onsets_by_detector,responses))])

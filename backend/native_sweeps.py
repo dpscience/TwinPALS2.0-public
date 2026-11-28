@@ -13,7 +13,7 @@ import weakref
 
 import numpy as np
 
-from .native_acquisition import Response
+from .native_acquisition import Response, charge_parameters
 
 
 class FrameBuffers:
@@ -71,7 +71,7 @@ def binding():
         return None
     try:
         library = ct.CDLL(str(path))
-        fn = library.tp_accepted_sweeps_v2
+        fn = library.tp_accepted_sweeps_v4
         library.tp_sweep_histories
         library.tp_copy_sweeps
         fn._dll = library
@@ -104,7 +104,7 @@ def configuration(resolved):
         for r, ch in zip(library.responses, p['channels']):
             gain = 10**(-ch['attenuation_dB']/20)
             responses.append(Response(r['order'], -1 if r['polarity']=='negative' else 1,
-                                      r['tau_ns'], r['voltage_scale_mV'], -gain if ch.get('invert') else gain))
+                                      r['tau_ns'], r['voltage_scale_mV'], -gain if ch.get('invert') else gain, *charge_parameters(r)))
     return settings, (Response*4)(*responses)
 
 
