@@ -1,0 +1,805 @@
+{
+  "budget": 16,
+  "rows": [
+    {
+      "key": "bare180",
+      "label": "Bare 180°",
+      "material": "",
+      "mm": 0,
+      "counts": 800,
+      "fraction": 30.0,
+      "penalty": 0.0
+    },
+    {
+      "key": "pb05",
+      "label": "0.5 mm Pb",
+      "material": "Pb",
+      "mm": 0.5,
+      "counts": 800,
+      "fraction": 22.625,
+      "penalty": -3.7154489149008207
+    },
+    {
+      "key": "pb10",
+      "label": "1 mm Pb",
+      "material": "Pb",
+      "mm": 1.0,
+      "counts": 800,
+      "fraction": 25.625,
+      "penalty": 19.210998708276826
+    },
+    {
+      "key": "pb15",
+      "label": "1.5 mm Pb",
+      "material": "Pb",
+      "mm": 1.5,
+      "counts": 800,
+      "fraction": 25.0,
+      "penalty": 22.634889932418687
+    },
+    {
+      "key": "pb42",
+      "label": "4.2 mm Pb",
+      "material": "Pb",
+      "mm": 4.2,
+      "counts": 800,
+      "fraction": 16.875,
+      "penalty": 26.03823935917362
+    },
+    {
+      "key": "pb80",
+      "label": "8 mm Pb",
+      "material": "Pb",
+      "mm": 8.0,
+      "counts": 800,
+      "fraction": 9.0,
+      "penalty": 56.22932150276427
+    },
+    {
+      "key": "pb120",
+      "label": "12 mm Pb",
+      "material": "Pb",
+      "mm": 12.0,
+      "counts": 800,
+      "fraction": 4.25,
+      "penalty": 104.76673104446697
+    },
+    {
+      "key": "w05",
+      "label": "0.5 mm W",
+      "material": "W",
+      "mm": 0.5,
+      "counts": 800,
+      "fraction": 24.375,
+      "penalty": 9.391952256580183
+    },
+    {
+      "key": "w10",
+      "label": "1 mm W",
+      "material": "W",
+      "mm": 1.0,
+      "counts": 800,
+      "fraction": 26.25,
+      "penalty": 9.543070129990848
+    },
+    {
+      "key": "w15",
+      "label": "1.5 mm W",
+      "material": "W",
+      "mm": 1.5,
+      "counts": 800,
+      "fraction": 20.25,
+      "penalty": 17.549981189413177
+    },
+    {
+      "key": "w42",
+      "label": "4.2 mm W",
+      "material": "W",
+      "mm": 4.2,
+      "counts": 800,
+      "fraction": 15.25,
+      "penalty": 43.08428950019152
+    },
+    {
+      "key": "w80",
+      "label": "8 mm W",
+      "material": "W",
+      "mm": 8.0,
+      "counts": 800,
+      "fraction": 5.375,
+      "penalty": 118.21007084597821
+    },
+    {
+      "key": "w120",
+      "label": "12 mm W",
+      "material": "W",
+      "mm": 12.0,
+      "counts": 800,
+      "fraction": 2.125,
+      "penalty": 222.18284641593132
+    },
+    {
+      "key": "ref90",
+      "label": "90° reference",
+      "material": "",
+      "mm": 0,
+      "counts": 800,
+      "fraction": 0.375,
+      "penalty": -0.46396375543863444
+    }
+  ],
+  "runs": [
+    {
+      "geometry": "bare180",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 0.0,
+      "end": 65.126106
+    },
+    {
+      "geometry": "bare180",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 65.426991,
+      "end": 79.308964
+    },
+    {
+      "geometry": "bare180",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 79.744482,
+      "end": 81.01287
+    },
+    {
+      "geometry": "pb05",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 0.654209,
+      "end": 65.140442
+    },
+    {
+      "geometry": "pb05",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 66.076184,
+      "end": 81.349102
+    },
+    {
+      "geometry": "pb05",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 82.212297,
+      "end": 83.308574
+    },
+    {
+      "geometry": "pb10",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 1.182413,
+      "end": 65.132466
+    },
+    {
+      "geometry": "pb10",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 66.811577,
+      "end": 81.286752
+    },
+    {
+      "geometry": "pb10",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 82.45012,
+      "end": 83.284062
+    },
+    {
+      "geometry": "pb15",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 1.351365,
+      "end": 65.123775
+    },
+    {
+      "geometry": "pb15",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 66.949565,
+      "end": 82.125992
+    },
+    {
+      "geometry": "pb15",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 82.928258,
+      "end": 83.392512
+    },
+    {
+      "geometry": "pb42",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 81.34963,
+      "end": 149.563197
+    },
+    {
+      "geometry": "pb42",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 149.88073,
+      "end": 167.030768
+    },
+    {
+      "geometry": "pb42",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 168.320185,
+      "end": 170.755633
+    },
+    {
+      "geometry": "pb80",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 83.61443,
+      "end": 149.947564
+    },
+    {
+      "geometry": "pb80",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 150.279831,
+      "end": 210.638398
+    },
+    {
+      "geometry": "pb80",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 211.537893,
+      "end": 212.756621
+    },
+    {
+      "geometry": "pb120",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 84.287829,
+      "end": 149.925582
+    },
+    {
+      "geometry": "pb120",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 151.042804,
+      "end": 251.479254
+    },
+    {
+      "geometry": "pb120",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 256.222648,
+      "end": 260.794899
+    },
+    {
+      "geometry": "w05",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 84.502018,
+      "end": 151.245606
+    },
+    {
+      "geometry": "w05",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 151.538091,
+      "end": 161.895057
+    },
+    {
+      "geometry": "w05",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 162.381698,
+      "end": 163.7607
+    },
+    {
+      "geometry": "w10",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 164.213012,
+      "end": 210.278013
+    },
+    {
+      "geometry": "w10",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 210.710213,
+      "end": 239.133855
+    },
+    {
+      "geometry": "w10",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 240.716505,
+      "end": 241.615177
+    },
+    {
+      "geometry": "w15",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 173.152416,
+      "end": 212.128956
+    },
+    {
+      "geometry": "w15",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 212.638359,
+      "end": 243.259781
+    },
+    {
+      "geometry": "w15",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 243.67266,
+      "end": 244.185788
+    },
+    {
+      "geometry": "w42",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 213.939479,
+      "end": 242.360168
+    },
+    {
+      "geometry": "w42",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 243.28568,
+      "end": 303.974003
+    },
+    {
+      "geometry": "w42",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 304.400248,
+      "end": 305.302122
+    },
+    {
+      "geometry": "w80",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 242.022165,
+      "end": 285.597471
+    },
+    {
+      "geometry": "w80",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 287.604905,
+      "end": 346.505992
+    },
+    {
+      "geometry": "w80",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 346.840309,
+      "end": 348.932475
+    },
+    {
+      "geometry": "w120",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 245.134665,
+      "end": 288.264112
+    },
+    {
+      "geometry": "w120",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 290.390291,
+      "end": 460.932824
+    },
+    {
+      "geometry": "w120",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 462.160682,
+      "end": 464.296867
+    },
+    {
+      "geometry": "ref90",
+      "repeat": 1,
+      "stage": 1,
+      "workers": 4,
+      "start": 265.911582,
+      "end": 299.359836
+    },
+    {
+      "geometry": "ref90",
+      "repeat": 1,
+      "stage": 2,
+      "workers": 2,
+      "start": 300.327193,
+      "end": 382.743943
+    },
+    {
+      "geometry": "ref90",
+      "repeat": 1,
+      "stage": 3,
+      "workers": 2,
+      "start": 383.707565,
+      "end": 385.042442
+    },
+    {
+      "geometry": "bare180",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 306.230732,
+      "end": 332.153011
+    },
+    {
+      "geometry": "bare180",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 332.525736,
+      "end": 341.55302
+    },
+    {
+      "geometry": "bare180",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 341.954786,
+      "end": 342.817399
+    },
+    {
+      "geometry": "pb05",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 343.185504,
+      "end": 381.803847
+    },
+    {
+      "geometry": "pb05",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 382.20804,
+      "end": 400.462714
+    },
+    {
+      "geometry": "pb05",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 400.793717,
+      "end": 401.317333
+    },
+    {
+      "geometry": "pb10",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 349.802642,
+      "end": 382.789215
+    },
+    {
+      "geometry": "pb10",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 384.205918,
+      "end": 402.66738
+    },
+    {
+      "geometry": "pb10",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 403.643305,
+      "end": 405.718803
+    },
+    {
+      "geometry": "pb15",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 385.65974,
+      "end": 433.588575
+    },
+    {
+      "geometry": "pb15",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 435.076947,
+      "end": 456.336929
+    },
+    {
+      "geometry": "pb15",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 456.730029,
+      "end": 457.880824
+    },
+    {
+      "geometry": "pb42",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 401.649494,
+      "end": 447.239056
+    },
+    {
+      "geometry": "pb42",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 447.646115,
+      "end": 469.640203
+    },
+    {
+      "geometry": "pb42",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 470.380961,
+      "end": 474.61613
+    },
+    {
+      "geometry": "pb80",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 410.625958,
+      "end": 448.698344
+    },
+    {
+      "geometry": "pb80",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 449.825584,
+      "end": 515.012408
+    },
+    {
+      "geometry": "pb80",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 516.041798,
+      "end": 516.970767
+    },
+    {
+      "geometry": "pb120",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 458.247616,
+      "end": 500.76809
+    },
+    {
+      "geometry": "pb120",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 503.818675,
+      "end": 606.863868
+    },
+    {
+      "geometry": "pb120",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 608.53524,
+      "end": 611.45497
+    },
+    {
+      "geometry": "w05",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 466.148519,
+      "end": 510.79414
+    },
+    {
+      "geometry": "w05",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 511.905366,
+      "end": 530.576648
+    },
+    {
+      "geometry": "w05",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 532.04525,
+      "end": 533.395158
+    },
+    {
+      "geometry": "w10",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 479.536982,
+      "end": 512.779055
+    },
+    {
+      "geometry": "w10",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 513.226167,
+      "end": 539.833928
+    },
+    {
+      "geometry": "w10",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 542.284304,
+      "end": 547.265395
+    },
+    {
+      "geometry": "w15",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 517.380235,
+      "end": 559.522546
+    },
+    {
+      "geometry": "w15",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 564.122998,
+      "end": 588.438945
+    },
+    {
+      "geometry": "w15",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 589.478889,
+      "end": 590.360481
+    },
+    {
+      "geometry": "w42",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 535.080811,
+      "end": 578.593127
+    },
+    {
+      "geometry": "w42",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 579.056211,
+      "end": 608.196845
+    },
+    {
+      "geometry": "w42",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 609.790867,
+      "end": 611.576596
+    },
+    {
+      "geometry": "w80",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 549.756165,
+      "end": 580.127842
+    },
+    {
+      "geometry": "w80",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 581.301284,
+      "end": 624.611021
+    },
+    {
+      "geometry": "w80",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 624.87906,
+      "end": 625.331226
+    },
+    {
+      "geometry": "w120",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 590.792965,
+      "end": 612.958179
+    },
+    {
+      "geometry": "w120",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 613.388465,
+      "end": 651.085631
+    },
+    {
+      "geometry": "w120",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 651.34339,
+      "end": 651.804271
+    },
+    {
+      "geometry": "ref90",
+      "repeat": 2,
+      "stage": 1,
+      "workers": 4,
+      "start": 612.353644,
+      "end": 634.607659
+    },
+    {
+      "geometry": "ref90",
+      "repeat": 2,
+      "stage": 2,
+      "workers": 2,
+      "start": 634.872675,
+      "end": 654.528982
+    },
+    {
+      "geometry": "ref90",
+      "repeat": 2,
+      "stage": 3,
+      "workers": 2,
+      "start": 654.734302,
+      "end": 655.193407
+    }
+  ]
+}

@@ -216,6 +216,7 @@ static G4ThreeVector isotropic() {
 }
 static json vectorJson(const G4ThreeVector& v, double unit = 1.) { return json::array({v.x() / unit, v.y() / unit, v.z() / unit}); }
 
+#include "cathode_film.hpp"
 #include "config_geometry.hpp"
 #include "optical_boundary.hpp"
 

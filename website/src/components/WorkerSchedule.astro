@@ -1,0 +1,101 @@
+---
+import study from '../data/absorber-summary.json';
+const stages = ['Detector response', 'Digitizer acquisition', 'Lifetime analysis'];
+const labels = new Map(study.rows.map(row => [row.key, row.label]));
+const runs = study.runs.map(({geometry, ...interval}) => ({...interval, name: labels.get(geometry)}));
+const stop=Math.max(...runs.map(r=>r.end));
+const elapsedSeconds = Math.round(stop);
+const elapsedLabel = Math.floor(elapsedSeconds / 60) + ' min ' + elapsedSeconds % 60 + ' s';
+const first=runs.filter(r=>r.stage===1).sort((a,b)=>a.start-b.start).slice(0,4);
+const initial=Math.ceil(Math.max(...first.map(r=>r.start)))+1;
+const initialJobs=runs.filter(r=>r.start<=initial && initial<r.end);
+const bounds = [...new Set(runs.flatMap(run => [run.start, run.end]))].sort((a, b) => a - b);
+const intervals = bounds.slice(0, -1).map((from, i) => {
+  const jobs = runs.filter(run => run.start <= from && from < run.end);
+  return {from, to: bounds[i + 1], jobs: jobs.length,
+    byStage: stages.map((_, j) => jobs.filter(run => run.stage === j + 1).reduce((n, run) => n + run.workers, 0))};
+});
+const peakJobs = Math.max(...intervals.map(interval => interval.jobs));
+const peakWorkers = Math.max(...intervals.map(interval => interval.byStage.reduce((n, used) => n + used, 0)));
+const colors = ['#317b70', '#b07630', '#695f90'];
+const percent = (time: number) => 100 * time / stop;
+---
+<div class="actual-queue" data-worker-log data-runs={JSON.stringify(runs)} data-capacity={study.budget} data-duration={stop} data-stages={JSON.stringify(stages)}>
+  <p class="eyebrow">Recorded worker allocation</p><h3 id="worker-heading">How the absorber scan ran</h3>
+  <p class="runtime">From the first detector transport run to the final lifetime analysis, the scan took <strong><time datetime={`PT${elapsedSeconds}S`}>{elapsedLabel}</time></strong> on an <strong>Intel Core Ultra 7 155H</strong>.</p>
+  <p>Two independent runs for each of {study.rows.length} geometries produced {study.runs.length} module executions. Up to {peakJobs} jobs ran at once, using up to {peakWorkers} allocated workers. Transport used four workers per job. Once its detector responses were ready, a geometry could move on to digitization and then lifetime analysis, each using two workers.</p>
+  <div class="history">
+    <svg viewBox={`0 0 100 ${study.budget}`} preserveAspectRatio="none" role="img" aria-label="Worker allocation over the full scan. Stacked bands represent workers assigned to detector transport, digitization and lifetime analysis.">
+      {intervals.map(({from,to,byStage}) => byStage.map((n,j) => n > 0 && <rect x={percent(from)} width={percent(to-from)} y={study.budget-byStage.slice(0,j+1).reduce((a,b)=>a+b,0)} height={n} fill={colors[j]} />))}
+    </svg>
+    <i data-position style={`left:${percent(initial)}%`}></i>
+  </div>
+  <div class="history-key">{stages.map((name,i) => <span><i style={`background:${colors[i]}`}></i>{name}</span>)}</div>
+  <div class="clock-control"><button type="button" data-play>Play run history</button><label>Workstation run progress <output data-clock>{percent(initial).toFixed(1)}%</output><input type="range" min="0" max={Math.ceil(stop)} value={initial} step="1" aria-valuetext={percent(initial).toFixed(1)+'% of execution time'}/></label></div>
+  <div class="allocation"><strong data-usage>{initialJobs.reduce((n,r)=>n+r.workers,0)} / {study.budget} workers</strong><div class="slots" aria-hidden="true">{Array.from({length:study.budget},(_,i)=><i data-on={i<initialJobs.reduce((n,r)=>n+r.workers,0)}/>)}</div></div>
+  <ul class="jobs">{initialJobs.map(r=><li><strong>{r.name} · run {r.repeat}</strong><span>{stages[r.stage-1]} · {r.workers} workers</span></li>)}</ul>
+  <p class="queue-note">Band height shows the number of workers assigned by the coordinator. The horizontal scale follows the saved start and finish times of the full runs. The measurement-time result above uses the source clock up to the selected spectrum count.</p>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-worker-log]').forEach(root=>{
+    const runs=JSON.parse(root.dataset.runs!) as {name:string,repeat:number,workers:number,stage:number,start:number,end:number}[];
+    const names = JSON.parse(root.dataset.stages!) as string[];
+    const marker = root.querySelector<HTMLElement>('[data-position]')!;
+    const range=root.querySelector<HTMLInputElement>('input')!;
+    const play=root.querySelector<HTMLButtonElement>('[data-play]')!;
+    const list=root.querySelector('ul')!;
+    let timer=0;
+    const pause=()=>{window.clearInterval(timer);timer=0;play.textContent='Play run history';};
+    function draw(){
+      const t=Number(range.value), jobs=runs.filter(r=>r.start<=t&&t<r.end), used=jobs.reduce((n,r)=>n+r.workers,0);
+      const percent = Math.min(100, t / Number(root.dataset.duration) * 100);
+      root.querySelector('output')!.textContent=percent.toFixed(1)+'%';
+      marker.style.left=percent+'%';
+      range.setAttribute('aria-valuetext',percent.toFixed(1)+'% of execution time');
+      root.querySelector('[data-usage]')!.textContent=used+' / '+root.dataset.capacity+' workers';
+      root.querySelectorAll<HTMLElement>('.slots i').forEach((el,i)=>el.dataset.on=String(i<used));
+      list.replaceChildren();
+      for(const r of jobs){
+        const li=document.createElement('li'), title=document.createElement('strong'), note=document.createElement('span');
+        title.textContent=r.name+' · run '+r.repeat; note.textContent=names[r.stage-1]+' · '+r.workers+' workers';
+        li.append(title,note);list.append(li);
+      }
+      if(!jobs.length){const li=document.createElement('li');li.textContent=t>=Number(range.max)?'All run receipts saved.':'Between recorded runs.';list.append(li);}
+    }
+    range.addEventListener('input',()=>{pause();draw();});
+    play.addEventListener('click',()=>{
+      if(timer){pause();return;}
+      if(Number(range.value)>=Number(range.max))range.value='0';
+      play.textContent='Pause replay';draw();
+      timer=window.setInterval(()=>{range.value=String(Math.min(Number(range.max),Number(range.value)+Math.max(1,Math.round(Number(range.max)/160))));draw();if(Number(range.value)>=Number(range.max))pause();},110);
+    });
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+  });
+</script>
+<style>
+  .actual-queue { border: 1px solid #bdcec2; border-radius: .75rem; padding: clamp(1.2rem,3vw,2.1rem); background: #eaf1e9; }
+  .actual-queue .eyebrow { color: var(--green); }
+  .runtime { margin-bottom: .65rem; }
+  .runtime strong { white-space: nowrap; }
+  h3 { font-size: clamp(1.65rem,3vw,2.5rem); margin: .6rem 0; letter-spacing: -.045em; }
+  p { max-width: 76ch; }
+  .history { position:relative; margin:1.2rem 0 .45rem; background:#dce8dd; border-bottom:1px solid #809b90; }
+  .history svg { display:block; width:100%; height:5rem; }
+  .history > i { position:absolute; top:0; bottom:0; width:2px; background:#142f2b; transform:translateX(-1px); }
+  .history-key { display:flex; flex-wrap:wrap; gap:.35rem 1rem; color:#38544b; font-size:.82rem; }
+  .history-key span { display:inline-flex; align-items:center; gap:.4rem; }
+  .history-key i { width:.7rem; height:.7rem; border-radius:2px; }
+  .clock-control,.allocation { display:flex; align-items:center; flex-wrap:wrap; gap: 1.2rem; margin:1.2rem 0; }
+  button { background:#193f38;color:white; border:0; padding:.67rem .9rem;border-radius:.35rem;cursor:pointer; font:inherit; }
+  label { flex:1; min-width:min(12rem,100%);color:#3f5951;font:.8rem/1.5 var(--mono); }
+  output { float:right; } input { display:block;width:100%;accent-color:#266959; }
+  .slots { display:flex;gap:3px;flex:1;min-width:8rem;max-width:22rem; }
+  .slots i { flex:1;height:.65rem;border-radius:2px;background:#c4d3c7; }
+  .slots i[data-on=true] { background:#2e7968; }
+  ul { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(12rem,100%),1fr));gap:.6rem;list-style:none;padding:0;min-height:4.3rem; }
+  .jobs :global(li) { padding:.65rem .85rem;border-left:2px solid #76aa95;background:#f7faf5; }
+  .jobs :global(strong), .jobs :global(span) { display:block; }
+  .jobs :global(strong) { font:.9rem/1.5 var(--mono); }
+  .jobs :global(span) { font-size:.85rem; color:#476054; margin-top:.2rem; }
+  .queue-note { margin-top:.9rem;font-size:.88rem;color:#4a6259; }
+</style>

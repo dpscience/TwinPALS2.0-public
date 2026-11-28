@@ -267,7 +267,7 @@ class Reader:
                 raise StreamError('Pulse stream digitizer parameters disagree with its database snapshot.')
             if expected['cell_intervals_ns'] != resolved.get('cell_intervals_ns'):
                 raise StreamError('Pulse stream fixed cell pattern disagrees with its seed and digitizer snapshot.')
-            from .streams import validate_analog_responses
+            from .streams import validate_analog_responses, response_calibration
             responses=resolved.get('analog_response')
             validate_analog_responses(responses)
             inputs=self.header.get('inputs')
@@ -275,8 +275,12 @@ class Reader:
             if not isinstance(inputs,list) or len(inputs)!=2:
                 raise StreamError('Pulse stream requires the two original M1 input snapshots.')
             headers=[item.get('header') if isinstance(item,dict) else None for item in inputs]
-            if any(not isinstance(h,dict) or h.get('format')!='twinpals-stream' or h.get('version')!=6
-                   or h.get('role')!=roles[i] or h.get('analog_response')!=responses for i,h in enumerate(headers)):
+            if any(not isinstance(h,dict) or h.get('format')!='twinpals-stream' or h.get('version') not in (6,7)
+                   or h.get('role')!=roles[i] for i,h in enumerate(headers)):
+                raise StreamError('Pulse stream input roles or analog PMT snapshots disagree.')
+            for h in headers:
+                validate_analog_responses(h.get('analog_response'))
+            if headers[0]['analog_response']!=responses or response_calibration(headers[1]['analog_response'])!=response_calibration(responses):
                 raise StreamError('Pulse stream input roles or analog PMT snapshots disagree.')
             if any(not headers[0].get(k) or headers[0].get(k)!=headers[1].get(k) for k in ('run_id','settings_sha256')):
                 raise StreamError('Pulse stream inputs do not belong to one M1 run.')

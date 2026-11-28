@@ -2,6 +2,24 @@
 // SPDX-License-Identifier: MIT
 // Scientific basis: Dominik Boras (2024), https://doi.org/10.25972/OPUS-37663
 
+struct CathodeFilm final : G4OpticalSurface {
+    Curve n,k,escape;
+    double thickness;
+    CathodeFilm(const std::string& name,const json& film):
+        G4OpticalSurface(name,glisur,polished,dielectric_metal),
+        n(curve(film.at("n"),"Cathode refractive index",1.e-12,1.e6)),
+        k(curve(film.at("k"),"Cathode extinction coefficient",0,1.e6)),
+        escape(curve(film.at("escape"),"Photoemission probability",0,1)),
+        thickness(number(film,"thickness_nm",1.e-12,1.e12)) {}
+    static double sample(const Curve& rows,double energy) {
+        auto hi=std::lower_bound(rows.begin(),rows.end(),energy,[](const auto& row,double e){return row.first<e;});
+        if(hi==rows.begin())return hi->second;
+        if(hi==rows.end())return rows.back().second;
+        const auto lo=hi-1;
+        return lo->second+(hi->second-lo->second)*(energy-lo->first)/(hi->first-lo->first);
+    }
+};
+
 // Resolved Module 1 geometry. Every dimension is a full length in millimetres.
 static G4ThreeVector readVector(const json& j, const std::string& label) {
     require(j.is_array() && j.size() == 3, label + " must contain three numbers");
@@ -271,8 +289,10 @@ public:
             // The entire bore behind the window is vacuum. The schematic shell
             // is drawn by the UI only; no invented glass wall enters transport.
             sensors[i]=place("Cathode"+id,endFace("CathodeSolid"+id,d,sensorThickness,false,d.sensor),nist->FindOrBuildMaterial("G4_Al"),local(-tubeLength/2+d.windowThickness+gap+sensorThickness/2),tube->GetLogicalVolume(),i);
-            auto* surface=new G4OpticalSurface("CathodeOptics"+id,glisur,polished,dielectric_metal);auto* qp=new G4MaterialPropertiesTable;
-            addQeCurve(qp,d.qe);addCurve(qp,"REFLECTIVITY",{{.001,0},{1.e6,0}});surface->SetMaterialPropertiesTable(qp);
+            auto* surface=d.sensor.contains("film")
+                ? static_cast<G4OpticalSurface*>(new CathodeFilm("CathodeOptics"+id,d.sensor.at("film")))
+                : new G4OpticalSurface("CathodeOptics"+id,glisur,polished,dielectric_metal);auto* qp=new G4MaterialPropertiesTable;
+            addQeCurve(qp,d.sensor.contains("film") ? curve(d.sensor.at("film").at("fallback"),"Outside film band QE",0,1) : d.qe);addCurve(qp,"REFLECTIVITY",{{.001,0},{1.e6,0}});surface->SetMaterialPropertiesTable(qp);
             new G4LogicalBorderSurface("WindowToCathode"+id,windows[i],sensors[i],surface);
             new G4LogicalBorderSurface("VacuumToCathode"+id,tube,sensors[i],surface);
 

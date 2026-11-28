@@ -4,7 +4,7 @@
 
 """Same-detector histogram populations; production is distinct from detection."""
 ORIGINS = ('none', 'scintillation', 'cherenkov', 'mixed')
-CRYSTAL_METRICS = frozenset(('energy', 'depth', 'polar_angle', 'azimuth'))
+CRYSTAL_METRICS = frozenset(('energy', 'depth', 'polar_angle', 'azimuth', 'reflections', 'cathode_reflections'))
 
 
 def selected(flags, origin='all', basis=None):

@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
             emitProtocol({{"type", "qe_self_test"}, {"status", "passed"}, {"probes", probes}, {"original_knots_preserved", true}, {"outside_domain_exact_guard", true}}); return 0;
         }
         if (argc == 2 && std::string(argv[1]) == "--version") {
-            emitProtocol({{"engine", "Geant4"}, {"version", kEngineVersion}, {"worker_version", kWorkerVersion}, {"stream_version", 6}, {"geant4_build", G4Version}, {"multithreaded", true}, {"max_threads", 256}, {"cpu_count", std::max(1u, std::thread::hardware_concurrency())}, {"rng_policy", kRngPolicy}}); return 0;
+            emitProtocol({{"engine", "Geant4"}, {"version", kEngineVersion}, {"worker_version", kWorkerVersion}, {"stream_version", 7}, {"geant4_build", G4Version}, {"multithreaded", true}, {"max_threads", 256}, {"cpu_count", std::max(1u, std::thread::hardware_concurrency())}, {"rng_policy", kRngPolicy}}); return 0;
         }
         std::string configFile, outputDirectory; bool validateOnly = false;
         for (int i = 1; i < argc; ++i) { const std::string arg = argv[i]; if (arg == "--validate") { validateOnly = true; continue; } require((arg == "--config" || arg == "--output") && i + 1 < argc, "Usage: twinpals-worker --config input.json --output directory"); (arg == "--config" ? configFile : outputDirectory) = argv[++i]; }

@@ -1,6 +1,43 @@
 {
   "format": "twinpals-catalogue-seed",
   "version": 2,
+  "factory_updates": [
+    {
+      "release": "2.0.3",
+      "introduced_ids": [],
+      "additions": [
+        {
+          "ids": [
+            "hamamatsu-r3377",
+            "hamamatsu-r2083",
+            "hamamatsu-r1828",
+            "photonis-xp2020",
+            "photonis-xp2020q",
+            "hamamatsu-r11265u-20",
+            "hamamatsu-r11265u-100",
+            "hamamatsu-r11265u-200",
+            "hamamatsu-r11265u-300",
+            "hamamatsu-r2059",
+            "hamamatsu-r5320",
+            "hamamatsu-r329-02",
+            "hamamatsu-r1450",
+            "hamamatsu-r9800",
+            "hamamatsu-r7400u-06",
+            "et-enterprises-9214b"
+          ],
+          "properties": [
+            "spe_charge_spread_percent",
+            "cathode_reflections",
+            "cathode_film_nm"
+          ],
+          "curves": [
+            "cathode_n",
+            "cathode_k"
+          ]
+        }
+      ]
+    }
+  ],
   "items": [
     {
       "id": "air-coupling",
@@ -36444,6 +36481,33 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "Model assumptions: Erlang order equals dynode count, fixed eG charge, independent Gaussian single-PE TTS. Timing scales with inverse square root of HV. The 50-ohm effective load is a measurement/reference circuit choice, not intrinsic tube resistance; any parallel terminations must be combined once. No cable/RC response, gain variation or saturation is claimed. Reference flash is represented as Gaussian 50 ps FWHM (the handbook test-light upper bound); individual datasheets do not specify this flash."
+          },
+          {
+            "title": "Hamamatsu Photonics: Head-on PMT product selection",
+            "url": "https://hub.hamamatsu.com/us/en/technical-notes/pmts/head-on-pmt-product-selection.html",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Model estimate. Typical multiplication excess noise factor F approximately 1.2 gives relative single-electron charge spread sqrt(F - 1) approximately 0.45 when collection efficiency is treated separately. No tube-specific width established."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ],
         "original_files": [
@@ -41358,7 +41422,10 @@
         "divider": "Datasheet voltage distribution",
         "output_topology": "Ideal current source into one effective resistive load",
         "transit_definition": "Peak of anode calibration-light response relative to light peak",
-        "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS"
+        "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS",
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -43372,6 +43439,206 @@
               2500000.0
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ]
     },
@@ -43465,6 +43732,33 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "Model assumptions: Erlang order equals dynode count, fixed eG charge, independent Gaussian single-PE TTS. Timing scales with inverse square root of HV. The 50-ohm effective load is a measurement/reference circuit choice, not intrinsic tube resistance; any parallel terminations must be combined once. No cable/RC response, gain variation or saturation is claimed. Reference flash is represented as Gaussian 50 ps FWHM (the handbook test-light upper bound); individual datasheets do not specify this flash."
+          },
+          {
+            "title": "Hamamatsu Photonics: Head-on PMT product selection",
+            "url": "https://hub.hamamatsu.com/us/en/technical-notes/pmts/head-on-pmt-product-selection.html",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Model estimate. Typical multiplication excess noise factor F approximately 1.2 gives relative single-electron charge spread sqrt(F - 1) approximately 0.45 when collection efficiency is treated separately. No tube-specific width established."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ],
         "original_files": [
@@ -44312,7 +44606,10 @@
         "divider": "Datasheet voltage distribution",
         "output_topology": "Ideal current source into one effective resistive load",
         "transit_definition": "Peak of anode calibration-light response relative to light peak",
-        "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS"
+        "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS",
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -45754,6 +46051,206 @@
               2500000.0
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ]
     },
@@ -45847,6 +46344,41 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "Model assumptions: Erlang order equals dynode count, fixed eG charge, independent Gaussian single-PE TTS. Timing scales with inverse square root of HV. The 50-ohm effective load is a measurement/reference circuit choice, not intrinsic tube resistance; any parallel terminations must be combined once. No cable/RC response, gain variation or saturation is claimed. Reference flash is represented as Gaussian 50 ps FWHM (the handbook test-light upper bound); individual datasheets do not specify this flash."
+          },
+          {
+            "title": "Yu. Davydov: R2059 single-electron LED calibration",
+            "url": "https://indico.fnal.gov/event/57834/contributions/262590/attachments/165398/219738/Mu_workshop_28Mar2023_Davydov.pdf#page=8",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Slide 8. Pedestal-subtracted peak position about 103 ADC channels and fitted Gaussian width about 31 channels give 30%. Value transferred from R2059 to R1828-01."
+          },
+          {
+            "title": "Hamamatsu R1828-01 / R2059",
+            "url": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/etd/R1828-01_R2059_TPMH1259E.pdf",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Family estimate supported by common 12-stage linear-focused multiplication system and operating specifications. Window materials differ."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ],
         "original_files": [
@@ -46694,7 +47226,10 @@
         "divider": "Datasheet voltage distribution",
         "output_topology": "Ideal current source into one effective resistive load",
         "transit_definition": "Peak of anode calibration-light response relative to light peak",
-        "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS"
+        "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS",
+        "spe_charge_spread_percent": 30,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -48136,6 +48671,206 @@
               88784403.68054852
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ]
     },
@@ -48237,6 +48972,33 @@
               "transit_definition"
             ],
             "comment": "Model assumptions: Erlang order equals dynode count, fixed eG charge, independent Gaussian single-PE TTS. Timing scales with inverse square root of HV. The 50-ohm effective load is a measurement/reference circuit choice, not intrinsic tube resistance; any parallel terminations must be combined once. No cable/RC response, gain variation or saturation is claimed. "
+          },
+          {
+            "title": "Philips XP2020 / XP2020Q data sheet",
+            "url": "https://wwwusers.ts.infn.it/~rui/univ/Acquisizione_Dati/Manuals/Philips%20XP2020.pdf#page=4",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Typical single-electron resolution at gain 3e7, divider A, p. 104. Gaussian-equivalent spread from relative FWHM: 70% / 2.355, rounded to 30%."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ],
         "original_files": [
@@ -49085,7 +49847,10 @@
         "output_topology": "Ideal current source into one effective resistive load",
         "transit_definition": "Peak of anode calibration-light response relative to light peak",
         "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS",
-        "published_fwhm_ns": 2.4
+        "published_fwhm_ns": 2.4,
+        "spe_charge_spread_percent": 30,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -50619,6 +51384,206 @@
               0.0015871599956975141
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ]
     },
@@ -50720,6 +51685,33 @@
               "transit_definition"
             ],
             "comment": "Model assumptions: Erlang order equals dynode count, fixed eG charge, independent Gaussian single-PE TTS. Timing scales with inverse square root of HV. The 50-ohm effective load is a measurement/reference circuit choice, not intrinsic tube resistance; any parallel terminations must be combined once. No cable/RC response, gain variation or saturation is claimed. "
+          },
+          {
+            "title": "Philips XP2020 / XP2020Q data sheet",
+            "url": "https://wwwusers.ts.infn.it/~rui/univ/Acquisizione_Dati/Manuals/Philips%20XP2020.pdf#page=4",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Typical single-electron resolution at gain 3e7, divider A, p. 104. Gaussian-equivalent spread from relative FWHM: 70% / 2.355, rounded to 30%."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ],
         "original_files": [
@@ -55635,7 +56627,10 @@
         "output_topology": "Ideal current source into one effective resistive load",
         "transit_definition": "Peak of anode calibration-light response relative to light peak",
         "response_model": "Erlang order = dynodes; fixed mean charge per PE; independent Gaussian TTS",
-        "published_fwhm_ns": 2.4
+        "published_fwhm_ns": 2.4,
+        "spe_charge_spread_percent": 30,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -57603,6 +58598,206 @@
             [
               650.0,
               0.0013802491915091565
+            ]
+          ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
             ]
           ]
         }
@@ -60961,7 +62156,10 @@
           "Dynode structure": "Metal channel",
           "Number of anodes": "1",
           "Cathode red/white ratio (R-68)": "0.4"
-        }
+        },
+        "spe_charge_spread_percent": 50,
+        "cathode_reflections": true,
+        "cathode_film_nm": 35.0
       },
       "curves": [
         {
@@ -61523,6 +62721,54 @@
               6865665.0802
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              2.1
+            ],
+            [
+              355,
+              2.2
+            ],
+            [
+              405,
+              2.8
+            ],
+            [
+              532,
+              2.9
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.1
+            ],
+            [
+              355,
+              0.2
+            ],
+            [
+              405,
+              0.6
+            ],
+            [
+              532,
+              0.4
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -61587,6 +62833,39 @@
               "window_material"
             ],
             "comment": "Model assumption: 0.8 mm from the related R11265 multi-anode UV-window design. The single-anode sheet specifies borosilicate. Its exact thickness and glass grade are unspecified. The catalogue uses BOROFLOAT 33 optical data as a surrogate."
+          },
+          {
+            "title": "Hamamatsu R11265U-200 single-photon pulse-height spectrum",
+            "url": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/etd/R11265U_H11934_TPMH1336E.pdf#page=2",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Family estimate transferred from R11265U-200. Figure 4, -900 V, standard divider, 400 nm. Approximate relative RMS of the visible signal after dark subtraction; threshold and skew affect the estimate. Pulse height represents charge at fixed pulse shape."
+          },
+          {
+            "title": "Hamamatsu R11265U family including R11265U-20",
+            "url": "https://user-web.icecube.wisc.edu/~kaeld/R11265U_H11934_TPMH1336E.pdf",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "R11265U-20 has a different photocathode and gain curve. Its charge spread is a family estimate."
+          },
+          {
+            "title": "Harmer, Townsend & Bowring (2012), Enhancement of photomultiplier sensitivity with anti-reflective layers",
+            "url": "https://doi.org/10.1088/0022-3727/45/5/055102",
+            "properties": [
+              "cathode_film_nm"
+            ],
+            "comment": "35 nm typical S20 film, used as a family estimate for extended-red multialkali."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "S20 family proxy at 266, 355, 405 and 532 nm for extended-red multialkali."
           }
         ]
       }
@@ -62452,7 +63731,10 @@
           "Cathode blue sensitivity index (CS 5-58)": "13.5",
           "Anode radiant sensitivity (typ)": "130,000 A/W",
           "Spectral response curve code": "440K"
-        }
+        },
+        "spe_charge_spread_percent": 50,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -62798,6 +64080,206 @@
               3433294.8046
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -62862,6 +64344,33 @@
               "window_material"
             ],
             "comment": "Model assumption: 0.8 mm from the related R11265 multi-anode UV-window design. The single-anode sheet specifies borosilicate. Its exact thickness and glass grade are unspecified. The catalogue uses BOROFLOAT 33 optical data as a surrogate."
+          },
+          {
+            "title": "Hamamatsu R11265U-200 single-photon pulse-height spectrum",
+            "url": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/etd/R11265U_H11934_TPMH1336E.pdf#page=2",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Family estimate transferred from R11265U-200. Figure 4, -900 V, standard divider, 400 nm. Approximate relative RMS of the visible signal after dark subtraction; threshold and skew affect the estimate. Pulse height represents charge at fixed pulse shape."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -63727,7 +65236,10 @@
           "Cathode blue sensitivity index (CS 5-58)": "15.5",
           "Anode radiant sensitivity (typ)": "150,000 A/W",
           "Spectral response curve code": "441K"
-        }
+        },
+        "spe_charge_spread_percent": 50,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -64073,6 +65585,206 @@
               3433294.8046
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -64137,6 +65849,33 @@
               "window_material"
             ],
             "comment": "Model assumption: 0.8 mm from the related R11265 multi-anode UV-window design. The single-anode sheet specifies borosilicate. Its exact thickness and glass grade are unspecified. The catalogue uses BOROFLOAT 33 optical data as a surrogate."
+          },
+          {
+            "title": "Hamamatsu R11265U-200 single-photon pulse-height spectrum",
+            "url": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/etd/R11265U_H11934_TPMH1336E.pdf#page=2",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Model-specific graphical estimate. Figure 4, -900 V, standard divider, 400 nm. Approximate relative RMS of the visible signal after dark subtraction; threshold and skew affect the estimate. Pulse height represents charge at fixed pulse shape."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -65002,7 +66741,10 @@
           "Cathode blue sensitivity index (CS 5-58)": "14",
           "Anode radiant sensitivity (typ)": "150,000 A/W",
           "Spectral response curve code": "444K"
-        }
+        },
+        "spe_charge_spread_percent": 50,
+        "cathode_reflections": true,
+        "cathode_film_nm": 23.4
       },
       "curves": [
         {
@@ -65388,6 +67130,190 @@
               3433294.8046
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              380,
+              2.07
+            ],
+            [
+              395,
+              2.22
+            ],
+            [
+              410,
+              2.3
+            ],
+            [
+              425,
+              2.4
+            ],
+            [
+              440,
+              2.5
+            ],
+            [
+              455,
+              2.63
+            ],
+            [
+              470,
+              2.81
+            ],
+            [
+              485,
+              2.99
+            ],
+            [
+              500,
+              3.16
+            ],
+            [
+              515,
+              3.22
+            ],
+            [
+              530,
+              3.21
+            ],
+            [
+              545,
+              3.23
+            ],
+            [
+              560,
+              3.32
+            ],
+            [
+              575,
+              3.39
+            ],
+            [
+              590,
+              3.28
+            ],
+            [
+              605,
+              3.22
+            ],
+            [
+              620,
+              3.18
+            ],
+            [
+              635,
+              3.15
+            ],
+            [
+              650,
+              3.14
+            ],
+            [
+              665,
+              3.14
+            ],
+            [
+              680,
+              3.13
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              380,
+              1.22
+            ],
+            [
+              395,
+              1.17
+            ],
+            [
+              410,
+              1.21
+            ],
+            [
+              425,
+              1.27
+            ],
+            [
+              440,
+              1.35
+            ],
+            [
+              455,
+              1.4
+            ],
+            [
+              470,
+              1.41
+            ],
+            [
+              485,
+              1.37
+            ],
+            [
+              500,
+              1.21
+            ],
+            [
+              515,
+              1.04
+            ],
+            [
+              530,
+              0.9
+            ],
+            [
+              545,
+              0.86
+            ],
+            [
+              560,
+              0.76
+            ],
+            [
+              575,
+              0.59
+            ],
+            [
+              590,
+              0.46
+            ],
+            [
+              605,
+              0.43
+            ],
+            [
+              620,
+              0.4
+            ],
+            [
+              635,
+              0.38
+            ],
+            [
+              650,
+              0.37
+            ],
+            [
+              665,
+              0.37
+            ],
+            [
+              680,
+              0.35
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -65452,6 +67378,24 @@
               "window_material"
             ],
             "comment": "Model assumption: 0.8 mm from the related R11265 multi-anode UV-window design. The single-anode sheet specifies borosilicate. Its exact thickness and glass grade are unspecified. The catalogue uses BOROFLOAT 33 optical data as a surrogate."
+          },
+          {
+            "title": "Hamamatsu R11265U-200 single-photon pulse-height spectrum",
+            "url": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/etd/R11265U_H11934_TPMH1336E.pdf#page=2",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Family estimate transferred from R11265U-200. Figure 4, -900 V, standard divider, 400 nm. Approximate relative RMS of the visible signal after dark subtraction; threshold and skew affect the estimate. Pulse height represents charge at fixed pulse shape."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. RbCsSb (ETL 9902B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
           }
         ]
       }
@@ -70370,7 +72314,10 @@
           "Photocathode": "Bialkali",
           "Entrance glass": "Silica",
           "Window thickness (model assumption)": "Assumed entrance-window thickness: 2 mm. Same 2 mm planar approximation as the catalogue R1828-01 for a two-inch head-on tube. The exact glass thickness is unpublished in the cited tube sheet."
-        }
+        },
+        "spe_charge_spread_percent": 30,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -70868,6 +72815,206 @@
               87717415.9291
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -70963,6 +73110,33 @@
               "quantum_efficiency"
             ],
             "comment": "The model-specific trace starts at 200 nm. From 162 nm to that point, the typical response for this photocathode/window combination (curve C, printed page 73) is normalized to the model-specific value at 200 nm. Below the tabulated curve TwinPALS uses zero."
+          },
+          {
+            "title": "Yu. Davydov: R2059 single-electron LED calibration",
+            "url": "https://indico.fnal.gov/event/57834/contributions/262590/attachments/165398/219738/Mu_workshop_28Mar2023_Davydov.pdf#page=8",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Slide 8. Pedestal-subtracted peak position about 103 ADC channels and fitted Gaussian width about 31 channels give 30%. Measured on an R2059."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -75881,7 +78055,10 @@
           "Photocathode": "Bialkali",
           "Entrance glass": "Silica",
           "Window thickness (model assumption)": "Assumed entrance-window thickness: 1 mm. 1 mm planar approximation for a 19–26 mm head-on package, scaled from the two-inch tube convention. The exact glass thickness is unpublished in the cited tube sheet."
-        }
+        },
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -76383,6 +78560,206 @@
               10042146.0358
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -76478,6 +78855,41 @@
               "quantum_efficiency"
             ],
             "comment": "The model-specific trace starts at 200 nm. From 162 nm to that point, the typical response for this photocathode/window combination (curve C, printed page 73) is normalized to the model-specific value at 200 nm. Below the tabulated curve TwinPALS uses zero."
+          },
+          {
+            "title": "Bednarski et al.: Calibration of photomultipliers gain used in the J-PET detector",
+            "url": "https://koza.if.uj.edu.pl/files/d0f757e32e06ff4879f263dde60f2b7f/Bams-2013-0110.pdf#page=4",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Figure 5. Graphical estimate of approximately 45–50% for the single-PE peak of an R4998; 45% is used for the related R5320."
+          },
+          {
+            "title": "Hamamatsu R4998 / R5320",
+            "url": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/etd/R4998_R5320_TPMH1362E.pdf",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Manufacturer family data sheet supporting the transfer."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -77329,7 +79741,10 @@
           "Photocathode": "Bialkali",
           "Entrance glass": "Borosilicate",
           "Window thickness (model assumption)": "Assumed entrance-window thickness: 2 mm. Same 2 mm planar approximation as the catalogue R1828-01 for a two-inch head-on tube. The exact glass thickness is unpublished in the cited tube sheet."
-        }
+        },
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -77723,6 +80138,206 @@
               76907938.0869
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -77802,6 +80417,33 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "The catalogue models a 50 Ω effective load and a 50 ps FWHM Gaussian calibration flash. The flash represents the reference pulse for calibration. The individual tube sheet does not specify this flash width."
+          },
+          {
+            "title": "Georgia Tech: measured relative R329-02 gain variance, Appendix B",
+            "url": "https://repository.gatech.edu/server/api/core/bitstreams/30b9e44c-2c77-4239-9abf-1ad40d20de1f/content",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Two R329-02 tubes. Reported relative variance 0.204 gives a relative standard deviation of sqrt(0.204) = 45.2%, rounded to 45%."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -78653,7 +81295,10 @@
           "Photocathode": "Bialkali",
           "Entrance glass": "Borosilicate",
           "Window thickness (model assumption)": "Assumed entrance-window thickness: 1 mm. 1 mm planar approximation for a 19–26 mm head-on package, scaled from the two-inch tube convention. The exact glass thickness is unpublished in the cited tube sheet."
-        }
+        },
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -79011,6 +81656,206 @@
               4968968.6384
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -79090,6 +81935,33 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "The catalogue models a 50 Ω effective load and a 50 ps FWHM Gaussian calibration flash. The flash represents the reference pulse for calibration. The individual tube sheet does not specify this flash width."
+          },
+          {
+            "title": "Hamamatsu Photonics: Head-on PMT product selection",
+            "url": "https://hub.hamamatsu.com/us/en/technical-notes/pmts/head-on-pmt-product-selection.html",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Model estimate. Typical multiplication excess noise factor F approximately 1.2 gives relative single-electron charge spread sqrt(F - 1) approximately 0.45 when collection efficiency is treated separately. No tube-specific width established."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -79941,7 +82813,10 @@
           "Photocathode": "Bialkali",
           "Entrance glass": "Borosilicate",
           "Window thickness (model assumption)": "Assumed entrance-window thickness: 1 mm. 1 mm planar approximation for a 19–26 mm head-on package, scaled from the two-inch tube convention. The exact glass thickness is unpublished in the cited tube sheet."
-        }
+        },
+        "spe_charge_spread_percent": 36,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -80287,6 +83162,206 @@
               2119241.7732
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -80366,6 +83441,33 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "The catalogue models a 50 Ω effective load and a 50 ps FWHM Gaussian calibration flash. The flash represents the reference pulse for calibration. The individual tube sheet does not specify this flash width."
+          },
+          {
+            "title": "W.-S. Choong: Timing resolution of scintillation-detector systems",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2814442/",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Section 2.2 and figure 4. R9800 measured single-electron amplitude distribution modelled with 85% FWHM. Approximate effective charge spread 85% / 2.355 for a fixed kernel shape."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -85285,7 +88387,10 @@
           "Entrance glass": "Silica",
           "Window thickness (model assumption)": "Assumed entrance-window thickness: 0.8 mm. Compact metal package. The 0.8 mm proxy follows the existing R11265-family model. The exact glass thickness is unpublished in the cited tube sheet.",
           "Maximum voltage duration at 1000 V": "30 s, per the tube sheet. Model range ends at 950 V."
-        }
+        },
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -85731,6 +88836,206 @@
               2347061.6763
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -85820,6 +89125,33 @@
               "tts_convention"
             ],
             "comment": "The R7400U-06 row lists a typical 0.28 ns FWHM single-photoelectron transit-time spread at the 800 V reference."
+          },
+          {
+            "title": "Hamamatsu Photonics: Head-on PMT product selection",
+            "url": "https://hub.hamamatsu.com/us/en/technical-notes/pmts/head-on-pmt-product-selection.html",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Model estimate. Typical multiplication excess noise factor F approximately 1.2 gives relative single-electron charge spread sqrt(F - 1) approximately 0.45 when collection efficiency is treated separately. No tube-specific width established."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }
@@ -86675,7 +90007,10 @@
           "Multi-electron rise / FWHM": "3 ns / 4.5 ns",
           "Rated gain limit": "3 × 10⁷",
           "Maximum average anode current": "100 µA"
-        }
+        },
+        "spe_charge_spread_percent": 45,
+        "cathode_reflections": true,
+        "cathode_film_nm": 20.0
       },
       "curves": [
         {
@@ -87029,6 +90364,206 @@
               22181589.8978
             ]
           ]
+        },
+        {
+          "name": "cathode_n",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              1.3
+            ],
+            [
+              355,
+              1.6
+            ],
+            [
+              380,
+              1.92
+            ],
+            [
+              395,
+              2.18
+            ],
+            [
+              410,
+              2.38
+            ],
+            [
+              425,
+              2.61
+            ],
+            [
+              440,
+              2.7
+            ],
+            [
+              455,
+              2.87
+            ],
+            [
+              470,
+              3
+            ],
+            [
+              485,
+              3
+            ],
+            [
+              500,
+              3
+            ],
+            [
+              515,
+              3.09
+            ],
+            [
+              530,
+              3.26
+            ],
+            [
+              545,
+              3.2
+            ],
+            [
+              560,
+              3.12
+            ],
+            [
+              575,
+              3.06
+            ],
+            [
+              590,
+              3.01
+            ],
+            [
+              605,
+              2.98
+            ],
+            [
+              620,
+              2.96
+            ],
+            [
+              635,
+              2.95
+            ],
+            [
+              650,
+              2.95
+            ],
+            [
+              665,
+              2.95
+            ],
+            [
+              680,
+              2.96
+            ]
+          ]
+        },
+        {
+          "name": "cathode_k",
+          "x_unit": "nm",
+          "y_unit": "1",
+          "semantics": "Photocathode film optical constant",
+          "points": [
+            [
+              266,
+              0.6
+            ],
+            [
+              355,
+              1.3
+            ],
+            [
+              380,
+              1.69
+            ],
+            [
+              395,
+              1.69
+            ],
+            [
+              410,
+              1.71
+            ],
+            [
+              425,
+              1.53
+            ],
+            [
+              440,
+              1.5
+            ],
+            [
+              455,
+              1.44
+            ],
+            [
+              470,
+              1.34
+            ],
+            [
+              485,
+              1.11
+            ],
+            [
+              500,
+              1.06
+            ],
+            [
+              515,
+              1.05
+            ],
+            [
+              530,
+              0.86
+            ],
+            [
+              545,
+              0.63
+            ],
+            [
+              560,
+              0.53
+            ],
+            [
+              575,
+              0.46
+            ],
+            [
+              590,
+              0.42
+            ],
+            [
+              605,
+              0.38
+            ],
+            [
+              620,
+              0.37
+            ],
+            [
+              635,
+              0.35
+            ],
+            [
+              650,
+              0.34
+            ],
+            [
+              665,
+              0.34
+            ],
+            [
+              680,
+              0.33
+            ]
+          ]
         }
       ],
       "provenance": {
@@ -87108,6 +90643,33 @@
               "calibration_flash_fwhm_ns"
             ],
             "comment": "The catalogue models a 50 Ω effective load and a 50 ps FWHM Gaussian calibration flash. The flash represents the reference pulse for calibration. The individual tube sheet does not specify this flash width."
+          },
+          {
+            "title": "Hamamatsu Photonics: Head-on PMT product selection",
+            "url": "https://hub.hamamatsu.com/us/en/technical-notes/pmts/head-on-pmt-product-selection.html",
+            "properties": [
+              "spe_charge_spread_percent"
+            ],
+            "comment": "Model estimate. Typical multiplication excess noise factor F approximately 1.2 gives relative single-electron charge spread sqrt(F - 1) approximately 0.45 when collection efficiency is treated separately. No tube-specific width established."
+          },
+          {
+            "title": "Motta & Schönert (2005), Optical properties of bialkali photocathodes",
+            "url": "https://arxiv.org/abs/physics/0408075",
+            "properties": [
+              "cathode_film_nm",
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "Appendix A, central solution, 380–680 nm. KCsSb (ETL 9102B) measurements transferred as a family assumption for this tube. Film thickness and indices are not measurements of this specific model."
+          },
+          {
+            "title": "Alexander, Moody & Bandaru (2017), Enhanced photocathode performance through optimization of film thickness and substrate, Table I",
+            "url": "https://nanomaterials.ucsd.edu/wp-content/uploads/2015/01/JVST-B-_anna.pdf",
+            "properties": [
+              "cathode_n",
+              "cathode_k"
+            ],
+            "comment": "K2CsSb UV values at 266 and 355 nm. Interpolated to the first Motta & Schönert point at 380 nm."
           }
         ]
       }

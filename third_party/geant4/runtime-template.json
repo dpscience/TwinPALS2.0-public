@@ -4,8 +4,8 @@
   "minimum_os_model": "Windows 10/11 x64 with OS Universal CRT",
   "official_release_page": "https://geant4.web.cern.ch/download/11.4.0.html",
   "event_time_kernel": {
-    "format": "TPSTRM06",
-    "record_bytes": 324,
+    "format": "TPSTRM07",
+    "record_bytes": 340,
     "channels": 2,
     "semantics": "Two detector summaries plus complete accepted-PE raw times, PMT onsets and cathode XY. Optical mean arrival remains relative to gamma emission; the separate analog response includes independent per-PE TTS and calibrated transit. PROV stores shared immutable branching transport ancestry referenced by each accepted photoelectron.",
     "includes_all_generated_events": true,
@@ -22,7 +22,7 @@
     "compact_live_stdout": true,
     "pending_serialized_bytes_limit": 67108864,
     "pending_events_limit": "clamp(128*threads,256,8192)",
-    "event_record_bytes_limit": 324,
+    "event_record_bytes_limit": 340,
     "memory_limit_scope": "64 MiB serialized reorder queue; each active Geant4 event also owns its accepted-PE list. Live batches are bounded by elapsed time, events and bytes.",
     "reproducibility": "Current regression includes native multithreaded transport, ordered writer lookahead, optical invariance under analysis cuts, and deterministic serial/parallel pulse processing. Exact cases and counts are in the linked report. No cross-version RNG promise."
   },
@@ -192,7 +192,7 @@
       "data_provenance": "ENSDF; original upstream README is preserved; no standalone data license inferred"
     }
   ],
-  "stream_version": 6,
+  "stream_version": 7,
   "optical_boundary_model": "geant4-11.4-lut-interior-v1",
   "dependency_audit": {
     "method": "Recursive MSVC dumpbin /DEPENDENTS"

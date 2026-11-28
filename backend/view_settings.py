@@ -7,7 +7,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .m3_models import MonitorView, SpectrumAnalysis
 
-Metric = Literal['pulse_height','energy','photon_count','mean_arrival','depth','polar_angle','azimuth','track_length','reflections']
+Metric = Literal['pulse_height','energy','photon_count','mean_arrival','depth','polar_angle','azimuth','track_length','reflections','cathode_reflections']
 
 class ViewModel(BaseModel):
     model_config=ConfigDict(extra='forbid',allow_inf_nan=False)
@@ -18,9 +18,10 @@ class Selection(ViewModel):
     primary: Literal['all','na22_prompt','na22_annihilation','co60_1173','co60_1332']='all'
     category: Literal['all','interaction','transmission','miss']='all'
     origin: Literal['all','none','scintillation','cherenkov','mixed']='all'
+    reflection_scope: Literal['reflections','cathode_reflections']='reflections'
     split_origin: bool=False
     bins: int=Field(120,ge=10,le=1000)
-    suppress_zero: list[Literal['energy','photon_count','mean_arrival','pulse_height','depth','polar_angle','azimuth','track_length','reflections']]=Field(default_factory=lambda:['energy','photon_count','mean_arrival','pulse_height'],max_length=9)
+    suppress_zero: list[Metric]=Field(default_factory=lambda:['energy','photon_count','mean_arrival','pulse_height'],max_length=10)
 
 class Camera(ViewModel):
     position: tuple[float,float,float]

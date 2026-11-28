@@ -88,7 +88,7 @@ class Reader {
         provAt=position-payload.size();provLength=payload.size();hasProvenance=true;
     }
     void eventFrame(){
-        require(payload.size()==324,"EVNT record must contain exactly 324 bytes");
+        require(payload.size()==340,"EVNT record must contain exactly 340 bytes");
         require(hasAnalog&&hasProvenance,"Event has no analog pulse or transport ancestry");
         require(row<total&&read<uint64_t>(payload.data())==row,"Event IDs/count must match the checked stream");
         const auto primary=read<uint32_t>(payload.data()+8);double x[15];std::memcpy(x,payload.data()+12,120);
@@ -103,7 +103,7 @@ class Reader {
         if(out.prefixes)std::copy(x,x+15,out.prefixes+row*15);
         const uint64_t all=uint64_t(counts[0])+counts[1];uint64_t first=0;
         for(int ch=0;ch<2;++ch){
-            const auto* p=payload.data()+132+96*ch;const auto flags=read<uint32_t>(p);const auto hits=read<uint64_t>(p+4);double d[7];std::memcpy(d,p+12,56);
+            const auto* p=payload.data()+132+104*ch;const auto flags=read<uint32_t>(p);const auto hits=read<uint64_t>(p+4);double d[7];std::memcpy(d,p+12,56);
             for(double v:d)require(std::isfinite(v),"Nonfinite DetectorInfo values");
             require(!(flags&~255u)&&bool(flags&48)==bool(hits),"Invalid DetectorInfo flags");
             require(d[0]>=0&&d[1]>=-1e-9&&d[5]>=-1e-9&&d[6]>=0,"Negative detector energy, arrival time or path length");
@@ -144,7 +144,7 @@ public:
         threshold=header.at("physics").at("minimum_energy_keV");cherenkov=header.at("physics").at("include_cherenkov");components=static_cast<int>(header.at("light_components").size());
         const std::string role=header.at("role");mask=role=="na22_prompt"?1:role=="na22_annihilation"?6:3;
         for(int i=0;i<2;++i){tails[i]=cfg.at("tails").at(i);polarity[i]=header.at("analog_response").at(i).at("polarity")=="negative"?-1:1;}
-        const auto* prefix=take(12).data();require(std::memcmp(prefix,"TPSTRM06",8)==0,"Unsupported transport stream");
+        const auto* prefix=take(12).data();require(std::memcmp(prefix,"TPSTRM07",8)==0,"Unsupported transport stream");
         const auto n=read<uint32_t>(prefix+8);require(n<=64*1024*1024,"Transport header exceeds limit");payload=take(n);
         require(object(payload.data(),n)==header,"Input stream header changed after setup validation");
     }

@@ -31,6 +31,12 @@ struct AdcPulseDescriptor {
     int32_t count,order;
     double origin,tau,scale,polarity,factor;
 };
+struct ShapeAdcDescriptor {
+    const double* onsets;
+    int32_t count;
+    double order;
+    double origin,tau,scale,polarity,factor;
+};
 API int tp_adc_waveform(const double* times,const double* background,int n,const AdcPulseDescriptor* pulses,int count,
                         double filter,double low,double high,double lsb,unsigned levels,float* output,int* clipped){
     if(n<1||count<0||!(lsb>0)||levels<2)return 1;
@@ -39,11 +45,24 @@ API int tp_adc_waveform(const double* times,const double* background,int n,const
         descriptors.reserve(count);
         for(int i=0;i<count;++i){
             const auto& p=pulses[i];
-            descriptors.push_back({p.onsets,p.count,p.order,p.origin,p.tau,p.scale,p.polarity,p.factor});
+            descriptors.push_back({p.onsets,p.count,static_cast<double>(p.order),p.origin,p.tau,p.scale,p.polarity,p.factor});
         }
         return adc_waveform::sample(times,background,n,descriptors.data(),count,filter,low,high,lsb,levels,output,clipped);
     }
     catch(...){return 2;}
+}
+
+struct SpeAdcPulse {ShapeAdcDescriptor pulse;analog_pmt::ChargeLaw charge;uint64_t record;};
+API int tp_adc_waveform_spe_shape(const double* times,const double* background,int n,const SpeAdcPulse* pulses,int count,
+                        double filter,double low,double high,double lsb,unsigned levels,float* output,int* clipped){
+    if(n<1||count<0||!(lsb>0)||levels<2)return 1;
+    try{
+        std::vector<adc_waveform::Pulse> descriptors;descriptors.reserve(count);
+        for(int i=0;i<count;++i){const auto& p=pulses[i].pulse;
+            descriptors.push_back({p.onsets,p.count,static_cast<double>(p.order),p.origin,p.tau,p.scale,p.polarity,p.factor,nullptr,pulses[i].charge,pulses[i].record});
+        }
+        return adc_waveform::sample(times,background,n,descriptors.data(),count,filter,low,high,lsb,levels,output,clipped);
+    }catch(...){return 2;}
 }
 
 API int tp_source_pulses(const source_pulses::Library* libs,const double* delays,const double* gains,uint64_t first,int n,
@@ -58,7 +77,7 @@ struct ScanLibraryIndex {
     const uint64_t* onsets;
     uint64_t records;
 };
-API int tp_scan_descriptors(const source_pulses::Pulse* pulses,size_t count,const ScanLibraryIndex* libs,
+API int tp_scan_descriptors_v2(const source_pulses::Pulse* pulses,size_t count,const ScanLibraryIndex* libs,
                             double filterTail,acquisition_scan::Pulse* out,double* maximum){
     double tail=0.;
     for(size_t i=0;i<count;++i){
@@ -67,7 +86,7 @@ API int tp_scan_descriptors(const source_pulses::Pulse* pulses,size_t count,cons
         const auto& lib=libs[p.role];const auto* row=lib.index+3*p.record;
         const auto base=lib.onsets?lib.onsets[p.record]:row[0]+24;
         const uint64_t stride=lib.onsets?8:32;
-        out[i]={p.time,p.origin,p.span,base+(p.channel?row[1]*stride:0),row[1+p.channel],p.role,p.channel};
+        out[i]={p.time,p.origin,p.span,base+(p.channel?row[1]*stride:0),row[1+p.channel],p.role,p.channel,p.record};
         tail=std::max(tail,p.span+filterTail);
     }
     *maximum=tail;return 0;
@@ -97,7 +116,7 @@ API int tp_acquired_density_batch(const double* y,const uint8_t* valid,int count
     return 0;
 }
 
-API void* tp_acquisition_scan_create(const acquisition_scan::Pulse* pulses,uint64_t count,const unsigned char* a,uint64_t as,const unsigned char* b,uint64_t bs,
+API void* tp_acquisition_scan_create_v2_shape(const acquisition_scan::Pulse* pulses,uint64_t count,const unsigned char* a,uint64_t as,const unsigned char* b,uint64_t bs,
         const acquisition_scan::Response* response,const acquisition_scan::Config* config,const acquisition_scan::State* state,uint64_t limit){
     try{return new acquisition_scan::Scanner(pulses,count,a,as,b,bs,response,*config,*state,limit);}catch(...){return nullptr;}
 }
@@ -106,7 +125,7 @@ API int tp_acquisition_scan_next(void* handle,int blocks,acquisition_scan::Cross
     try{auto* scanner=static_cast<acquisition_scan::Scanner*>(handle);const int n=scanner->next(blocks,output,capacity);*state=scanner->snapshot();*done=scanner->done();return n;}catch(...){return -2;}
 }
 API void tp_acquisition_scan_destroy(void* handle){delete static_cast<acquisition_scan::Scanner*>(handle);}
-API int tp_acquisition_independent(const acquisition_scan::Pulse* pulses,uint64_t count,const unsigned char* a,uint64_t as,const unsigned char* b,uint64_t bs,
+API int tp_acquisition_independent_v2_shape(const acquisition_scan::Pulse* pulses,uint64_t count,const unsigned char* a,uint64_t as,const unsigned char* b,uint64_t bs,
         const acquisition_scan::Response* response,const acquisition_scan::Config* config,acquisition_scan::State* state,uint64_t limit,
         acquisition_scan::Crossing* out,int capacity,unsigned workers){
     try{return acquisition_scan::independent(pulses,count,a,as,b,bs,response,*config,*state,limit,out,capacity,workers);}
@@ -129,7 +148,7 @@ API int tp_transport_index_sorted_onsets(void* handle,uint64_t first,double* out
     return static_cast<transport_index::Reader*>(handle)->packOnsets(first,out,capacity)?0:1;
 }
 
-API int tp_analog_evaluate(const double* onsets,int count,const double* times,int points,int order,double tau,double filterTau,double* out) {
+API int tp_analog_evaluate_shape(const double* onsets,int count,const double* times,int points,double order,double tau,double filterTau,double* out) {
     if(count<0||points<0||order<2||order>32||!std::isfinite(tau)||tau<=0)return 1;
     try {
         if(!count){std::fill(out,out+points,0.);return 0;}
@@ -145,26 +164,66 @@ API int tp_analog_evaluate(const double* onsets,int count,const double* times,in
     }catch(...){return 3;}
 }
 
-API double tp_analog_peak(const double* onsets,int count,int order,double tau) {
+API void tp_spe_weights(int count,double cutoff,double scale,uint64_t seed,double* output){
+    if(count>0)analog_pmt::ChargeLaw{cutoff,scale,0}.fill(output,count,seed);
+}
+
+API int tp_analog_weighted_shape(const double* onsets,const double* weights,int count,const double* times,int points,
+                           double order,double tau,double filter,double* out){
+    if(count<0||points<0||order<2||order>32||!(tau>0))return 1;
+    try{
+        if(!count){std::fill(out,out+points,0.);return 0;}
+        std::vector<std::pair<double,double>> pairs; pairs.reserve(count);
+        for(int i=0;i<count;++i)pairs.emplace_back(onsets[i],weights[i]);
+        std::stable_sort(pairs.begin(),pairs.end(),[](const auto& a,const auto& b){return a.first<b.first;});
+        std::vector<double> sorted(count),amplitude(count);
+        for(int i=0;i<count;++i){sorted[i]=pairs[i].first;amplitude[i]=pairs[i].second;}
+        analog_pmt::Response r;r.order=order;r.tau=tau;r.filterTau=filter;
+        analog_pmt::Chain chain(sorted.data(),count,r,false,amplitude.data());
+        for(int i=0;i<points;++i)out[i]=times[i]<sorted.front()?0.:chain.at(times[i]);
+        return 0;
+    }catch(...){return 2;}
+}
+
+API double tp_spe_peak_shape(const double* onsets,int count,double order,double tau,double cutoff,double scale,uint64_t seed,uint64_t event){
+    if(count<0||order<2||order>32||!(tau>0))return -1;
+    try{analog_pmt::Response r;r.order=order;r.tau=tau;
+        auto weights=analog_pmt::ChargeLaw{cutoff,scale,seed}.weights(count,event);
+        return analog_pmt::peak(std::vector<double>(onsets,onsets+count),r,weights.empty()?nullptr:weights.data());
+    }catch(...){return -1;}
+}
+
+API double tp_analog_peak_shape(const double* onsets,int count,double order,double tau) {
     if(count<0||order<2||order>32||tau<=0)return -1;
     try{analog_pmt::Response r;r.order=order;r.tau=tau;return analog_pmt::peak(std::vector<double>(onsets,onsets+count),r);}catch(...){return -1;}
 }
 
 // A bounded batch of real pulses. The spool interleaves onsets, arrivals and
 // provenance, so onset offsets are in bytes and need not be double-aligned.
-API int tp_persistence_batch(const unsigned char* bytes,size_t length,const uint64_t* rows,int pulses,
-        const double* times,int bins,int order,double tau,double charge,double ymax,int64_t* grids) {
+static int persistenceBatch(const unsigned char* bytes,size_t length,const uint64_t* rows,int pulses,
+        const double* times,int bins,double order,double tau,double charge,double ymax,int64_t* grids,
+        const analog_pmt::ChargeLaw* law) {
     if(bins<10 || bins>1000 || pulses<0 || !(ymax>0) || !(charge>0))return 1;
     try {
         std::vector<double> onsets,values(bins);
         for(int i=0;i<pulses;++i) {
-            const auto offset=rows[3*i], count=rows[3*i+1], origin=rows[3*i+2];
+            const auto* row=rows+(law?4:3)*i;
+            const auto offset=row[0], count=row[1], origin=row[2];
             if(!count || count>INT32_MAX || offset>length || count>(length-offset)/sizeof(double) || origin>2)return 2;
             onsets.resize(count);
             std::memcpy(onsets.data(),bytes+offset,count*sizeof(double));
-            if(tp_analog_evaluate(onsets.data(),static_cast<int>(count),times,bins,order,tau,0.,values.data()))return 3;
+            double chargeSum=static_cast<double>(count);
+            if(law){
+                std::sort(onsets.begin(),onsets.end());
+                auto weights=law->weights(count,row[3]);
+                chargeSum=0.;
+                for(double weight:weights)chargeSum+=weight;
+                analog_pmt::Response r;r.order=order;r.tau=tau;
+                analog_pmt::Chain chain(onsets.data(),count,r,false,weights.data());
+                for(int x=0;x<bins;++x)values[x]=times[x]<onsets.front()?0.:chain.at(times[x]);
+            } else if(tp_analog_evaluate_shape(onsets.data(),static_cast<int>(count),times,bins,order,tau,0.,values.data()))return 3;
             for(int x=0;x<bins;++x) {
-                const double value=std::abs(values[x]*(charge*1e12))/(count*charge*1e12);
+                const double value=std::abs(values[x]*(charge*1e12))/(chargeSum*charge*1e12);
                 if(value<=ymax*1e-12)continue;
                 const int y=std::min(bins-1,static_cast<int>(std::floor(value/ymax*bins)));
                 ++grids[(origin*bins+y)*bins+x];
@@ -172,6 +231,19 @@ API int tp_persistence_batch(const unsigned char* bytes,size_t length,const uint
         }
         return 0;
     }catch(...){return 4;}
+}
+
+API int tp_persistence_batch_shape(const unsigned char* bytes,size_t length,const uint64_t* rows,int pulses,
+        const double* times,int bins,double order,double tau,double charge,double ymax,int64_t* grids){
+    return persistenceBatch(bytes,length,rows,pulses,times,bins,order,tau,charge,ymax,grids,nullptr);
+}
+
+API int tp_persistence_spe_batch_shape(const unsigned char* bytes,size_t length,const uint64_t* rows,int pulses,
+        const double* times,int bins,double order,double tau,double charge,double ymax,int64_t* grids,
+        double cutoff,double scale,uint64_t seed){
+    if(!(scale>0))return 1;
+    const analog_pmt::ChargeLaw law{cutoff,scale,seed};
+    return persistenceBatch(bytes,length,rows,pulses,times,bins,order,tau,charge,ymax,grids,&law);
 }
 
 // Validate packed, potentially unaligned stream nodes in one pass. This keeps
@@ -187,4 +259,14 @@ API int tp_transport_validate(const unsigned char* nodes,int count,const unsigne
     }
     for(int i=0;i<refCount;++i){uint32_t ref;std::memcpy(&ref,refs+static_cast<std::size_t>(i)*4,4);if(!ref||ref>static_cast<uint32_t>(count))return 3;}
     return 0;
+}
+
+API int tp_analog_evaluate(const double* onsets,int count,const double* times,int points,int order,double tau,double filter,double* out) {
+    return tp_analog_evaluate_shape(onsets,count,times,points,order,tau,filter,out);
+}
+API double tp_analog_peak(const double* onsets,int count,int order,double tau) {
+    return tp_analog_peak_shape(onsets,count,order,tau);
+}
+API double tp_spe_peak(const double* onsets,int count,int order,double tau,double cutoff,double scale,uint64_t seed,uint64_t event) {
+    return tp_spe_peak_shape(onsets,count,order,tau,cutoff,scale,seed,event);
 }

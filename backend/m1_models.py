@@ -38,6 +38,9 @@ class Detector(StrictModel):
     scintillator_id: str = 'bc422q-05'
     coupling_id: str = 'silicone-coupling'
     pmt_id: str = 'hamamatsu-r3377'
+    pmt_cathode_reflections: bool = True
+    pmt_shape_enabled: bool = False
+    pmt_shape_factor: float = Field(1., gt=0)
     pmt_hv_V: float | None = Field(None, description='Magnitude or signed HV; None uses the PMT reference voltage')
     pmt_load_ohm: float = Field(50, gt=0, le=100000)
     pmt_polarity: Literal['positive','negative'] = 'negative'

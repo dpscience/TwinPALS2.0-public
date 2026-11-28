@@ -1,0 +1,37 @@
+<section id="workflows" class="workflow" aria-labelledby="workflow-heading"><div class="wrap">
+  <header>
+    <h2 id="workflow-heading">Two ways to use TwinPALS.</h2>
+    <p>Both interfaces use the same local component database, simulation models and analysis tools. In TwinPALS Desktop, you configure and inspect each run yourself. With TwinPALS MCP, an AI agent can carry out a whole study from one prompt and shorten a parameter scan by running independent configurations in parallel.</p>
+  </header>
+  <div class="routes">
+    <a href="#desktop"><h3>TwinPALS Desktop <span aria-hidden="true">↓</span></h3>
+      <p>Inspect a gamma interaction alongside the pulse it produced. Adjust a filter, replay the recorded waveforms and see which events it removes from the lifetime spectrum.</p></a>
+    <a href="#studies"><h3>TwinPALS MCP | AI-driven study <span aria-hidden="true">↓</span></h3>
+      <p>Specify a parameter range and the quantity to compare. The agent schedules runs within your CPU budget, compares their spectra and links each result to the settings that produced it.</p></a>
+  </div>
+  <div class="shared-chain">
+    <strong>Shared measurement chain</strong>
+    <ol aria-label="TwinPALS modules in measurement order"><li><a href="#m1">Detector response</a></li><li><a href="#m2">Digitizer acquisition</a></li><li><a href="#m3">Lifetime spectrum</a></li></ol>
+  </div>
+</div></section>
+<style>
+  .workflow { background: #e7efe8; padding-block: clamp(2.8rem,5vw,4.8rem); border-bottom: 1px solid #c4d2c7; }
+  header { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.3rem,5vw,5rem); align-items: end; }
+  h2 { max-width: 17ch; font-size: clamp(2.35rem,4.2vw,3.9rem); }
+  header p { color: #3e5550; max-width: 56ch; }
+  .routes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.15rem; margin-top: 1.8rem; }
+  .routes a { background: #f8faf4; border: 1px solid #bbcec1; border-top: 3px solid #3b786b; border-radius: 4px; padding: 1.2rem 1.4rem; text-decoration: none; }
+  .routes a + a { border-top-color: #af8349; }
+  .routes h3 { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .routes span { color: var(--green); font-weight: 500; }
+  .routes p { color: var(--muted); margin-top: .45rem; }
+  .routes a:hover h3 { text-decoration: underline; text-underline-offset: .18em; }
+  .shared-chain { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .6rem 1rem; margin-top: 1.25rem; padding-top: .9rem; border-top: 1px solid #b7cabc; }
+  .shared-chain strong { color: #335449; font-size: .9rem; }
+  .shared-chain ol { display: flex; flex-wrap: wrap; gap: .4rem 1rem; list-style: none; padding: 0; }
+  .shared-chain li { display: flex; align-items: baseline; gap: 1rem; }
+  .shared-chain li + li::before { content: '→' / ''; color: #608677; }
+  .shared-chain a { color: var(--green); font-size: .94rem; }
+  @media(max-width:480px) { .shared-chain ol { width: 100%; flex-direction: column; gap: .25rem; list-style: decimal inside; } .shared-chain li { display: list-item; font-size: .87rem; color: #608677; } .shared-chain li + li::before { content: none; } }
+  @media(max-width:680px) { header,.routes { grid-template-columns: 1fr; } .routes { gap: .7rem; } }
+</style>

@@ -18,9 +18,10 @@ struct Pulse {
     double time, origin, span;
     uint64_t onsetOffset, onsetCount;
     uint32_t role, channel;
+    uint64_t record;
 };
-static_assert(sizeof(Pulse)==48);
-struct Response { int32_t order, polarity; double tau, scale, factor; };
+static_assert(sizeof(Pulse)==56);
+struct Response { double order; int32_t polarity; double tau, scale, factor; analog_pmt::ChargeLaw charge; };
 struct Crossing { double time, channel, a, b; };
 struct State { double busy, trigger, crossA, crossB, previousA, previousB, cursor; };
 struct Config { double step, filterTau, filterTail, coincidence, delay, dead, stopAt, thresholdA, thresholdB; int32_t logic, prune, stride[2]; };
@@ -50,7 +51,7 @@ class Scanner {
 
     struct Signal {
         const Pulse& pulse;const Response& response;
-        std::vector<double> owned;const double* sorted=nullptr;analog_pmt::Response shape;
+        std::vector<double> owned,weights;double totalWeight=0.;const double* sorted=nullptr;analog_pmt::Response shape;
         std::optional<analog_pmt::Chain> chain;
         Signal(const Pulse& p,const Response& r,const unsigned char* map,int stride,double filter):pulse(p),response(r){
             if(!p.onsetCount)return;
@@ -63,7 +64,9 @@ class Scanner {
                 std::sort(owned.begin(),owned.end());sorted=owned.data();
             }
             shape.order=r.order;shape.tau=r.tau;shape.filterTau=filter;
-            chain.emplace(sorted,p.onsetCount,shape,true);
+            weights=r.charge.weights(p.onsetCount,p.record);
+            if(weights.empty())totalWeight=double(p.onsetCount);else for(double w:weights)totalWeight+=w;
+            chain.emplace(sorted,p.onsetCount,shape,true,weights.empty()?nullptr:weights.data());
         }
         double at(double time){
             const double relative=time-pulse.origin;
@@ -174,7 +177,7 @@ public:
                 if(!s.pulse.onsetCount)continue;
                 const auto& r=s.response;
                 const double threshold=s.pulse.channel?cfg.thresholdB:cfg.thresholdA;
-                const double scale=std::abs(r.scale*r.factor)*s.pulse.onsetCount/r.tau;
+                const double scale=std::abs(r.scale*r.factor)*s.totalWeight/r.tau;
                 const double logBound=std::log(std::max(1.,4*signals.size()*scale/threshold))+(r.order+1)*std::log(2.);
                 const double duration=2*std::max(r.tau,cfg.filterTau)*logBound;
                 quietAfter=std::max(quietAfter,(s.pulse.origin+s.sorted[s.pulse.onsetCount-1])+duration+2*cfg.step);

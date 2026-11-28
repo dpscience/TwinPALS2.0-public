@@ -27,7 +27,7 @@ test('processing progress counts source records, including zero-light and stoppe
 const {parseCurve,curveText,defaultCurveImport}=require('../src/curveText.ts');
 const {plotText}=require('../src/Plot.tsx');
 const {detectCurveImport,curveMetadata}=require('../src/curveText.ts');
-const {spectralMatch}=require('../src/spectralMatch.ts');
+const {spectralMatch,photocathodeSpectrum}=require('../src/spectralMatch.ts');
 const {plotRanges}=require('../src/plotRange.ts');
 
 test('constant material curves remain visible between their two endpoints',()=>{
@@ -71,6 +71,11 @@ test('spectral match preserves absolute QE and weighted component photon fractio
  const emission=data.series[0].points;assert.ok(Math.abs(Math.max(...emission.map(p=>p[1]))-100)<1e-8);
  const fast=emission.find(p=>Math.abs(p[0]-210)<1e-8)[1],slow=emission.find(p=>Math.abs(p[0]-410)<1e-8)[1];assert.ok(Math.abs(fast/slow-.25)<.002);
  assert.match(data.note,/QE is absolute/);
+ const rows=[[266,.2,.5,.3],[380,.1,.6,.3]];
+ const film=photocathodeSpectrum(rows,scint);
+ assert.deepEqual(film.series[3],{...data.series[0],dashed:true});
+ assert.deepEqual(film.series.slice(0,3).map(s=>s.points),[[[266,20],[380,10]],[[266,50],[380,60]],[[266,30],[380,30]]]);
+ assert.deepEqual(photocathodeSpectrum(rows,undefined).series,film.series.slice(0,3));
 });
 test('CSV, TXT and decimal comma preserve numeric values',()=>{
  assert.deepEqual(parseCurve('300,0.125\n400,0.25'),[[300,.125],[400,.25]]);
@@ -109,5 +114,51 @@ test('split origin styles distinguish every primary and detector, independently 
   assert.equal(new Set(plot.series.map(s=>s.name)).size,16);
   assert.equal(new Set(plot.series.map(s=>`${s.color}:${s.dashed}`)).size,16);
   assert.ok(plot.series.every((s,i)=>s.dashed===(series[i].detector==='B')&&!s.legendGroup));
+ }
+});
+
+test('photocathode requirements follow the switch and the shape factor follows each detector',()=>{
+ const {missingProperties,cathodeReflectionIssue}=require('../src/materialReadiness.tsx');
+ const {renderToStaticMarkup}=require('react-dom/server'),{createElement}=require('react');
+ const {default:OperatingPoint}=require('../src/PMTOperatingPoint.tsx');
+ const seed=require('../../seed/factory_catalogue.json');
+ const tube=structuredClone(seed.items.find(e=>e.category==='pmt'));
+ assert.equal(cathodeReflectionIssue(tube),'');
+ const {invalidProperties}=require('../src/materialReadiness.tsx');
+ const partial=structuredClone(tube);
+ partial.curves.find(c=>c.name==='cathode_k').points=[];
+ assert.ok(missingProperties(partial).includes('Cathode extinction coefficient k'));
+ partial.properties.cathode_reflections=false;
+ assert.deepEqual(missingProperties(partial),[]);
+ assert.deepEqual(invalidProperties(partial),[]);
+ partial.curves=partial.curves.filter(c=>!['cathode_n','cathode_k'].includes(c.name));
+ assert.match(cathodeReflectionIssue(partial),/No photocathode reflection curves/);
+ tube.properties.cathode_reflections=false;
+ assert.match(cathodeReflectionIssue(tube),/disabled in the PMT catalogue/);
+ tube.curves=tube.curves.filter(c=>c.name!=='cathode_n');
+ assert.deepEqual(missingProperties(tube),[]);
+ tube.properties.cathode_reflections=true;
+ assert.ok(missingProperties(tube).includes('Cathode refractive index n'));
+ assert.match(cathodeReflectionIssue(tube),/Incomplete PMT reflection data: Cathode refractive index n/);
+ const markup=enabled=>renderToStaticMarkup(createElement(OperatingPoint,{
+    detector:{pmt_load_ohm:50,pmt_polarity:'negative',pmt_shape_enabled:enabled},pmt:tube,reflectionIssue:cathodeReflectionIssue(tube),change:()=>{}}));
+ const numeric=html=>html.match(/Shape factor f[\s\S]+?<input[^>]*>/)[0].split('<input').pop();
+ assert.match(markup(false),/type="checkbox" disabled=""[^>]*aria-describedby/);
+ assert.ok(markup(false).indexOf('TTS σ')<markup(false).indexOf('Operating |HV|'));
+ assert.match(numeric(markup(false)),/disabled/);
+ assert.match(numeric(markup(false)),/value="1"/);
+ assert.doesNotMatch(numeric(markup(true)),/disabled/);
+});
+
+test('photocathode shows its schematic first and keeps the source links inside each curve row',()=>{
+ const {renderToStaticMarkup}=require('react-dom/server'),{createElement}=require('react');
+ const {default:Fields}=require('../src/PMTFields.tsx');
+ const tube=require('../../seed/factory_catalogue.json').items.find(e=>e.id==='hamamatsu-r2059');
+ for(const editable of [false,true]){
+  const html=renderToStaticMarkup(createElement(Fields,{entry:tube,tab:'optical',editable}));
+  assert.match(html,/class="pmt-fields"><figure class="pmt-section"/);
+  const rows=[...html.matchAll(/class="curve-link pmt-curve-link"><button[^>]*>([^<]+)<\/button><span class="property-sources">([\s\S]+?)<\/span><\/div>/g)];
+  assert.deepEqual(rows.map(r=>r[1]),['quantum-efficiency','cathode refractive index n','cathode extinction coefficient k'].map(label=>(editable?'Edit ':'View ')+label+' curve'));
+  for(const [, ,sources] of rows)assert.match(sources,/<a [^>]*aria-label="Source \d+/);
  }
 });

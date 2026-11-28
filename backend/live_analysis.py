@@ -29,7 +29,7 @@ from .streams import (FRAME, MAX_FRAME, METRICS, ROLES, StreamError, _header, fr
 
 DETECTOR_DTYPE = np.dtype([('flags','<u4'),('hits','<u8'),('energy','<f8'),
     ('mean','<f8'),('position','<f8',(3,)),('time','<f8'),('length','<f8'),
-    ('reflections','<u8'),('reentries','<u4'),('minimum_mV','<f8'),('maximum_mV','<f8')])
+    ('reflections','<u8'),('reentries','<u4'),('minimum_mV','<f8'),('maximum_mV','<f8'),('cathode_reflections','<u8')])
 EVENT_DTYPE = np.dtype([('id','<u8'),('mask','<u4'),('source','<f8',(3,)),
     ('directions','<f8',(3,3)),('emission','<f8',(3,)),('detectors',DETECTOR_DTYPE,(2,))])
 assert EVENT_DTYPE.itemsize == EVENT_BYTES
@@ -686,8 +686,8 @@ def values(rows, metric, detector, role, pose, origin="all", basis=None):
     rows=rows[selected(rows["detectors"]["flags"][:,detector],origin,basis)]
     d=rows['detectors'][:,detector]
     if metric == 'pulse_height': return np.maximum(-d['minimum_mV'],d['maximum_mV']),0
-    if metric in ('energy','photon_count','reflections'):
-        return d[{'energy':'energy','photon_count':'hits','reflections':'reflections'}[metric]], 0
+    if metric in ('energy','photon_count','reflections','cathode_reflections'):
+        return d[{'energy':'energy','photon_count':'hits','reflections':'reflections','cathode_reflections':'cathode_reflections'}[metric]], 0
     if metric in ('mean_arrival','track_length','depth'):
         valid=(d['flags'] & (2 if metric=='depth' else 1)) != 0
         selected=d[valid]
@@ -745,7 +745,7 @@ def histogram_reference(snapshots, request, cancel=None):
     low,high=chosen or bounds
     if not math.isfinite(low): low,high=0.,1.
     elif low==high:
-        half=.5 if metric in ('photon_count','reflections') else max(abs(low)*.01,.0005)
+        half=.5 if metric in ('photon_count','reflections','cathode_reflections') else max(abs(low)*.01,.0005)
         low,high=low-half,high+half
     edges=np.array([float(low+(high-low)*i/bins) for i in range(bins+1)])
     for s in active:

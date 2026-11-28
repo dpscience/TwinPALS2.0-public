@@ -4,7 +4,7 @@
 
 import {useState} from 'react';
 import type {Entry} from './types';
-import {Field,NumberField} from './Fields';
+import {Field,NumberField,Help} from './Fields';
 import {MaterialCurveEditor} from './MaterialCurveEditor';
 import {MaterialReferences,SourceLinks} from './MaterialSources';
 import WindowComposition from './WindowComposition';
@@ -23,9 +23,16 @@ export function PMTSection({p}:{p:Record<string,unknown>}){
  </svg><figcaption>Section schematic · the active cathode and the outer tube have independent dimensions.</figcaption></figure>;
 }
 
-export default function PMTFields({entry,tab,editable,change,browse,onPending}:{entry:Entry;tab:string;editable:boolean;change:(p:Record<string,unknown>)=>void;browse:(kind:string,initial?:string)=>Promise<string|null>;onPending:(value:boolean)=>void}){
+export default function PMTFields({entry,tab,editable,change,browse,onPending,onCurve}:{onCurve:(name:string)=>void;entry:Entry;tab:string;editable:boolean;change:(p:Record<string,unknown>)=>void;browse:(kind:string,initial?:string)=>Promise<string|null>;onPending:(value:boolean)=>void}){
  const p=entry.properties,[curve,setCurve]=useState('refractive_index'),glass=p.window_material as Entry|undefined;
  const source=(key:string)=><SourceLinks entry={entry} property={key}/>;
+ const curveLink=(name:string,label:string)=>{
+  const present=entry.curves.some(c=>c.name===name);
+  return <div className="curve-link pmt-curve-link">
+   <button type="button" disabled={!editable&&!present} onClick={()=>onCurve(name)}>{present?(editable?'Edit':'View'):'Add'} {label} curve</button>
+   {source(name)}
+  </div>;
+ };
  const number=(key:string,label:string,help:string,min=0)=><NumberField key={key} label={label} help={help} references={source(key)} value={Number(p[key]??0)} min={min} disabled={!editable} onChange={v=>change({[key]:v})}/>;
  const aperture=(prefix:'window'|'photocathode')=><><Field label="Shape" help="Full transverse outline, centred on the PMT axis." references={source(prefix+'_shape')}><select disabled={!editable} value={String(p[prefix+'_shape']??'circle')} onChange={e=>change({[prefix+'_shape']:e.target.value})}><option value="circle">Circular</option><option value="rect">Rectangular</option></select></Field><div className="field-grid">{(p[prefix+'_shape']==='rect'?['width','height']:['diameter']).map(k=>number(prefix+'_'+k+'_mm',`${k[0].toUpperCase()+k.slice(1)} · mm`,'Full dimension of the window or active photocathode surface.',.001))}</div></>;
  const updateGlass=(g:Entry)=>change({window_material:g});
@@ -41,9 +48,18 @@ export default function PMTFields({entry,tab,editable,change,browse,onPending}:{
    <Field label="Outside tabulated optical range" help="Keep the nearest endpoint value, or require the glass curves to cover the full scintillator emission spectrum."><select disabled={!editable} value={String(glass.properties.optical_extrapolation??'constant')} onChange={e=>updateGlass({...glass,properties:{...glass.properties,optical_extrapolation:e.target.value}})}><option value="constant">Keep the nearest endpoint value</option><option value="none">Require complete spectral coverage</option></select></Field>
    <details open className="window-references"><summary>Glass references</summary><MaterialReferences entry={glass} editable={editable} change={refs=>updateGlass({...glass,provenance:{...glass.provenance,references:refs}})}/></details>
   </>}</>}
-  {tab==='optical'&&<>{aperture('photocathode')}{number('cathode_gap_mm','Window → cathode gap · mm','Distance from the inner window face to the active surface. Zero for a transmission photocathode deposited on the glass. Any positive gap is filled with vacuum.')}<PMTSection p={p}/></>}
+  {tab==='optical'&&<><PMTSection p={p}/>
+   {aperture('photocathode')}{number('cathode_gap_mm','Window → cathode gap · mm','Distance from the inner window face to the active surface. Zero for a transmission photocathode deposited on the glass. Any positive gap is filled with vacuum.')}
+   <Field label="Quantum-efficiency reference" help="Complete-tube QE includes window loss. Cathode-surface QE is combined with the selected window absorption." references={source('qe_reference_plane')}><select disabled={!editable} value={String(p.qe_reference_plane??'intrinsic_cathode')} onChange={e=>change({qe_reference_plane:e.target.value})}><option value="external_tube">Measured for complete PMT / tube</option><option value="intrinsic_cathode">Measured at cathode surface</option></select></Field>
+   {curveLink('quantum_efficiency','quantum-efficiency')}
+   <section className="pmt-film">
+    <label className="toggle"><input type="checkbox" disabled={!editable} checked={p.cathode_reflections===true} onChange={e=>change({cathode_reflections:e.target.checked})}/><span>Enable photocathode reflection data</span><Help text="Require a referenced film thickness and optical constants for this PMT. Each detector can then simulate reflections in Module 1 Setup."/></label>
+    {p.cathode_reflections===true&&<>{number('cathode_film_nm','Cathode film thickness · nm','Thickness of the photoemissive layer on the active face.',.001)}
+    {curveLink('cathode_n','cathode refractive index n')}
+    {curveLink('cathode_k','cathode extinction coefficient k')}</>}
+   </section></>}
   {tab==='timing'&&<>
-   <h3>Gain and high voltage</h3><div className="field-grid">{number('dynodes','Dynode stages','Physical stage count. The effective Erlang pulse model uses this as its order; this is a modelling convention, not a microscopic dynode simulation.',2)}{number('gain','Gain at reference HV','Mean charge multiplication. One accepted photoelectron produces charge e × gain.',1)}{number('gain_hv_V','Gain reference |HV| · V','Voltage magnitude at which the stated gain applies.',1)}{number('gain_exponent','Gain exponent','Used only when no gain-versus-HV curve is present under Curves. Then G = Gref × (HV/HVref)^exponent. With a curve, this number is ignored; gain is interpolated from that curve.',.01)}</div>
+   <h3>Gain and high voltage</h3><div className="field-grid">{number('dynodes','Dynode stages','Physical stage count. Sets the default pulse order. Module 1 Setup can scale that order for each detector.',2)}{number('gain','Gain at reference HV','Mean charge multiplication. Mean anode charge per accepted photoelectron is e × gain.',1)}{number('spe_charge_spread_percent','Single-photoelectron charge spread · %','Relative standard deviation of the anode charge from one photoelectron (100 × σQ / mean charge). At 30%, a mean charge of 1 pC has a standard deviation of 0.30 pC. Each accepted photoelectron receives its own charge before the pulses are summed. Transit-time spread (TTS) describes the separate variation in arrival time.')}{number('gain_hv_V','Gain reference |HV| · V','Voltage magnitude at which the stated gain applies.',1)}{number('gain_exponent','Gain exponent','Used only when no gain-versus-HV curve is present under Curves. Then G = Gref × (HV/HVref)^exponent. With a curve, this number is ignored; gain is interpolated from that curve.',.01)}</div>
    <div className="field-grid">{number('hv_min_V','Model minimum |HV| · V','Lower bound supported by the selected model and its references.',1)}{number('hv_max_V','Model maximum |HV| · V','Upper model bound; must not exceed the absolute rating.',1)}{number('hv_absolute_max_V','Absolute maximum |HV| · V','Manufacturer rating. This does not extend the supported model range.',1)}</div>
    <h3>Reference timing</h3><div className="field-grid">{number('rise_ns','10–90% rise time · ns','Manufacturer response rise. The intrinsic Erlang time constant is calibrated after folding in reference TTS and the measurement flash.',.001)}{number('rise_hv_V','Rise reference |HV| · V','High voltage used for the rise-time measurement.',1)}{number('transit_ns','Transit time · ns','Light-pulse peak to anode-response peak at the reference condition. Calibration accounts for the intrinsic kernel peak; it is not added twice.',.001)}{number('transit_hv_V','Transit reference |HV| · V','High voltage used for the transit-time measurement.',1)}{number('tts_ns','Single-photoelectron TTS · ns','Independent transit-time spread for each accepted photoelectron. Select the original sigma/FWHM convention; no event-level 1/√N broadening is added.')}{number('tts_hv_V','TTS reference |HV| · V','High voltage used for the single-photoelectron TTS measurement.',1)}</div>
    <Field label="TTS convention" help="FWHM = 2.35482 × sigma for the Gaussian model." references={source('tts_convention')}><select disabled={!editable} value={String(p.tts_convention??'fwhm')} onChange={e=>change({tts_convention:e.target.value})}><option value="fwhm">FWHM</option><option value="sigma">Sigma (RMS)</option></select></Field>

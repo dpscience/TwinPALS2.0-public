@@ -98,31 +98,78 @@ class OpticalBoundary final : public G4OpBoundaryProcess {
     struct Interface {
         const G4VPhysicalVolume *pre=nullptr,*post=nullptr;
         G4OpticalSurface* measured=nullptr;
+        CathodeFilm* film=nullptr;
     };
     // One immutable geometry per native job. Cache both ordinary and measured
     // interfaces per worker. Checking both volume pointers handles collisions.
     std::array<Interface,64> interfaces{};
-    G4OpticalSurface* measuredSurface(G4VPhysicalVolume* pre,G4VPhysicalVolume* post){
+    const Interface& interfaceFor(G4VPhysicalVolume* pre,G4VPhysicalVolume* post){
         const size_t slot=((reinterpret_cast<uintptr_t>(pre)>>5)^(reinterpret_cast<uintptr_t>(post)>>6))%interfaces.size();
         auto& entry=interfaces[slot];
-        if(entry.pre==pre && entry.post==post)return entry.measured;
+        if(entry.pre==pre && entry.post==post)return entry;
         auto* border=G4LogicalBorderSurface::GetSurface(pre,post);
         auto* surface=border?dynamic_cast<G4OpticalSurface*>(border->GetSurfaceProperty()):nullptr;
-        entry={pre,post,nullptr};
+        entry={pre,post,nullptr,dynamic_cast<CathodeFilm*>(surface)};
         if(surface && surface->GetType()==dielectric_LUT && surface->GetModel()==LUT){
             auto* table=surface->GetMaterialPropertiesTable();
             if(!table || !(table->GetProperty(kREFLECTIVITY)||table->GetProperty(kTRANSMITTANCE)||table->GetProperty(kEFFICIENCY)))entry.measured=surface;
         }
-        return entry.measured;
+        return entry;
     }
-    bool usedLut=false;
-    G4OpBoundaryProcessStatus lutStatus=Undefined;
-    bool sampleMeasuredWrapping(const G4Track& track,const G4Step& step) {
+    bool handledBoundary=false;
+    G4OpBoundaryProcessStatus boundaryStatus=Undefined;
+    bool sampleFilm(const CathodeFilm& film,const G4Track& track,const G4Step& step){
+        const auto* post=step.GetPostStepPoint();
+        const auto& transform=post->GetTouchableHandle()->GetHistory()->GetTopTransform();
+        const auto local=transform.TransformPoint(post->GetPosition());
+        const auto face=post->GetPhysicalVolume()->GetLogicalVolume()->GetSolid()->SurfaceNormal(local);
+        const double energy=track.GetKineticEnergy()/eV;
+        if(face.z()<-.999 && (energy<film.escape.front().first || energy>film.escape.back().first))return false;
+        aParticleChange.Initialize(track);
+        if(face.z()<-.999){
+            const auto direction=track.GetMomentumDirection();
+            const auto normal=transform.Inverse().TransformAxis(face);
+            const double mu=std::clamp(-direction.dot(normal),0.,1.);
+            auto s=direction.cross(normal);
+            s=s.mag2()>1.e-20?s.unit():track.GetPolarization().unit();
+            const auto p=s.cross(direction);
+            const double es=track.GetPolarization().dot(s),ep=track.GetPolarization().dot(p);
+            auto* material=step.GetPreStepPoint()->GetMaterial()->GetMaterialPropertiesTable();
+            const double index=material->GetProperty(kRINDEX)->Value(track.GetKineticEnergy());
+            const std::complex<double> nk{film.sample(film.n,energy),film.sample(film.k,energy)};
+            const double wavelength=(h_Planck*c_light/track.GetKineticEnergy())/nm;
+            const auto sm=filmMode(index,nk,mu,film.thickness,wavelength,false);
+            const auto pm=filmMode(index,nk,mu,film.thickness,wavelength,true);
+            const auto rs=es*sm.r, rp=ep*pm.r;
+            const double reflection=std::norm(rs)+std::norm(rp);
+            const double draw=G4UniformRand();
+            if(draw<reflection){
+                const auto outgoing=(direction+2.*mu*normal).unit();
+                // G4 carries real linear polarization. Sample its two relative
+                // signs to retain the reflected beam's linear Stokes moments.
+                const double amp=std::abs(rs)*std::abs(rp);
+                const double sign=amp>0 && G4UniformRand()>(1+std::real(rs*std::conj(rp))/amp)*.5 ? -1.:1.;
+                aParticleChange.ProposeMomentumDirection(outgoing);
+                aParticleChange.ProposePolarization((std::abs(rs)*s+sign*std::abs(rp)*s.cross(outgoing)).unit());
+                aParticleChange.ProposeVelocity(track.GetVelocity());
+                boundaryStatus=FresnelReflection;
+                return true;
+            }
+            const double detected=(es*es*sm.absorb+ep*ep*pm.absorb)*film.sample(film.escape,energy);
+            boundaryStatus=draw<reflection+detected?Detection:Absorption;
+        }else boundaryStatus=Absorption;
+        aParticleChange.ProposeTrackStatus(fStopAndKill);
+        if(boundaryStatus==Detection)aParticleChange.ProposeLocalEnergyDeposit(track.GetKineticEnergy());
+        return true;
+    }
+    bool sampleCustomSurface(const G4Track& track,const G4Step& step) {
         const double tolerance=G4GeometryTolerance::GetInstance()->GetSurfaceTolerance();
         if(step.GetPostStepPoint()->GetStepStatus()!=fGeomBoundary || step.GetStepLength()<=tolerance) return false;
         auto* pre=step.GetPreStepPoint()->GetPhysicalVolume();auto* post=step.GetPostStepPoint()->GetPhysicalVolume();
         if(!pre || !post) return false;
-        auto* surface=measuredSurface(pre,post);
+        const auto& entry=interfaceFor(pre,post);
+        if(entry.film)return sampleFilm(*entry.film,track,step);
+        auto* surface=entry.measured;
         if(!surface)return false;
         auto* material=step.GetPreStepPoint()->GetMaterial()->GetMaterialPropertiesTable();
         if(!material || !material->GetProperty(kRINDEX)) return false;
@@ -150,14 +197,14 @@ class OpticalBoundary final : public G4OpBoundaryProcess {
         const auto polarization=-track.GetPolarization()+2*track.GetPolarization().dot(facet)*facet;
         aParticleChange.Initialize(track);aParticleChange.ProposeVelocity(track.GetVelocity());
         aParticleChange.ProposeMomentumDirection(outgoing.unit());aParticleChange.ProposePolarization(polarization.unit());
-        lutStatus=G4OpBoundaryProcessStatus(int(surface->GetFinish())+(int(NoRINDEX)-int(groundbackpainted)));
+        boundaryStatus=G4OpBoundaryProcessStatus(int(surface->GetFinish())+(int(NoRINDEX)-int(groundbackpainted)));
         return true;
     }
 public:
-    G4OpBoundaryProcessStatus GetStatus() const override {return usedLut?lutStatus:G4OpBoundaryProcess::GetStatus();}
+    G4OpBoundaryProcessStatus GetStatus() const override {return handledBoundary?boundaryStatus:G4OpBoundaryProcess::GetStatus();}
     G4VParticleChange* PostStepDoIt(const G4Track& track, const G4Step& step) override try {
-        usedLut=sampleMeasuredWrapping(track,step);
-        auto* result = usedLut?G4VDiscreteProcess::PostStepDoIt(track,step):G4OpBoundaryProcess::PostStepDoIt(track, step);
+        handledBoundary=sampleCustomSurface(track,step);
+        auto* result = handledBoundary?G4VDiscreteProcess::PostStepDoIt(track,step):G4OpBoundaryProcess::PostStepDoIt(track, step);
         if (!reflectionStatus(GetStatus())) return result;
         auto* change = static_cast<G4ParticleChange*>(result);
         const auto* pre = step.GetPreStepPoint();

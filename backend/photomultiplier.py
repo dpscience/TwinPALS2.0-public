@@ -22,6 +22,10 @@ def validate_pmt(entry):
     from .analog_pmt import validate_response
     p = entry['properties']
     validate_response(p)
+    if type(p.get('cathode_reflections',False)) is not bool:
+        raise ValueError('Simulate photocathode reflections must be a checkbox.')
+    if p.get('cathode_reflections') and 'cathode_film_nm' in p and (type(p['cathode_film_nm']) not in (int,float) or not 0 < p['cathode_film_nm'] < math.inf):
+        raise ValueError('Cathode film thickness must be positive and finite.')
     if p.get('tube_shape', 'circle') not in ('circle', 'square'):
         raise ValueError('Photomultiplier → Package: choose cylindrical or square.')
     for key in geometry_fields(p):

@@ -258,7 +258,8 @@ class PulseManager:
         if info['isotope']=='na22':
             validate_lifetime_mixture(p['lifetimes'])
         responses=info['streams'][0]['header']['analog_response']
-        if any(i['header']['analog_response']!=responses for i in info['streams']):
+        from .streams import response_calibration
+        if any(response_calibration(i['header']['analog_response'])!=response_calibration(responses) for i in info['streams'][1:]):
             raise ValueError('Module 1 streams have different PMT response snapshots. Select the two outputs of one run.')
         resolved['analog_response']=responses
         for ch,r in enumerate(responses):

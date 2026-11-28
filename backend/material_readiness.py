@@ -18,6 +18,8 @@ def missing_properties(entry):
         if any(c.get('rise_time_ns') is None or c.get('decay_time_ns') is None for c in components): missing.append('Rise / decay time')
     if category == 'pmt' and 'quantum_efficiency' not in curves: missing.append('Quantum efficiency')
     if category == 'pmt':
+        from .photocathode_film import missing_film
+        missing.extend(missing_film(entry))
         from .photomultiplier import geometry_fields
         from .analog_pmt import RESPONSE_FIELDS
         for key in (*geometry_fields(p), *RESPONSE_FIELDS):

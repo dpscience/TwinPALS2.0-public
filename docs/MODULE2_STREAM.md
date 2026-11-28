@@ -23,7 +23,7 @@ absolute times, trigger cell, baseline/clipping flags, and every retained
 analogue contribution's channel, primary role, decay/transport record IDs,
 onset/source time, lifetime/component, amplitude and `light_origin`
 (`scintillation`, `cherenkov`, or `mixed`). The same required origin is present
-in timeline contributions. Both input snapshots use TPSTRM06. Pulse metadata refers back to the original M1 event; gain/TTS are not redrawn.
+in timeline contributions. New input snapshots use TPSTRM07. Existing pulse files can also embed TPSTRM06 headers. Pulse metadata refers back to the original M1 event; gain/TTS are not redrawn.
 Each waveform also retains its end/busy times, accepted trigger channel and a
 bounded absolute-time context (at most 256 surrounding analogue contributions,
 exact known total, interval and `known_until_ns` horizon). This includes already

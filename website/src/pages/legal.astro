@@ -1,0 +1,29 @@
+---
+import Shell from '../layouts/Shell.astro';
+import { base, guide } from '../site';
+import manropeLicense from '@fontsource-variable/manrope/LICENSE?raw';
+import plexLicense from '@fontsource/ibm-plex-mono/LICENSE?raw';
+---
+<Shell title="Legal Notice | TwinPALS" description="Who operates the TwinPALS research website and where to find its software and font licenses.">
+  <article class="wrap prose">
+    <h1>Legal Notice</h1>
+    <p>Danny Petschke operates this website from Sweden as a private individual. TwinPALS is a free research software project.</p>
+    <p>For project enquiries or questions about this website, email <a href="mailto:twinpals@proton.me">twinpals@proton.me</a>. The <a href={base + 'privacy/'}>Privacy Notice</a> explains how visits and correspondence are handled.</p>
+    <h2>Software and third-party materials</h2>
+    <p>The MIT License covers the original TwinPALS source code and documentation. The bundled libraries and scientific datasets have their own license terms. The download includes the applicable notices.</p>
+    <p><a href={guide + 'LICENSE'} target="_blank" rel="noopener noreferrer">TwinPALS license</a> · <a href={guide + 'NOTICE.md'} target="_blank" rel="noopener noreferrer">Project and third-party notices</a></p>
+    <p>This product includes software developed by Members of the Geant4 Collaboration (<a href="https://geant4.web.cern.ch/" target="_blank" rel="noopener noreferrer">http://cern.ch/geant4</a>). The G4EMLOW 8.8 dataset supplied with the TwinPALS download is restricted to non-commercial use within Geant4.</p>
+    <p><a href="https://geant4.web.cern.ch/download/license.html" target="_blank" rel="noopener noreferrer">Geant4 software license</a> · <a href={guide + 'legal/public/texts/emlow-1.txt'} target="_blank" rel="noopener noreferrer">G4EMLOW dataset terms</a></p>
+    <h2>Scientific background</h2>
+    <p>The project credits Dominik Boras’s 2024 dissertation at the University of Würzburg on the PALS digital twin.</p>
+    <p><a href="https://doi.org/10.25972/OPUS-37663" target="_blank" rel="noopener noreferrer">Read the dissertation</a></p>
+    <h2>Catalogue and illustrations</h2>
+    <p>The website catalogue lists selected simulation parameters. In TwinPALS, each component record identifies its sources and model assumptions. Manufacturer tables and published research data have source-specific terms for reuse. <a href={guide + 'seed/README.md'} target="_blank" rel="noopener noreferrer">Factory data and sources</a>.</p>
+    <p>The interface screenshots show TwinPALS. The absorber-study plots show results from the project’s simulation runs. The image introducing the component catalogue is an AI-generated illustration of generic laboratory hardware.</p>
+    <h2>Website typefaces</h2>
+    <p>This site serves Manrope and IBM Plex Mono locally under the SIL Open Font License.</p>
+    <details><summary>Manrope copyright and license</summary><pre>{manropeLicense}</pre></details>
+    <details><summary>IBM Plex Mono copyright and license</summary><pre>{plexLicense}</pre></details>
+    <p>The simulation plots use DejaVu Sans for their labels. <a href="https://dejavu-fonts.github.io/License.html" target="_blank" rel="noopener noreferrer">DejaVu font license</a>.</p>
+  </article>
+</Shell>

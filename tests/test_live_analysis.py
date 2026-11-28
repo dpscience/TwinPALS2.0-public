@@ -108,8 +108,8 @@ def test_stop_import_retains_data_and_never_follows_file_growth(tmp_path):
     finally:store.close()
 
 
-def test_summary_is_324_bytes_and_validation_rejects_invalid_flags():
-    assert EVENT_DTYPE.itemsize==324
+def test_summary_is_340_bytes_and_validation_rejects_invalid_flags():
+    assert EVENT_DTYPE.itemsize==340
     data=np.frombuffer(event(0)[12:],dtype=EVENT_DTYPE).copy()
     data['detectors']['flags'][0,0]|=256
     with pytest.raises(StreamError,match='detector'):checked_events(data.tobytes(),'na22_prompt',0)
@@ -129,3 +129,17 @@ def test_maximum_survives_last_edge_roundoff(tmp_path):
             assert a['series'][0]['counts'][-1]==1
             assert sum(a['series'][0]['counts'])==a['series'][0]['valid']==2
     finally:store.close()
+
+
+@pytest.mark.parametrize('basis,events',[('crystal',4),('anode',2)])
+def test_reflection_surface_preserves_event_population(tmp_path,basis,events):
+    path=write(tmp_path/'surfaces.tpstream')
+    store=AnalysisStore()
+    try:
+        store.open_files([path])
+        loaded(store)
+        plots=store.query(dict(metrics=['reflections','cathode_reflections'],basis=basis,
+                               detector='A',bins=4,range=[0,4]))
+        assert [p['series'][0]['counts'] for p in plots]==[[0,0,0,events],[0,0,events,0]]
+    finally:
+        store.close()

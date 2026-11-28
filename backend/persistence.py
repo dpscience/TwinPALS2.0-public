@@ -9,7 +9,7 @@ import tempfile
 import threading
 import weakref
 import numpy as np
-from .analog_pmt import evaluate, tail_span, kernel, native_library
+from .analog_pmt import spe_weights, evaluate, tail_span, kernel, native_library
 
 class PulseCloud:
     def __init__(self):
@@ -33,7 +33,7 @@ class PulseCloud:
             if raw is not None:
                 arrival_offset=self.file.tell();self.file.write(raw.tobytes())
             code=int(np.bitwise_or.reduce(np.asarray(origins,dtype="u1")[:,0],initial=0)) if origins is not None else 1
-            self.rows.append((offset,len(a),float(a.min()),float(a.max()),arrival_offset,code))
+            self.rows.append((offset,len(a),float(a.min()),float(a.max()),arrival_offset,code,event_id if event_id is not None else 0))
             lo,hi=self.rows[-1][2:4]
             self.bounds=(lo,hi) if self.bounds is None else (min(lo,self.bounds[0]),max(hi,self.bounds[1]))
             # Only the first 20 nonempty pulses choose the display range. Later
@@ -67,7 +67,7 @@ class PulseCloud:
             self.file.write(np.ascontiguousarray(tags,'u1'))
             first=len(self.rows)
             for event,n,k,lo,hi,origin in zip(ids.tolist(),counts.tolist(),offsets.tolist(),lows,highs,origins):
-                row=(base+8*k,n,lo,hi,arrivals_at+8*k,origin)
+                row=(base+8*k,n,lo,hi,arrivals_at+8*k,origin,event)
                 self.rows.append(row)
                 self.events[event]=row
                 self.origin_index[event]=(tags_at+2*k,n)
@@ -126,7 +126,8 @@ def axes(groups, bins):
 
 def accumulate(cloud, response, bins, axis, stop, cancel, batched):
     low, high, ymax, centers = axis
-    key = (bins, low, high, ymax, response['order'], response['tau_ns'], response['charge_C'])
+    key = (bins, low, high, ymax, response['order'], response['tau_ns'], response['charge_C'],
+           response.get('charge_cutoff'), response.get('charge_scale'), response.get('charge_seed'))
     with cloud.compute_lock:
         if key not in cloud.cache:
             cloud.cache[key] = [np.zeros((3,bins,bins),dtype=np.int64), 0, np.zeros(3,dtype=np.int64)]
@@ -135,7 +136,9 @@ def accumulate(cloud, response, bins, axis, stop, cancel, batched):
         cloud.cache.move_to_end(key)
         cached = cloud.cache[key]
         grids, seen, totals = cached
-        native = getattr(native_library(), 'tp_persistence_batch', None) if batched else None
+        law = tuple(response[k] for k in ('charge_cutoff','charge_scale','charge_seed')) if response.get('charge_scale') else ()
+        function = 'tp_persistence_spe_batch_shape' if law else 'tp_persistence_batch_shape'
+        native = getattr(native_library(), function, None) if batched else None
         try:
             while seen < stop:
                 if cancel.is_set():
@@ -153,14 +156,19 @@ def accumulate(cloud, response, bins, axis, stop, cancel, batched):
                     with cloud.read_lock:
                         cloud.reader.seek(offset)
                         raw = cloud.reader.read(length)
-                    descriptors = np.array([(row[0]-offset, row[1], max(0,row[5]-1)) for row in rows], dtype=np.uint64)
+                    descriptors = np.array([(row[0]-offset, row[1], max(0,row[5]-1), row[6]) for row in rows], dtype=np.uint64)
+                    if not law:
+                        descriptors = np.ascontiguousarray(descriptors[:,:3])
                     if native(raw, len(raw), descriptors, len(rows), centers, bins, response['order'],
-                              response['tau_ns'], response['charge_C'], ymax, grids):
+                              response['tau_ns'], response['charge_C'], ymax, grids, *law):
                         raise ValueError('Could not evaluate pulse density batch')
                     totals += np.bincount(descriptors[:,2].astype(int), minlength=3)
                 else:
                     for row in rows:
-                        v = np.abs(evaluate(cloud.read(row), response, centers, current=True))/(row[1]*response['charge_C']*1e12)
+                        onsets=cloud.read(row)
+                        weights=spe_weights(onsets,response,row[6])
+                        norm=row[1] if weights is None else weights.sum()
+                        v = np.abs(evaluate(onsets, response, centers, current=True,event=row[6],weights=weights))/(norm*response['charge_C']*1e12)
                         occupied = v > ymax*1e-12
                         yi = np.minimum(bins-1, np.floor(v[occupied]/ymax*bins).astype(int))
                         index = max(0,row[5]-1)

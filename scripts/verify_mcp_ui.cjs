@@ -65,23 +65,51 @@ async function until(fn,message){
       await send('Browser.close');
       return;
     }
-    await until(()=>run("document.querySelectorAll('.study-run').length === 4"),'Observer did not display four real runs');
+    await until(()=>run("document.querySelectorAll('.study-run').length === 5"),'Observer did not display five real runs');
     await run("[...document.querySelectorAll('.study-run')].find(b=>b.textContent.includes('reference')).click()");
     await until(()=>run("!!document.querySelector('.study-geometry canvas') && !!document.querySelector('.study-chart svg')"),'Missing detector geometry or measured spectrum');
-    const shot=await send('Page.captureScreenshot',{format:'png'});
-    fs.writeFileSync(path.join(folder,'observer.png'),Buffer.from(shot.data,'base64'));
-    await run("[...document.querySelectorAll('button')].find(b=>b.textContent==='Run settings').click()");
+    async function capture(name){
+      const shot=await send('Page.captureScreenshot',{format:'png'});
+      fs.writeFileSync(path.join(folder,name),Buffer.from(shot.data,'base64'));
+    }
+    const clickText=(selector,text)=>run("[...document.querySelectorAll("+JSON.stringify(selector)+")].find(b=>b.textContent.includes("+JSON.stringify(text)+")).click()");
+    async function chooseDistribution(value){
+      await run("(()=>{const s=document.querySelector('select[aria-label]');s.value="+JSON.stringify(value)+";s.dispatchEvent(new Event('change',{bubbles:true}));})()");
+      await until(()=>run("document.querySelector('.study-chart')?.textContent.includes("+JSON.stringify(value)+")"),'Distribution did not update: '+value);
+    }
+    assert.ok(await run("document.querySelector('article').textContent.includes('Detector response by primary')"));
+    await capture('observer.png');
+    await clickText('button','Run settings');
     await until(()=>run("!!document.querySelector('.study-settings details')"),'Settings inspection failed');
     assert.equal(await run("document.querySelectorAll('.study-settings input,.study-settings select,.study-settings textarea').length"),0);
-    await run("[...document.querySelectorAll('.study-run')].find(b=>b.textContent.includes('lifetime')).click()");
-    await run("[...document.querySelectorAll('button')].find(b=>b.textContent==='Measurement').click()");
+    await clickText('button','Study results');
+    await until(()=>run("document.querySelector('article table')?.textContent.includes('cascade')"),'Comparison did not show the two detector simulations');
+    assert.ok(await run("document.querySelector('article table').textContent.includes('source')"));
+    await clickText('button','Measurement');
+    await clickText('.study-run','acquire');
+    await until(()=>run("document.querySelector('.observer-source select')?.value==='features'"),'Saved acquisition query missing');
+    await until(()=>run("document.querySelector('.study-chart svg')!==null"),'Acquisition plot missing');
+    await chooseDistribution('Pulse area');
+    await chooseDistribution('Peak-time difference · B − A');
+    await capture('observer-acquisition.png');
+    await clickText('.study-run','lifetime');
     await until(()=>run("!!document.querySelector('.study-chart') && document.querySelector('article').textContent.includes('Pairs analyzed')"),'M3 measurement missing');
+    assert.ok(await run("document.querySelector('article').textContent.includes('CFD · A')"));
+    assert.equal(await run("document.querySelector('select[aria-label]').options.length"),4);
+    await capture('observer-lifetime.png');
+    await clickText('button','Study results');
+    await until(()=>run("document.querySelectorAll('article table tbody tr').length===2 && document.querySelector('.comparison-controls') && !!document.querySelector('.study-chart')"),'Same-stream lifetime comparison missing');
+    assert.ok(await run("document.querySelector('article table').textContent.includes('CFD A (%)')"));
+    assert.ok(await run("document.querySelector('.study-documents').textContent.includes('methods.md')"));
+    const selected=await run("document.querySelector('.study-title h1').textContent");
+    assert.equal(selected,'lifetime');
+    await capture('observer-comparison.png');
     await send('Emulation.setDeviceMetricsOverride',{width:390,height:820,deviceScaleFactor:1,mobile:true});
     assert.ok(await run("document.documentElement.scrollWidth <= innerWidth+2"),'Horizontal overflow on narrow screen');
     assert.equal(await run("location.hash"),'');
     assert.deepEqual(errors,[]);assert.deepEqual(httpErrors,[]);
     fs.writeFileSync(report,JSON.stringify({ok:true,version:require('../frontend/package.json').version,pageErrors:errors,httpErrors,licenses,
-      checks:['Four runs','Pinned run','Real detector geometry and measured spectrum','Read-only settings','M3 detail','390 px layout']})); 
+      checks:['Five runs','Pinned run','Real detector geometry and measured spectrum','Read-only settings','M1 outcomes','Study comparison','Named M2 query and all three distributions','M3 timing settings, directions and same-stream comparison','390 px layout']}));
     await send('Browser.close');
   }finally{
     socket?.close();

@@ -84,4 +84,4 @@ Open the project in VS Code. Create or edit `.vscode/mcp.json` and merge the ent
 
 The version and directory come from the local service. The component names come from that workspace's catalogue. If they look unfamiliar, compare the reported directory with **Status and paths** in the TwinPALS tray. If the portable folder moved, print the configuration again and update the client's executable and data paths.
 
-To submit your first calculation, use the [zero-lifetime timing study](../../README.md#try-a-zero-lifetime-timing-study). Open **Open study observer** from the tray to follow the queued and running steps.
+To submit your first calculation, use the [START shielding study](../../README.md#example-study-shielding-the-start-detector). Open **Open study observer** from the tray to follow the queued and running steps.

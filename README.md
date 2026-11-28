@@ -2,7 +2,9 @@
 
 TwinPALS is a **digital twin of a positron annihilation lifetime spectrometer**. Build a virtual counterpart of your detector setup and follow a coincidence from gamma emission through the two detectors to its entry in the lifetime spectrum. You can study how much of a peak or tail comes from the intended start–stop pairs, scattered photons, overlapping pulses or accidental coincidences, and how much useful signal survives a change in your timing or selection settings.
 
-**Cite this software.** Danny Petschke, *TwinPALS 2.0*, version 2.0.2. When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Boras dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
+[**Explore the TwinPALS website**](https://dpscience.github.io/TwinPALS2.0-public/) to follow the animated detector signal, browse the component catalogue and see how TwinPALS MCP runs a shielding study from a single prompt.
+
+**Cite this software.** Danny Petschke, *TwinPALS 2.0*, version 2.0.3. When publishing results, please also cite Dominik Boras’s 2024 doctoral dissertation on the PALS digital twin. [Software citation (CITATION.cff)](CITATION.cff) · [Boras dissertation (DOI)](https://doi.org/10.25972/OPUS-37663)
 
 TwinPALS is organized into **three modules**, each modelling one stage of a measurement.
 
@@ -10,7 +12,7 @@ TwinPALS is organized into **three modules**, each modelling one stage of a meas
 2. **Waveform acquisition** uses the source activity to simulate when decays occur, places the detector signals on that timeline and records digitized pulse pairs when the trigger fires.
 3. **Lifetime analysis** measures the time difference between the two pulses, builds the lifetime spectrum and shows which types of events contribute to each peak or tail.
 
-[Follow a measurement](#from-gamma-emission-to-a-lifetime-spectrum) · [Desktop setup](#open-twinpals-on-windows) · [AI-assisted studies](#run-a-study-with-an-ai-agent) · [Component catalogue](#component-catalogue) · [Download for Windows](https://github.com/dpscience/TwinPALS2.0-public/releases) · [Build from source](#build-from-source)
+[Follow a measurement](#from-gamma-emission-to-a-lifetime-spectrum) · [TwinPALS Desktop](#open-twinpals-on-windows) · [TwinPALS MCP](#run-a-study-with-an-ai-agent) · [Component catalogue](#component-catalogue) · [Download for Windows](https://github.com/dpscience/TwinPALS2.0-public/releases) · [Build from source](#build-from-source)
 
 [![Na-22 gamma and optical transport through the source and opposing detectors, with the resulting anode current](docs/screenshots/detector-transport.png)](docs/screenshots/detector-transport.png)
 
@@ -50,35 +52,35 @@ Replay the same waveforms with a tighter pulse-height window to see how much acc
 
 ## Two ways to use TwinPALS
 
-Use the **desktop workbench** when you want to build a detector, inspect an individual pulse or try a cut yourself. Use an **AI agent** when you want to repeat a measurement across many settings and compare the results. Both use the same component catalogue and run the same three modules on your PC.
+TwinPALS Desktop and TwinPALS MCP run the same three simulation modules on your PC and use the same component catalogue. Choose how you want to control the measurement.
 
-| Mode | How a measurement runs |
+| Mode | How you use it |
 | --- | --- |
-| **Desktop** | You choose the setup in the workbench → TwinPALS runs the modules → you inspect waveforms and spectra in the workbench. |
-| **AI-assisted** | You describe a study in chat → the agent submits it through the Model Context Protocol (MCP) → TwinPALS runs the modules → you follow progress in the study observer and review the agent’s report. |
+| **TwinPALS Desktop** | Build the detector interactively, inspect an individual pulse and adjust a filter to see which events enter the lifetime spectrum. |
+| **TwinPALS MCP** | Describe a study to an AI agent. Through the Model Context Protocol (MCP), the agent can configure runs, schedule independent measurements in parallel and compare the resulting spectra. |
 
 ## Open TwinPALS on Windows
 
-To open the workbench, download either Windows x64 package from the [release page](https://github.com/dpscience/TwinPALS2.0-public/releases). TwinPALS starts on your PC and opens its controls in your default browser.
+To open TwinPALS Desktop, download either Windows x64 package from the [release page](https://github.com/dpscience/TwinPALS2.0-public/releases). TwinPALS starts on your PC and opens its controls in your default browser.
 
 | Distribution | First launch | Where your data go by default |
 | --- | --- | --- |
 | **Windows installer** | Run the release file ending in **-setup.exe**. Complete Setup, then open **TwinPALS 2.0** from the Start menu. | `%LOCALAPPDATA%\TwinPALS\Data`. Later installs reuse your catalogue, settings and study workspace. |
 | **Portable ZIP** | Extract the **entire ZIP** to a writable folder. Open that folder and double-click **TwinPALS.exe**. Keep its companion files and folders together. | The `data` folder beside the executable. |
 
-Both downloads include the scientific runtime, Geant4 data and desktop interface. When the browser opens, start in **Module 1** to set up the source and the two detectors. If you close the browser tab, click the TwinPALS icon in the Windows notification area (near the clock, sometimes under the hidden-icons arrow) and choose **Open desktop in browser**.
+Both downloads include the scientific runtime, Geant4 data and TwinPALS Desktop. When the browser opens, start in **Module 1** to set up the source and the two detectors. If you close the browser tab, click the TwinPALS icon in the Windows notification area (near the clock, sometimes under the hidden-icons arrow) and choose **Open desktop in browser**.
 
 ### The Windows tray
 
-The tray gives you one place to find the desktop, the study service and any connected MCP clients. **Status and paths** identifies the installation and workspace. With the study service running, **Open study observer** opens the read-only view of agent work. Closing a browser tab leaves the underlying service running. The menu also lets you disconnect a client or stop a service.
+The tray gives you one place to find TwinPALS Desktop, the study service and any connected MCP clients. **Status and paths** identifies the installation and workspace. With the study service running, **Open study observer** opens the read-only view of agent work. Closing a browser tab leaves the underlying service running. The menu also lets you disconnect a client or stop a service.
 
 [![TwinPALS tray menu with the desktop ready, one active study step and a connected MCP client](docs/screenshots/windows-tray.png)](docs/screenshots/windows-tray.png)
 
 ## Run a study with an AI agent
 
-Suppose you want to know which timing settings give the narrowest prompt peak. Ask an assistant such as Codex, Claude or GitHub Copilot to replay one pulse stream at different constant-fraction levels. Through its MCP connection, the agent can look up your detector settings, submit each combination to TwinPALS, compare the resulting spectra and write a report with the run IDs behind its conclusions.
+Connect an AI client such as Codex, Claude or GitHub Copilot to TwinPALS MCP. The agent can look up detector components, run a series of configurations and compare the spectra against a criterion you specify. The shielding example below shows how to turn a measurement question into a study.
 
-### Connect TwinPALS to Codex
+### Connect TwinPALS MCP to Codex
 
 1. Open the folder containing **TwinPALS-MCP.exe**. In File Explorer, type `powershell` in the address bar and press Enter. Run the following command to print the configuration for this copy.
 
@@ -100,42 +102,46 @@ Suppose you want to know which timing settings give the narrowest prompt peak. A
 
 **Setup guides** · [Codex, including a TOML example](docs/mcp/CLIENTS.md#codex) · [Claude Desktop](docs/mcp/CLIENTS.md#claude-desktop) · [Claude Code](docs/mcp/CLIENTS.md#claude-code) · [GitHub Copilot CLI](docs/mcp/CLIENTS.md#github-copilot-cli) · [GitHub Copilot in VS Code](docs/mcp/CLIENTS.md#github-copilot-in-vs-code)
 
-### What the study observer shows
+### Example study: shielding the START detector
 
-The **study observer** lets you inspect what TwinPALS is computing while the agent works. For instance, when the agent says it is testing a new timing setting, you can see which run it submitted, check the actual setting and inspect the spectrum as soon as it is available. Open **Open study observer** from the tray when the MCP study service is running.
+**Study goal.** In an opposed (180°) sodium-22 spectrometer, a 511 keV annihilation photon can reach detector B (STOP) while its partner and the prompt 1275 keV gamma both deposit energy in detector A (START). Their light can overlap in a single START pulse and shift the measured lifetime. At 90°, the partner photon travels away from START, making that geometry a useful low-pile-up reference.
 
-The left column lists the study steps and their progress. Select a step to inspect its measurements, plots or recorded settings in the centre. The activity feed on the right shows which runs started and when TwinPALS saved their results. The view is read-only, so you can explore the results or close the tab while the study continues. [Study tools, saved results and recovery](docs/mcp/README.md)
+How closely can a lead or tungsten plate in front of START approach the 90° reference, and how much additional measurement time does that require? Keep the solid angle of each crystal fixed and compare configurations at the same number of accepted A→B lifetime entries. The detector assembly and aluminium sample inputs come from the [Boras dissertation](https://doi.org/10.25972/OPUS-37663).
 
-[![Live study observer with a completed CF setting pinned, two settings running and further steps queued](docs/screenshots/observer-cf-study.png)](docs/screenshots/observer-cf-study.png)
-
-*The timing scan below, photographed during a small pilot with 256 simulated pulse pairs. The selected run used 10% CF on both channels. Two other settings were running. This view illustrates how to follow the calculation. The pilot count is too small to select a best setting from this plot.*
-
-### Try a zero-lifetime timing study
-
-This study measures the simulated instrument response function (IRF). Each cell of a 9 × 9 grid uses the same waveform pairs. The row sets the constant-fraction (CF) level in A and the column sets it in B. Paste this prompt into your connected client.
+**Agent prompt.** Paste this into a client connected to TwinPALS MCP.
 
 ```text
-Find the CF levels for A and B that minimize the simulated coincidence IRF FWHM.
+Compare START pile-up (1275/511 keV) at 180° and 90° for equal detector
+solid angles. How close can shielding at 180° bring the pile-up fraction
+to the 90° reference, and what does that cost in measurement time?
 
-Use Na-22 and record the detector, digitizer and source timing settings. In Module 2
-use exactly one discrete lifetime component: tau = 0 ps, intensity = 100%.
-Keep detector timing spread, electronic noise and digitizer jitter at their
-configured values. Generate one pulse stream for the entire scan. Record its seed.
+Use the Boras high-purity aluminium setup (https://doi.org/10.25972/OPUS-37663).
+Take the sample and lifetime inputs from §5.4.6.2 and Table 22. Model the
+PSI DRS4 digitizer and two BC-422Q (0.5%) truncated cones with 19 mm entrance
+diameter, 40 mm rear diameter and 27.9 mm length. Use PTFE wrapping, silicone
+coupling and R3377 photomultipliers.
 
-In Module 3, vary CF independently in A and B from 10% to 90% in steps of 10%.
-Run all 81 combinations on that stream. Keep the PHS windows, filters, cable
-correction, histogram range and bin width fixed throughout.
+Adapt Figs. 85 and 87. Point A (START) and B (STOP) at the Na-22 source,
+with each active crystal face 15 mm from it. Use bare 180° as the baseline
+and 90° with its lead separator as the reference. At 180°, test lead and
+tungsten plates in front of A at 0.5, 1, 1.5, 4.2, 8 and 12 mm. Keep the
+crystals fixed as each plate thickens towards the source. Include attenuation
+and scattering in the plates. Keep activity, digitizer settings and analysis
+windows fixed across runs.
 
-Use the merged ideal/intended same-decay contribution for the prompt peak.
-Measure its full width at half maximum in ps using one method for all settings.
-State how you determine the baseline and interpolate both half-height crossings.
-Record the peak counts and accepted fraction. Flag unresolved widths and acquire
-more statistics if needed. Treat statistical ties as ties.
-
-Produce a 9 x 9 FWHM heatmap and a table. Give the best independent CF levels
-(A, B) and the best shared level (A = B). Cross-check the best settings on
-a new independent seed. Save a Markdown report with uncertainties and run IDs.
+For each configuration, report the fraction of accepted A→B lifetime entries
+whose START pulse contains both gamma energies from the same decay. Compare
+the source-clock time needed for equal A→B counts, as a percentage change
+from bare 180°. Show the trade-off across thicknesses for both materials.
 ```
+
+### What the study observer shows
+
+Choose **Open study observer** from the Windows tray to inspect the runs submitted through TwinPALS MCP. Select a transport step to check the detector assembly, or open **Run settings** to verify the absorber used for that run. The activity feed records when each step started and when its results were saved. [Study tools, saved results and recovery](docs/mcp/README.md)
+
+[![TwinPALS Study Observer showing the detector assembly for the 180° run with a 12 mm tungsten START absorber](docs/screenshots/observer-start-absorber.png)](docs/screenshots/observer-start-absorber.png)
+
+*The selected Module 1 run shows the opposed detectors with a 12 mm tungsten plate in front of START. The left column lists the scan steps and the right column shows the recorded activity.*
 
 ## Component catalogue
 
@@ -156,7 +162,7 @@ The factory catalogue contains **396 entries** across eight families.
 | [Shielding materials](docs/COMPONENTS.md#shielding-materials) | 5 | Composition and density for gamma transport |
 <!-- factory-catalogue:end -->
 
-The **[complete component catalogue](docs/COMPONENTS.md)** lists every factory entry with comparable properties and units. Open **Database** in the workbench to inspect curves, reference conditions and model assumptions, edit a record, or import and export your own catalogue. Lifetime references are available for a subset of samples and for all six encapsulation foils.
+The **[complete component catalogue](docs/COMPONENTS.md)** lists every factory entry with comparable properties and units. Open **Database** in TwinPALS Desktop to inspect curves, reference conditions and model assumptions, edit a record, or import and export your own catalogue. Lifetime references are available for a subset of samples and for all six encapsulation foils.
 
 [![Hamamatsu R329-02 record showing window and photocathode geometry](docs/screenshots/photomultiplier-catalogue.png)](docs/screenshots/photomultiplier-catalogue.png)
 
@@ -168,7 +174,7 @@ The **[complete component catalogue](docs/COMPONENTS.md)** lists every factory e
 
 ## Build from source
 
-Build from source to inspect or change the simulation engines and workbench. On Windows x64 with Python 3.12, Node.js/npm, CMake and Visual Studio 2022 C++ tools, run the following commands from the repository root.
+Build from source to inspect or change the simulation engines and TwinPALS Desktop. On Windows x64 with Python 3.12, Node.js/npm, CMake and Visual Studio 2022 C++ tools, run the following commands from the repository root.
 
 ```powershell
 .\scripts\build-workbench.ps1
@@ -181,7 +187,7 @@ Both factory tables are included. The source build fetches the pinned Geant4 SDK
 | --- | --- |
 | `backend/` | Desktop launcher, local API, catalogue and module processing |
 | `backend/mcp_server/` | MCP tools, persistent studies and the observer service |
-| `frontend/src/` | React workbench, plots and observer |
+| `frontend/src/` | TwinPALS Desktop interface, plots and study observer |
 | `native/` | Geant4 worker, pulse processing libraries and Windows tray |
 | `seed/` and `third_party/geant4/` | Factory catalogue, material definitions and Geant4 dependency manifest |
 | `tests/` and `frontend/tests/` | Python and frontend checks |

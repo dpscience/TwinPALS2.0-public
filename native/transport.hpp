@@ -23,7 +23,7 @@ struct LightOrigin { uint8_t mechanism=0,component=0; uint32_t history=0; G4Thre
 struct TrackRecord { int primary=-1; LightOrigin light; };
 struct DetectorSummary {
     double energy = 0, arrivalSum = 0, trackLengthSum = 0;
-    uint64_t detected = 0, reflections = 0;
+    uint64_t detected = 0, reflections = 0, cathodeReflections = 0;
     uint32_t reentries = 0;
     bool hasInteraction = false;
     bool entered = false;
@@ -39,7 +39,7 @@ struct DetectorSummary {
     void interact(const G4ThreeVector& p, double t) { if (!hasInteraction || t < interactionTime) { hasInteraction = true; interaction = p; interactionTime = t; } }
     void add(const DetectorSummary& p) {
         energy += p.energy; arrivalSum += p.arrivalSum; trackLengthSum += p.trackLengthSum;
-        detected += p.detected; reflections += p.reflections; reentries += p.reentries;
+        detected += p.detected; reflections += p.reflections; cathodeReflections += p.cathodeReflections; reentries += p.reentries;
         arrivals.insert(arrivals.end(),p.arrivals.begin(),p.arrivals.end());
         positions.insert(positions.end(),p.positions.begin(),p.positions.end());
         origins.insert(origins.end(),p.origins.begin(),p.origins.end());originMask|=p.originMask;productionMask|=p.productionMask;
@@ -260,7 +260,10 @@ public:
             }
             if (!boundary) { auto* processes = G4OpticalPhoton::Definition()->GetProcessManager()->GetProcessList(); for (std::size_t i = 0; i < processes->size(); ++i) if (auto* p = dynamic_cast<G4OpBoundaryProcess*>((*processes)[i])) { boundary = p; break; } require(boundary != nullptr, "Missing optical boundary process"); }
             const auto status = boundary->GetStatus();
-            if (reflectionStatus(status)) for (int d = 0; d < 2; ++d) if (pre == geometry.detectors[d] || pre == geometry.windows[d]) ++response[d].reflections;
+            if (reflectionStatus(status)) for (int d = 0; d < 2; ++d) {
+                if (pre == geometry.detectors[d] || pre == geometry.windows[d]) ++response[d].reflections;
+                if (post == geometry.sensors[d]) ++response[d].cathodeReflections;
+            }
             if (status == Detection) {
                 const int d = post == geometry.sensors[0] ? 0 : post == geometry.sensors[1] ? 1 : -1;
                 require(d >= 0, "Detection outside configured cathode");
@@ -313,7 +316,7 @@ struct AnalogEvent {
     json births=json::array();
 };
 static AnalogEvent eventBytes(const EventState& state, int projection,const Configuration& c) {
-    AnalogEvent result;auto& out=result.event;out.reserve(324);appendU64(out,state.id);
+    AnalogEvent result;auto& out=result.event;out.reserve(340);appendU64(out,state.id);
     uint32_t mask = 0; std::array<G4ThreeVector, 3> dirs{}; std::array<double, 3> times{};
     for (const auto& p : state.primaries) { mask |= 1u << p.slot; dirs[p.slot] = p.direction; times[p.slot] = p.emissionTime; }
     appendU32(out, mask); appendVector(out, state.sourcePosition, mm); for (const auto& d : dirs) appendVector(out, d); for (double t : times) appendDouble(out, t);
@@ -328,9 +331,10 @@ static AnalogEvent eventBytes(const EventState& state, int projection,const Conf
         appendU32(out, (s.detected ? 1u : 0u) | (s.hasInteraction ? 2u : 0u) | (s.energy >= c.minimumEnergyKeV ? 4u : 0u) | (s.entered ? 8u : 0u) | (s.originMask<<4)|(s.productionMask<<6)); appendU64(out, s.detected); appendDouble(out, s.energy);
         appendDouble(out, s.detected ? s.arrivalSum / s.detected - emission : 0); appendVector(out, s.interaction, mm);
         appendDouble(out, s.hasInteraction ? s.interactionTime - emission : 0); appendDouble(out, s.detected ? s.trackLengthSum / s.detected : 0); appendU64(out, s.reflections); appendU32(out, s.reentries);
-        const auto& p=c.document.at("analog_response").at(d);
+        const auto& header=c.document.at("streams").at(projection<0?0:projection).at("header");
+        const auto& p=(header.contains("analog_response")?header.at("analog_response"):c.document.at("analog_response")).at(d);
         analog_pmt::Response response;
-        response.order=p.at("order").get<int>();response.tau=p.at("tau_ns").get<double>();
+        response.order=p.at("order").get<double>();response.tau=p.at("tau_ns").get<double>();
         response.delay=p.at("onset_delay_ns").get<double>();response.sigma=p.at("tts_sigma_ns").get<double>();
         response.voltageScale=p.at("voltage_scale_mV").get<double>();response.polarity=p.at("polarity")=="negative"?-1:1;
         require(response.order>=2&&response.order<=32&&response.tau>0&&response.sigma>=0,"Invalid analog response");
@@ -340,8 +344,11 @@ static AnalogEvent eventBytes(const EventState& state, int projection,const Conf
         historyRefs[d]=std::move(s.history);
         const uint64_t analogSeed=static_cast<uint64_t>(c.seed) ^ (static_cast<uint64_t>(state.id)+1)*0xd1b54a32d192ed03ULL ^ (static_cast<uint64_t>(projection+2)*2+d)*0x94d049bb133111ebULL;
         onsets[d]=analog_pmt::onsets(raw[d],response,analogSeed);
-        const double amplitude=analog_pmt::peak(onsets[d],response);
+        analog_pmt::ChargeLaw charge{p.value("charge_cutoff",0.),p.value("charge_scale",0.),p.value("charge_seed",uint64_t(0))};
+        const auto weights=charge.weights(onsets[d].size(),state.id);
+        const double amplitude=analog_pmt::peak(onsets[d],response,weights.empty()?nullptr:weights.data());
         appendDouble(out,response.polarity<0?-amplitude:0);appendDouble(out,response.polarity>0?amplitude:0);
+        appendU64(out,s.cathodeReflections);
         appendU32(result.pulse,static_cast<uint32_t>(raw[d].size()));
     }
     for(int d=0;d<2;++d)for(std::size_t i=0;i<raw[d].size();++i){appendDouble(result.pulse,raw[d][i]);appendDouble(result.pulse,onsets[d][i]);appendDouble(result.pulse,positions[d][i][0]);appendDouble(result.pulse,positions[d][i][1]);appendFloat(result.hits[d],positions[d][i][0]);appendFloat(result.hits[d],positions[d][i][1]);}
@@ -361,7 +368,7 @@ static AnalogEvent eventBytes(const EventState& state, int projection,const Conf
     }
     for(const auto& refs:historyRefs)for(auto ref:refs)appendU32(provenance,ref);
     if(state.sampleTrajectory){result.preview=std::move(onsets);result.arrivals=std::move(raw);result.origins=std::move(origins);}
-    require(out.size() == 324, "Internal event record size mismatch"); return result;
+    require(out.size() == 340, "Internal event record size mismatch"); return result;
 }
 static std::string base64(const std::string& input) {
     static constexpr char alphabet[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -404,20 +411,27 @@ class OrderedWriter {
     std::chrono::steady_clock::time_point lastProgress = std::chrono::steady_clock::now();
     bool liveAnalysis;
     std::array<uint64_t,2> cascadeInteractions{}, cascadeResponses{};
-    static bool interacts(const std::string& e,int d) {uint32_t flags;double energy;std::memcpy(&flags,e.data()+132+d*96,4);std::memcpy(&energy,e.data()+132+d*96+12,8);return (flags&2)||energy>0;}
-    static bool responds(const std::string& e,int d) {uint64_t hits;std::memcpy(&hits,e.data()+132+d*96+4,8);return hits>0;}
+    static constexpr std::size_t detectorOffset(int detector) {
+        return 132 + detector * 104;
+    }
+    static bool eligibleResponse(const std::string& event, int detector) {
+        uint32_t flags;
+        std::memcpy(&flags, event.data() + detectorOffset(detector), sizeof(flags));
+        return (flags & 5) == 5;
+    }
+    static bool interacts(const std::string& e,int d) {uint32_t flags;double energy;std::memcpy(&flags,e.data()+detectorOffset(d),4);std::memcpy(&energy,e.data()+detectorOffset(d)+12,8);return (flags&2)||energy>0;}
+    static bool responds(const std::string& e,int d) {uint64_t hits;std::memcpy(&hits,e.data()+detectorOffset(d)+4,8);return hits>0;}
     void flushBatch() {
         for (auto& output:outputs) {
             output.file.flush(); require(output.file.good(),"Stream flush failed");
             if (!output.batch.empty()) {
-                const int count=static_cast<int>(output.batch.size()/324);
+                const int count=static_cast<int>(output.batch.size()/340);
                 emitProtocol({{"type","analysis_batch"},{"role",output.role},{"first",completed-count},{"count",count},{"data",base64(output.batch)},{"analog",base64(output.analog)},{"hit_a",base64(output.hits[0])},{"hit_b",base64(output.hits[1])}});
                 output.batch.clear();output.analog.clear();
                 output.hits[0].clear();output.hits[1].clear();
             }
         }
     }
-static bool eligibleResponse(const std::string& bytes,int detector){uint32_t flags;std::memcpy(&flags,bytes.data()+132+detector*96,4);return (flags&5)==5;}
 public:
     OrderedWriter(const Configuration& cfg, const fs::path& outputDirectory) : c(cfg), cancellationFile(outputDirectory / "cancel.flag"), liveAnalysis(cfg.document.value("output",json::object()).value("live_analysis",false)) {
         const auto& streams = c.document.at("streams"); require(streams.is_array() && streams.size() == (c.sourceRole == "co60" ? 2u : 1u), "Wrong number of output streams");
@@ -426,14 +440,14 @@ public:
             require(path.extension() == ".part", "Native output must end .part");
             if (path.has_parent_path()) fs::create_directories(path.parent_path());
             out.file.open(path, std::ios::binary | std::ios::out | std::ios::trunc); require(out.file.good(), "Cannot create stream output");
-            auto header = stream.at("header"); header["native"] = {{"worker_version", kWorkerVersion}, {"geant4_version", kEngineVersion}, {"seed", c.seed}, {"threads", c.threads}, {"rng_policy", kRngPolicy}, {"reflections_definition", "Optical boundary reflections from crystal and entrance window, all tracked photons of selected ancestry"}};
-            header["version"] = 6;header["provenance_layout"]="shared-transport-tree-v1";
+            auto header = stream.at("header"); header["native"] = {{"worker_version", kWorkerVersion}, {"geant4_version", kEngineVersion}, {"seed", c.seed}, {"threads", c.threads}, {"rng_policy", kRngPolicy}, {"cathode_reflections_definition", "Reflections at the active photocathode including incidence from glass or vacuum, all tracked photons of selected ancestry"}, {"reflections_definition", "Optical boundary reflections from crystal and entrance window, all tracked photons of selected ancestry"}};
+            header["version"] = 7;header["provenance_layout"]="shared-transport-tree-v1";
             header["light_components"]=lightComponents(c);
             header["physics"] = c.document.at("physics");
-            header["analog_response"]=c.document.at("analog_response");
+            if(!header.contains("analog_response"))header["analog_response"]=c.document.at("analog_response");
             header["photoelectron_layout"]="float64[PE,4]:arrival_ns,onset_ns,local_x_mm,local_y_mm;uint8[PE,2]:mechanism,component;mechanism:1=scintillation,2=cherenkov";
             header["native"]["optical_boundary_model"] = kOpticalBoundaryModel;
-            const auto encoded = header.dump(); require(encoded.size() <= 64 * 1024 * 1024, "Header exceeds 64 MiB"); std::string prefix("TPSTRM06", 8); appendU32(prefix, static_cast<uint32_t>(encoded.size()));
+            const auto encoded = header.dump(); require(encoded.size() <= 64 * 1024 * 1024, "Header exceeds 64 MiB"); std::string prefix("TPSTRM07", 8); appendU32(prefix, static_cast<uint32_t>(encoded.size()));
             out.file.write(prefix.data(), static_cast<std::streamsize>(prefix.size())); out.file.write(encoded.data(), static_cast<std::streamsize>(encoded.size())); out.file.flush(); require(out.file.good(), "Cannot persist stream header");
             if (liveAnalysis) emitProtocol({{"type","analysis_header"},{"role",out.role},{"header",header}});
             outputs.push_back(std::move(out));
@@ -465,12 +479,12 @@ public:
             for (std::size_t i = 0; i < outputs.size(); ++i) {
                 auto& output=outputs[i];const auto& checksum=r.checksums[i];
                 frame(output.file,"APLS",r.pulses[i],checksum[0]);frame(output.file,"PROV",r.provenance[i],checksum[1]);frame(output.file, "EVNT",r.events[i],checksum[2]);
-                for(int d=0;d<2;++d){uint32_t flags;std::memcpy(&flags,r.events[i].data()+132+d*96,4);output.interactions[d]+=interacts(r.events[i],d);output.responses[d]+=responds(r.events[i],d);output.eligibleResponses[d]+=((flags&5)==5);++output.pulseOrigins[d][(flags>>4)&3];}
+                for(int d=0;d<2;++d){uint32_t flags;std::memcpy(&flags,r.events[i].data()+detectorOffset(d),4);output.interactions[d]+=interacts(r.events[i],d);output.responses[d]+=responds(r.events[i],d);output.eligibleResponses[d]+=((flags&5)==5);++output.pulseOrigins[d][(flags>>4)&3];}
                 if(liveAnalysis) {output.batch+=r.events[i];output.analog+=r.pulses[i];for(int d=0;d<2;++d)output.hits[d]+=r.hits[i][d];}
-                for(int d=0;d<2;++d){double low,high;std::memcpy(&low,r.events[i].data()+132+d*96+80,8);std::memcpy(&high,r.events[i].data()+132+d*96+88,8);output.maxima[d]=std::max(output.maxima[d],std::max(-low,high));uint32_t flags;std::memcpy(&flags,r.events[i].data()+132+d*96,4);if(flags&4)output.eligibleMaxima[d]=std::max(output.eligibleMaxima[d],std::max(-low,high));}
+                for(int d=0;d<2;++d){double low,high;std::memcpy(&low,r.events[i].data()+detectorOffset(d)+80,8);std::memcpy(&high,r.events[i].data()+detectorOffset(d)+88,8);output.maxima[d]=std::max(output.maxima[d],std::max(-low,high));uint32_t flags;std::memcpy(&flags,r.events[i].data()+detectorOffset(d),4);if(flags&4)output.eligibleMaxima[d]=std::max(output.eligibleMaxima[d],std::max(-low,high));}
                 const auto& p=r.previews[i];
                 if (!r.tracks.empty() || !p.preview[0].empty() || !p.preview[1].empty()) {
-                    std::array<uint32_t,2> flags{};for(int d=0;d<2;++d)std::memcpy(&flags[d],r.events[i].data()+132+d*96,4);
+                    std::array<uint32_t,2> flags{};for(int d=0;d<2;++d)std::memcpy(&flags[d],r.events[i].data()+detectorOffset(d),4);
                     const std::string outcome=interacts(r.events[i],0)||interacts(r.events[i],1)?"interaction":((flags[0]|flags[1])&8)?"transmission":"miss";
                     const auto category=outcome+"_"+std::to_string((flags[0]>>4)&3)+"_"+std::to_string((flags[1]>>4)&3);
                     const auto now=std::chrono::steady_clock::now();

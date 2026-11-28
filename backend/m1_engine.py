@@ -131,7 +131,9 @@ class RunManager:
             for index,stream in enumerate(streams):
                 job_number=index if profile['source']=='na22' else 0
                 seed=((resolved['seed']-1+job_number*104729)%2147483646)+1
-                header={'format':'twinpals-stream','version':6,'run_id':identifier,'stream_id':uuid.uuid4().hex,'analog_response':resolved['analog_response'],
+                from .analog_pmt import stream_responses
+                responses=stream_responses(resolved['analog_response'],seed,index)
+                header={'format':'twinpals-stream','version':7,'run_id':identifier,'stream_id':uuid.uuid4().hex,'analog_response':responses,
                         'role':stream['role'],'source':resolved['source'],'profile':profile,'physics':resolved['physics'],
                         'resolved':{'detectors':[{k:d[k] for k in ('id','front_mm','axis')} for d in resolved['detectors']]},
                         'material_names':material_names,'pmt_snapshot':self.run['pmt_snapshot'],

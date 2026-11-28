@@ -1,0 +1,40 @@
+---
+import '../styles/site.css';
+import '@fontsource-variable/manrope/wght.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import { base, guide, releases, repository } from '../site';
+import logo from '../../../frontend/public/favicon.svg?url';
+const citationUrl = guide + 'CITATION.cff';
+interface Props { title?: string; description?: string }
+const {
+  title = 'TwinPALS | A digital twin for positron lifetime spectroscopy',
+  description = 'Trace gamma interactions, detector pulses and coincidence spectra in TwinPALS Desktop. Use TwinPALS MCP to run parallel parameter scans and compare lifetime spectra with an AI agent.',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content={description} /><meta name="theme-color" content="#0e242a" />
+    <title>{title}</title><link rel="icon" type="image/svg+xml" href={logo} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap bar">
+        <a href={base} class="brand" aria-label="TwinPALS home"><img src={logo} alt="" width="38" height="38"/>TwinPALS</a>
+        <nav aria-label="Main navigation">
+          <a href={base + '#desktop'}>TwinPALS Desktop</a><a href={base + '#studies'}>TwinPALS MCP</a><a href={base + '#catalogue'}>Catalogue</a><a href={base + '#publications'}>Publications</a>
+          <a href={citationUrl} target="_blank" rel="noopener noreferrer">Cite TwinPALS</a>
+        </nav>
+        <a href={base + '#start'} class="nav-get">Get TwinPALS</a>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer"><div class="wrap foot-inner">
+      <div><a class="brand" href={base}><img src={logo} width="31" height="31" alt="" />TwinPALS</a><small>© 2026 Danny Petschke</small></div>
+      <nav aria-label="Project links"><a href={repository} target="_blank" rel="noopener noreferrer">GitHub</a><a href={releases} target="_blank" rel="noopener noreferrer">Downloads</a><a href={citationUrl} target="_blank" rel="noopener noreferrer">Cite TwinPALS</a><a href={base + 'privacy/'}>Privacy Notice</a><a href={base + 'legal/'}>Legal Notice</a></nav>
+    </div></footer>
+  </body>
+</html>

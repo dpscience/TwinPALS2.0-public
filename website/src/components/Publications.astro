@@ -1,0 +1,74 @@
+---
+const borasPetschkeStaab = 'Dominik Boras, Danny Petschke and Torsten E. M. Staab';
+
+const papers = [
+  {
+    title: 'The Influence of Corrupt Components in Positron Lifetime Spectra – On the Application of the Trapping Model to Determine Defect Densities',
+    citation: 'Journal of Physics: Conference Series 3149, 012016 (2025)',
+    authors: borasPetschkeStaab,
+    doi: '10.1088/1742-6596/3149/1/012016',
+    finding: 'Boras, Petschke and Staab traced 511 keV annihilation photons that triggered START in a simulated 180° spectrometer. These events distort the lifetime spectrum and bias the defect densities inferred with the standard trapping model.',
+  },
+  {
+    title: 'A machine learning approach using XGBoost for classification and filtering of 1275/511 pile-up events',
+    citation: 'Journal of Physics: Conference Series 3149, 012029 (2025)',
+    authors: borasPetschkeStaab,
+    doi: '10.1088/1742-6596/3149/1/012029',
+    finding: 'Can pulse shape reveal two overlapping gamma interactions? The authors trained a classifier on seven waveform features and tested the filter on high-purity copper. The filtered lifetimes closely matched a measurement in a 90° reference geometry.',
+  },
+  {
+    title: 'Improving positron lifetime spectra quality by suppressing corrupted coincidences via pulse-height spectrum window adjustments',
+    citation: 'Journal of Instrumentation 20, T10006 (2025)',
+    authors: borasPetschkeStaab,
+    doi: '10.1088/1748-0221/20/10/T10006',
+    finding: 'Lowering the upper edge of the start pulse-height window suppressed 1275/511 keV pile-up. In high-purity aluminium, the extracted lifetimes moved closer to those measured with the detectors at 90°.',
+  },
+  {
+    title: 'A Simulation Study on Polymer-like PALS Spectra using the Digital Twin Framework “TwinPALS”',
+    citation: 'Journal of Physics: Conference Series 3029, 012014 (2025)',
+    authors: borasPetschkeStaab,
+    doi: '10.1088/1742-6596/3029/1/012014',
+    finding: 'Polymers can exhibit a continuous distribution of positronium lifetimes. The authors simulated polymer-like spectra to examine how signals introduced by the spectrometer affect the recovered lifetime distribution.',
+  },
+  {
+    title: 'Geant4-based technical simulation study of plastic scintillators for Positron Annihilation Lifetime Spectroscopy (PALS)',
+    citation: 'Journal of Instrumentation 20, T01009 (2025)',
+    authors: borasPetschkeStaab,
+    doi: '10.1088/1748-0221/20/01/T01009',
+    finding: 'The detector-model study compared cylindrical and truncated-cone BC422Q scintillators. It quantified the trade-off between detection efficiency and unwanted interactions, and found a narrower timing response for the cones in the simulated setup.',
+  },
+];
+
+---
+<section id="publications" class="section publications" aria-labelledby="research-heading"><div class="wrap">
+  <header class="section-intro"><div><p class="eyebrow">Publications</p><h2 id="research-heading">Research with TwinPALS.</h2></div>
+    <p>Dominik Boras’s dissertation introduced the spectrometer model behind TwinPALS. The papers below explore how scintillator geometry affects detection efficiency and how pulse height and shape can reveal pile-up. They also examine how unwanted coincidences affect the interpretation of polymer-like spectra and the defect densities inferred with the trapping model.</p></header>
+  <aside class="thesis"><div><p class="citation">Doctoral dissertation · University of Würzburg · 2024</p><h3>The origins of TwinPALS</h3></div>
+    <div><p>Dominik Boras coupled Geant4 particle transport to a pulse generator to model a laboratory spectrometer from gamma emission to the measured lifetime spectrum. The dissertation documents the physical basis of TwinPALS.</p>
+    <a href="https://doi.org/10.25972/OPUS-37663" target="_blank" rel="noopener noreferrer">Read the dissertation</a></div></aside>
+  <ul class="papers">
+    {papers.map(paper => <li>
+      <div>
+        <p class="citation">{paper.citation}</p>
+        <h3><a href={'https://doi.org/' + paper.doi} target="_blank" rel="noopener noreferrer">{paper.title}</a></h3>
+        <p class="authors">{paper.authors}</p>
+      </div>
+      <p>{paper.finding}</p>
+    </li>)}
+  </ul>
+</div></section>
+<style>
+  .publications { background: #e7efe8; border-block: 1px solid var(--rule); }
+  .papers { list-style: none; padding: 0; }
+  .papers li,.thesis { display: grid; grid-template-columns: 1.03fr .97fr; gap: clamp(1.5rem,5vw,6rem); }
+  .papers li { border-top: 1px solid var(--rule); padding-block: clamp(1.35rem,2.5vw,2rem); }
+  .papers h3,.thesis h3 { font-size: clamp(1.14rem,1.65vw,1.45rem); line-height: 1.26; text-wrap: pretty; }
+  .citation { font: .78rem/1.5 var(--mono); margin-bottom: .5rem; color: var(--green); }
+  .authors { margin-top: .4rem; font-size: .94rem; color: var(--muted); }
+  .papers h3 a { text-decoration-color: #91b6a7; text-decoration-thickness: 1px; }
+  .papers h3 a:hover,.thesis a { color: var(--green); }
+  .papers li > p,.thesis div > p:not(.citation) { color: var(--muted); }
+  .thesis { border: 1px solid var(--rule); background: #f5f8f2; padding: 1.35rem; margin-bottom: clamp(1.25rem,2.5vw,2rem); border-radius: 4px; }
+  .thesis a { display: inline-block; margin-top: .45rem; }
+  @media(max-width:680px) { .papers li,.thesis { grid-template-columns: 1fr; gap: .55rem; } }
+</style>

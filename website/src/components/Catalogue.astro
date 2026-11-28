@@ -1,0 +1,312 @@
+---
+import { Image } from 'astro:assets';
+import libraryImage from '../assets/component-library.png';
+import {families, total} from '../data/catalogue';
+import {guide} from '../site';
+const catalogueUrl = guide + 'docs/COMPONENTS.md';
+const featuredComponents = [
+  'BC-422Q 0.5%',
+  'PSI DRS4 V5 · 5.12 GS/s',
+  'EJ-232Q 0.5%',
+  'Hamamatsu R11265U-200',
+];
+const firstFamily = families.find(family => family.rows.some(row => row[0] === featuredComponents[0]))!;
+const firstRecord = firstFamily.rows.find(row => row[0] === featuredComponents[0])!;
+const asJson = JSON.stringify({ families, featuredComponents }).replaceAll('<', '\\u003c');
+---
+
+<section class="catalogue" id="catalogue" aria-labelledby="catalogue-title">
+  <div class="wrap">
+    <div class="catalogue-intro">
+      <div>
+        <p class="section-label">Component database</p>
+        <h2 id="catalogue-title">PALS hardware and materials, ready to simulate.</h2>
+        <p class="intro-copy">TwinPALS comes with {total} ready-to-use records covering materials and hardware commonly used in PALS. The catalogue includes scintillators, photomultiplier tubes and digitizers, along with optical couplings, reflector wrappings, sample materials, encapsulation foils and shielding.</p>
+        <p class="intro-copy">Select a component in its module and TwinPALS loads its simulation parameters. A scintillator brings its light yield and decay times, a photomultiplier its timing response, and a digitizer its sampling rate and ADC range. Sample records include reference positron lifetimes where available.</p>
+      </div>
+      <Image class="library-image" src={libraryImage} format="webp" widths={[480, 800, 1200]}
+        sizes="(max-width: 760px) 91vw, (max-width: 1380px) 45vw, 580px"
+        alt="AI-generated illustration of a four-input waveform digitizer and a glass photomultiplier beside a scintillator, reflector, foil, sample discs and a shielding plate."
+        loading="lazy" />
+    </div>
+
+    <div class="explorer">
+      <div class="explorer-intro">
+        <div>
+          <h3>Explore the factory catalogue</h3>
+          <p>Explore {families.length} component families. Select a record to see its simulation parameters.</p>
+        </div>
+        <a href={catalogueUrl} target="_blank" rel="noopener noreferrer">Full catalogue guide</a>
+      </div>
+      <div class="explorer-controls" data-controls hidden>
+        <label>
+          <span>Find a component</span>
+          <input type="search" placeholder="Name or family, e.g. Kapton" data-search />
+        </label>
+        <label>
+          <span>Component family</span>
+          <select data-family>
+            <option value="">All families ({total})</option>
+            {families.map((family, index) => <option value={index}>{family.name} ({family.rows.length})</option>)}
+          </select>
+        </label>
+      </div>
+      <div class="catalogue-grid">
+        <div class="matches" data-controls hidden>
+          <div class="match-summary" aria-live="polite" role="status" data-count></div>
+          <div data-results aria-label="Matching components" role="group"></div>
+          <p data-empty hidden>Try another name or select a different family.</p>
+          <nav class="page-nav" aria-label="Catalogue result pages" data-paging>
+            <button type="button" data-previous>Previous</button>
+            <span data-page></span>
+            <button type="button" data-next>Next</button>
+          </nav>
+        </div>
+        <div class="record" aria-labelledby="catalogue-record-title">
+          <div id="catalogue-selected-record" data-detail>
+            <p class="record-family" data-detail-family>{firstFamily.name}</p>
+            <h4 id="catalogue-record-title" data-detail-name>{firstRecord[0]}</h4>
+            <dl class="record-fields" data-fields>
+              {firstFamily.fields.map((field, i) => <div><dt>{field}</dt><dd>{firstRecord[i + 1]}</dd></div>)}
+            </dl>
+            <a data-detail-link href={`${catalogueUrl}#${firstFamily.anchor}`} target="_blank" rel="noopener noreferrer">Read the family reference</a>
+          </div>
+          <p data-no-detail hidden>Select a matching component to inspect its properties.</p>
+        </div>
+      </div>
+    </div>
+    <p class="database-note">
+      In the <strong>Database</strong> tab of TwinPALS Desktop, inspect the underlying curves, measurement conditions
+      and source references. Edit a record or import and export your own catalogue.{' '}
+      <a href="https://github.com/dpscience/TwinPALS2.0-public/blob/master/seed/README.md" target="_blank" rel="noopener noreferrer">Factory data and sources</a>
+    </p>
+  </div>
+  <script is:inline type="application/json" data-catalogue-json set:html={asJson}></script>
+</section>
+
+<script>
+  interface CatalogFamily {
+    name: string;
+    anchor: string;
+    fields: string[];
+    rows: string[][];
+  }
+  interface Entry {
+    family: CatalogFamily;
+    familyIndex: number;
+    values: string[];
+    searchText: string;
+  }
+
+  const section = document.querySelector<HTMLElement>('#catalogue')!;
+  const {families: data, featuredComponents}: {families: CatalogFamily[]; featuredComponents: string[]} =
+    JSON.parse(section.querySelector('[data-catalogue-json]')!.textContent!);
+  const search = section.querySelector<HTMLInputElement>('[data-search]')!;
+  const picker = section.querySelector<HTMLSelectElement>('[data-family]')!;
+  const matches = section.querySelector<HTMLElement>('[data-results]')!;
+  const previous = section.querySelector<HTMLButtonElement>('[data-previous]')!;
+  const next = section.querySelector<HTMLButtonElement>('[data-next]')!;
+  const detail = section.querySelector<HTMLElement>('[data-detail]')!;
+  const guide = section.querySelector<HTMLAnchorElement>('[data-detail-link]')!;
+  const guideUrl = guide.href.split('#')[0];
+  const pageSize = 4;
+
+  // Folding also makes chemical subscripts searchable with a standard keyboard (e.g. BaF2).
+  function normalize(value: string) {
+    return value.normalize('NFKD').toLowerCase().replace(/[\u0300-\u036f]/g, '');
+  }
+
+  const entries: Entry[] = data.flatMap((family, familyIndex) => family.rows.map(values => ({
+    family, familyIndex, values, searchText: normalize(`${values[0]} ${family.name}`),
+  })));
+
+  const featured = featuredComponents.map((name) => entries.find(entry => entry.values[0] === name))
+    .filter((entry): entry is Entry => entry !== undefined);
+  const ordered = [...featured, ...entries.filter(entry => !featured.includes(entry))];
+  let filtered = ordered;
+  let selected: Entry | undefined;
+  let page = 0;
+
+  function showRecord(entry: Entry | undefined) {
+    selected = entry;
+    detail.hidden = !entry;
+    section.querySelector<HTMLElement>('[data-no-detail]')!.hidden = !!entry;
+    if (!entry) return;
+
+    section.querySelector('[data-detail-family]')!.textContent = entry.family.name;
+    section.querySelector('[data-detail-name]')!.textContent = entry.values[0];
+    const properties = entry.family.fields.map((field, index) => {
+      const group = document.createElement('div');
+      const label = document.createElement('dt');
+      const value = document.createElement('dd');
+      label.textContent = field;
+      value.textContent = entry.values[index + 1] === '—' ? 'No reference listed' : entry.values[index + 1];
+      group.append(label, value);
+      return group;
+    });
+    section.querySelector('[data-fields]')!.replaceChildren(...properties);
+    guide.href = `${guideUrl}#${entry.family.anchor}`;
+  }
+
+  function renderPage() {
+    const pageCount = Math.ceil(filtered.length / pageSize);
+    const visible = filtered.slice(page * pageSize, (page + 1) * pageSize);
+    const active = selected && visible.includes(selected) ? selected : visible[0];
+    showRecord(active);
+    const buttons = visible.map(entry => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-controls', 'catalogue-selected-record');
+      button.setAttribute('aria-pressed', String(entry === active));
+      const name = document.createElement('span');
+      name.textContent = entry.values[0];
+      const family = document.createElement('small');
+      family.textContent = entry.family.name;
+      button.append(name, family);
+      button.addEventListener('click', () => {
+        showRecord(entry);
+        matches.querySelectorAll('button').forEach(row => row.setAttribute('aria-pressed', String(row === button)));
+      });
+      return button;
+    });
+    matches.replaceChildren(...buttons);
+    section.querySelector('[data-count]')!.textContent = `${filtered.length} matching ${filtered.length === 1 ? 'record' : 'records'}`;
+    section.querySelector<HTMLElement>('[data-empty]')!.hidden = filtered.length > 0;
+    section.querySelector<HTMLElement>('[data-paging]')!.hidden = pageCount < 2;
+    section.querySelector('[data-page]')!.textContent = `${page + 1} / ${pageCount}`;
+    previous.disabled = page === 0;
+    next.disabled = page + 1 >= pageCount;
+  }
+
+  function filter() {
+    const tokens = normalize(search.value.trim()).split(/\s+/).filter(Boolean);
+    filtered = ordered.filter(entry =>
+      (picker.value === '' || entry.familyIndex === Number(picker.value)) &&
+      tokens.every(token => entry.searchText.includes(token))
+    );
+    page = 0;
+    renderPage();
+  }
+
+  search.addEventListener('input', filter);
+  picker.addEventListener('change', filter);
+  previous.addEventListener('click', () => { page -= 1; renderPage(); });
+  next.addEventListener('click', () => { page += 1; renderPage(); });
+  section.querySelectorAll<HTMLElement>('[data-controls]').forEach(element => element.hidden = false);
+  renderPage();
+</script>
+
+<style>
+  .catalogue {
+    background: var(--paper, #f7f7f1);
+    color: var(--ink, #10282b);
+    padding-block: clamp(4rem, 8vw, 7rem);
+    scroll-margin-top: 5rem;
+  }
+  .catalogue-intro {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    align-items: center;
+    gap: clamp(2rem, 7vw, 7rem);
+    margin-bottom: 2.7rem;
+  }
+  .section-label, .record-family, .match-summary, .page-nav span {
+    font: 500 .8rem/1.45 var(--mono, monospace);
+  }
+  .section-label, .record-family { color: var(--green, #126b60); }
+  .section-label { margin: 0 0 .9rem; text-transform: uppercase; letter-spacing: .11em; }
+  .catalogue h2 {
+    margin: 0;
+    max-width: 12em;
+    font-size: clamp(2.45rem, 4.1vw, 4.5rem);
+    line-height: 1.04;
+    letter-spacing: -.055em;
+  }
+  .intro-copy, .explorer-intro p, .database-note {
+    color: #3f5755;
+    line-height: 1.65;
+  }
+  .intro-copy { max-width: 53ch; margin: 1.2rem 0 0; }
+  .intro-copy + .intro-copy { margin-top: .75rem; }
+  .library-image { display: block; width: 100%; min-width: 0; height: auto; }
+  .explorer {
+    box-sizing: border-box;
+    padding: clamp(1.1rem, 3vw, 2.25rem);
+    border: 1px solid #becbc3;
+    background: #fffefa;
+  }
+  .explorer-intro {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: .5rem 1.5rem;
+  }
+  .explorer h3 { font-size: clamp(1.55rem, 2.3vw, 2.15rem); line-height: 1.18; letter-spacing: -.035em; margin: 0; }
+  .explorer-intro p { margin: .45rem 0 0; }
+  .catalogue a {
+    color: var(--green, #126b60); font-weight: 650;
+    text-decoration: underline; text-underline-offset: .22em;
+  }
+  .explorer-controls { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .explorer-controls label { min-width: 0; }
+  .explorer-controls label span { display: block; font-weight: 650; font-size: .92rem; margin-bottom: .36rem; }
+  .explorer-controls input, .explorer-controls select {
+    width: 100%; min-height: 2.8rem; box-sizing: border-box;
+    border: 1px solid #aabeb4; border-radius: .15rem;
+    background: #fffefa; color: var(--ink, #10282b);
+    padding: .5rem .8rem; font: inherit;
+  }
+  .catalogue :is(a, button, input, select):focus-visible,
+  .matches :global(button:focus-visible) {
+    outline: 2px solid #087668; outline-offset: 2px;
+  }
+  .catalogue-grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: clamp(1rem, 2vw, 2rem); align-items: start;
+  }
+  .catalogue-grid > *, .explorer-intro > * { min-width: 0; }
+  .match-summary { color: #51625e; margin: 0 0 .35rem; }
+  .matches :global([data-results] button) {
+    cursor: pointer; width: 100%; display: grid; justify-items: start; gap: .1rem;
+    padding: .55rem .8rem; border: 0; border-bottom: 1px solid #dce3dc;
+    border-left: 3px solid transparent; background: transparent;
+    text-align: left; font: inherit; line-height: 1.4; color: var(--ink, #10282b);
+    overflow-wrap: anywhere;
+  }
+  .matches :global([data-results] button:hover) { background: #f2f5ef; }
+  .matches :global([data-results] button[aria-pressed="true"]) {
+    border-left-color: #18796b; background: #e9f2eb;
+  }
+  .matches :global([data-results] button span) { font-weight: 660; }
+  .matches :global([data-results] small) { color: #426158; font-size: .81rem; }
+  .page-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: .4rem; margin-top: .75rem;
+  }
+  .page-nav button {
+    border: 1px solid #bccbc2; border-radius: .12rem;
+    padding: .3rem .65rem; background: transparent; color: #174e44;
+    cursor: pointer; font: inherit; font-size: .88rem;
+  }
+  .page-nav button:disabled { opacity: .45; cursor: default; }
+  .record { background: #edf2e9; padding: clamp(1rem, 2.1vw, 1.8rem); overflow-wrap: anywhere; }
+  .record-family { margin: 0 0 .3rem; }
+  .record h4 { margin: 0 0 1.05rem; font-size: clamp(1.5rem, 2.2vw, 2.05rem); line-height: 1.16; letter-spacing: -.045em; }
+  .record-fields { margin: 0 0 1rem; }
+  .record-fields :global(div) {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    gap: 1rem; padding: .62rem 0; border-top: 1px solid #c6d5c9;
+  }
+  .record-fields :global(dt) { color: #38574e; }
+  .record-fields :global(dd) { margin: 0; font-weight: 650; }
+  .record a, .explorer-intro a { font-size: .9rem; }
+  .database-note { max-width: 88ch; margin: 1.2rem 0 0; }
+  .database-note a { white-space: normal; }
+  .catalogue [hidden] { display: none !important; }
+  @media (max-width: 760px) {
+    .catalogue-intro, .catalogue-grid { grid-template-columns: 1fr; }
+    .catalogue-intro { gap: 1.3rem; margin-bottom: 1.6rem; }
+  }
+  @media (max-width: 540px) {
+    .explorer-controls { grid-template-columns: 1fr; gap: .65rem; }
+    .record-fields :global(div) { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); gap: .6rem; }
+  }
+</style>

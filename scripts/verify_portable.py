@@ -154,7 +154,7 @@ def main():
             assert health["engine"]["multithreaded"] is True
             assert health["engine"]["worker_version"] == health["version"]
             worker_metadata=json.loads(subprocess.check_output([health["engine"]["path"],"--version"],env=env,timeout=10))
-            assert worker_metadata['stream_version']==6,worker_metadata
+            assert worker_metadata['stream_version']==7,worker_metadata
             connection=urllib.request.urlopen(base+'/api/client/connect',timeout=30)
             while True:
                 line=connection.readline()
@@ -322,7 +322,7 @@ def main():
             result={"status":"passed","application_version":health["version"],"engine":health["engine"],
                 "copied_folder":str(target),"launcher":"Start-TwinPALS.cmd","port":port,"sanitized_path":env["PATH"],
                 "python_node_geant4_env_removed":True,"runs":runs,"pulse_runs":pulse_runs,"lifetime_runs":lifetime_runs,"events":4000,"sources":["na22","co60"],
-                "profile_exchange":"passed","material_exchange_preview":"passed","factory_entries":len(state['entries']),"standard_materials":309,"event_schema_version":6,"printed_url":base,"independent_stream_validation":"passed",
+                "profile_exchange":"passed","material_exchange_preview":"passed","factory_entries":len(state['entries']),"standard_materials":309,"event_schema_version":7,"printed_url":base,"independent_stream_validation":"passed",
                 "execution":"real Geant4; Na independent pools, Co correlated projections; selected gamma transport",
                 "native_threads":native_threads,"source_release_manifest_sha256":source_manifest_sha256,"worker_stream_version":worker_metadata['stream_version'],
                 "packaged_server_sha256":hashlib.sha256((target/"TwinPALS.exe").read_bytes()).hexdigest(),

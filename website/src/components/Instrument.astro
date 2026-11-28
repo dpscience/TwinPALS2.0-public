@@ -1,0 +1,191 @@
+---
+import drawing from '../assets/measurement-path.svg?raw';
+
+const stages = [
+  {key: 'source', label: 'Source', ms: 2400, frame: '254 57 392 201',
+    text: 'The source model sets the gamma energies and how the emissions are correlated. The sample and encapsulation materials determine what the photons traverse before reaching either detector.'},
+  {key: 'gamma', label: 'Gamma rays', ms: 2400, frame: '205 79 490 251',
+    text: 'Geant4 tracks each gamma through the setup and records where it deposits energy. Here one interaction occurs in each crystal. A gamma can also scatter into the opposite detector.'},
+  {key: 'light', label: 'Light', ms: 2300, frame: '514 97 235 120',
+    text: 'The deposited energy and crystal light yield set the expected number of scintillation photons. Their emission times follow the crystal decay constants. Optical transport tracks them through the crystal, coupling layer and PMT window.'},
+  {key: 'cathode', label: 'Photocathode', ms: 4200, frame: '78 24 744 381',
+    text: 'The conversion from light to charge begins at a thin film on the inside of the PMT window. An absorbed scintillation photon can release a photoelectron into the vacuum. TwinPALS uses the wavelength-dependent quantum efficiency to model how often this occurs.'},
+  {key: 'pulse', label: 'PMT pulse', ms: 2600, frame: '37 100 426 218',
+    text: 'The dynodes multiply the electrons released at the photocathode. TwinPALS models the gain and transit-time spread of the selected tube, then sums the single-photoelectron responses to form the anode pulse.'},
+  {key: 'digitizer', label: 'Digitizer', ms: 2500, frame: '167 266 295 151',
+    text: 'Source activity sets how often pulses arrive and overlap. When the two channels satisfy the coincidence trigger, the digitizer records both voltages at the selected sampling interval and ADC resolution.'},
+  {key: 'spectrum', label: 'Spectrum', ms: 3600, frame: '488 249 304 156',
+    text: 'Constant-fraction timing gives each accepted pulse pair a start–stop time difference and one count in the lifetime spectrum. Recorded decay and photon IDs let you separate intended pairs from other event classes, such as pile-up or accidental background.'},
+];
+---
+<figure class="hero-figure" id="signal-path">
+  <div class="instrument-drawing" set:html={drawing} />
+  <figcaption class="instrument-caption">
+    <div class="trace-header">
+      <strong>Follow the signal</strong>
+      <button type="button" class="trace-play" data-transport hidden>
+        <span class="transport-icon" aria-hidden="true"></span><span data-label>Play</span>
+      </button>
+    </div>
+    <p class="trace-static">Follow gamma emission, energy deposition in the crystals and the two digitized pulses. Each accepted start–stop time difference adds one count to the lifetime spectrum.</p>
+    <div class="trace-controls" hidden>
+      <div class="trace-steps" role="group" aria-label="Signal path stages">
+        {stages.map(stage => <button type="button" data-stage={stage.key} data-ms={stage.ms} data-frame={stage.frame}
+          aria-pressed="false" aria-controls="path-explanation">{stage.label}</button>)}
+      </div>
+      <div id="path-explanation" class="trace-detail" aria-live="off" aria-atomic="true">
+        {stages.map(stage => <p data-description={stage.key} aria-hidden="true">{stage.text}</p>)}
+      </div>
+    </div>
+  </figcaption>
+</figure>
+<script>
+  const figure = document.querySelector<HTMLElement>('#signal-path');
+  if (figure) {
+    const svg = figure.querySelector('svg')!;
+    const buttons = Array.from(figure.querySelectorAll<HTMLButtonElement>('[data-stage]'));
+    const captions = Array.from(figure.querySelectorAll<HTMLElement>('[data-description]'));
+    const details = figure.querySelector<HTMLElement>('.trace-detail')!;
+    const transport = figure.querySelector<HTMLButtonElement>('[data-transport]')!;
+    const transportLabel = transport.querySelector<HTMLElement>('[data-label]')!;
+    const fullFrame = svg.getAttribute('viewBox')!;
+    const smallScreen = matchMedia('(max-width: 600px)');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    let active = 0;
+    let wantsPlayback = !reducedMotion.matches;
+    let inView = false;
+    let hasPlayed = false;
+    let remaining = 0;
+    let deadline = 0;
+    let timer: number | undefined;
+    let camera = 0;
+
+    function frameStage(ease: boolean) {
+      cancelAnimationFrame(camera);
+      const closeup = buttons[active].dataset.stage === 'cathode' || (smallScreen.matches && (hasPlayed || active > 0));
+      const target = closeup ? buttons[active].dataset.frame! : fullFrame;
+      svg.toggleAttribute('data-closeup', closeup);
+      if (!ease || buttons[active].dataset.stage === 'cathode' || reducedMotion.matches || svg.getAttribute('viewBox') === target) {
+        svg.setAttribute('viewBox', target);
+        return;
+      }
+      const source = svg.getAttribute('viewBox')!.split(' ').map(Number);
+      const next = target.split(' ').map(Number);
+      const start = performance.now();
+      function tween(now: number) {
+        const t = Math.min(1, (now - start) / 340);
+        const mix = t * t * (3 - 2 * t);
+        svg.setAttribute('viewBox', source.map((v, i) => v + (next[i] - v) * mix).join(' '));
+        if (t < 1) camera = requestAnimationFrame(tween);
+      }
+      camera = requestAnimationFrame(tween);
+    }
+
+    function selectStage(index: number, animate: boolean) {
+      active = index;
+      const selected = buttons[index];
+      remaining = Number(selected.dataset.ms);
+      svg.toggleAttribute('data-animated', animate);
+      svg.dataset.phase = selected.dataset.stage;
+      buttons.forEach((b, i) => b.setAttribute('aria-pressed', String(i === index)));
+      captions.forEach((p, i) => p.setAttribute('aria-hidden', String(i !== index)));
+      frameStage(animate);
+    }
+
+    function freezeClock() {
+      if (timer === undefined) return;
+      clearTimeout(timer);
+      timer = undefined;
+      remaining = Math.max(1, deadline - performance.now());
+    }
+
+    function sync() {
+      const visible = inView && !document.hidden;
+      const running = visible && wantsPlayback;
+      svg.toggleAttribute('data-visible', visible);
+      svg.dataset.running = String(running);
+      transport.dataset.playing = String(wantsPlayback);
+      const label = wantsPlayback ? 'Pause' : hasPlayed ? 'Resume' : 'Play';
+      transportLabel.textContent = label;
+      transport.setAttribute('aria-label', label + ' the signal animation');
+      details.setAttribute('aria-live', wantsPlayback ? 'off' : 'polite');
+      if (!running) {
+        freezeClock();
+        return;
+      }
+      if (timer !== undefined) return;
+      svg.removeAttribute('data-preview');
+      if (!hasPlayed) {
+        hasPlayed = true;
+        frameStage(true);
+      }
+      svg.toggleAttribute('data-animated', true);
+      deadline = performance.now() + remaining;
+      timer = window.setTimeout(() => {
+        timer = undefined;
+        selectStage((active + 1) % buttons.length, true);
+        sync();
+      }, remaining);
+    }
+
+    buttons.forEach((button, i) => button.addEventListener('click', () => {
+      freezeClock();
+      wantsPlayback = false;
+      hasPlayed = true;
+      sync();
+      selectStage(i, false);
+      svg.removeAttribute('data-preview');
+      if (!reducedMotion.matches && ['source', 'gamma', 'light', 'cathode'].includes(button.dataset.stage!)) {
+        // Resolve the idle style so a second click can replay the same physical event.
+        svg.getBoundingClientRect();
+        svg.setAttribute('data-preview', '');
+      }
+    }));
+    transport.addEventListener('click', () => { wantsPlayback = !wantsPlayback; sync(); });
+    document.addEventListener('visibilitychange', sync);
+    smallScreen.addEventListener('change', () => frameStage(false));
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) wantsPlayback = false;
+      frameStage(false);
+      sync();
+    });
+    selectStage(0, false);
+    figure.querySelector<HTMLElement>('.trace-static')!.hidden = true;
+    figure.querySelector<HTMLElement>('.trace-controls')!.hidden = false;
+    transport.hidden = false;
+    sync();
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    }).observe(figure);
+  }
+</script>
+<style>
+  .instrument-drawing { width: 100%; aspect-ratio: 900 / 461; overflow: hidden; }
+  .instrument-drawing :global(svg) { width: 100%; height: 100%; display: block; }
+  .instrument-caption { margin: .6rem auto 0; width: 94%; color: #c9d8d2; container-type: inline-size; }
+  .trace-header { display: flex; align-items: center; justify-content: space-between; gap: .8rem; }
+  .trace-header strong { color: #edf3e9; font-size: 1rem; font-weight: 650; }
+  .trace-play { display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .15rem .3rem .6rem; background: transparent; border: 0; color: #b1c7bf; font-size: .8rem; }
+  .trace-play:hover { color: #fff; }
+  .transport-icon { width: 0; height: 0; border-block: 4px solid transparent; border-left: 6px solid currentColor; }
+  [data-playing="true"] .transport-icon { width: 7px; height: 9px; border: 0; border-inline: 2px solid currentColor; }
+  .trace-steps { display: grid; grid-template-columns: .8fr 1fr .7fr 1.35fr 1fr .9fr 1fr; gap: .35rem; margin-block: .7rem .6rem; }
+  .trace-steps button { text-align: left; color: #aec4bc; border: 0; border-top: 2px solid #3d5b59; background: none; padding: .5rem 0 .27rem; font-size: .83rem; line-height: 1.25; }
+  .trace-steps button:hover { border-color: #8da8a0; color: #f7f9ec; }
+  .trace-steps button[aria-pressed="true"] { border-color: #95e1c9; color: #d7f5e6; font-weight: 700; }
+  .trace-detail { display: grid; align-items: start; }
+  .trace-static, .trace-detail p { font-size: .89rem; line-height: 1.5; }
+  .trace-detail p { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .16s ease, visibility 0s .16s; }
+  .trace-detail p[aria-hidden="false"] { opacity: 1; visibility: visible; transition: opacity .28s .14s ease, visibility 0s .14s; }
+  @container (max-width: 32rem) { .trace-steps { grid-template-columns: repeat(3,minmax(0,1fr)) minmax(max-content,1fr); } }
+  @media(max-width: 600px) {
+    .instrument-caption { width: 100%; }
+    .trace-steps { gap: .2rem; }
+    .trace-steps button { min-height: 42px; font-size: .72rem; }
+    .trace-play { min-height: 36px; }
+  }
+  @media(prefers-reduced-motion: reduce) {
+    .trace-detail p, .trace-detail p[aria-hidden="false"] { transition: none; }
+  }
+</style>

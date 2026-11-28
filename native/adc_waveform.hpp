@@ -11,7 +11,7 @@
 
 namespace adc_waveform {
 struct SampledResponse {
-    double first=0.,inverseStep=0.,last=0.,unitError=0.;
+    double first=0.,inverseStep=0.,last=0.,chargeSum=0,unitError=0.;
     std::vector<double> knots;
     double at(double t)const{
         if(t<=first||t>=last)return 0.;
@@ -28,9 +28,14 @@ struct SampledResponse {
 };
 struct Pulse {
     const double* onsets;
-    int32_t count,order;
+    int32_t count;
+    double order;
     double origin,tau,scale,polarity,factor;
     const SampledResponse* table=nullptr;
+    analog_pmt::ChargeLaw charge{};
+    uint64_t event=0;
+    const double* weights=nullptr;
+    double totalWeight=0.;
 };
 struct Kernel {
     int order;
@@ -90,7 +95,7 @@ inline bool clustered(const Pulse& p,const Kernel& k,const std::vector<double>& 
         for(int l=1;l<10;++l)prefix[l]=prefix[l-1]*(x-(l-1));
         double suffix=1.;
         for(int l=9;l>=0;--l){
-            weights[j+l]+=prefix[l]*suffix*inverse[l];suffix*=x-l;
+            weights[j+l]+=(p.weights?p.weights[i]:1.)*prefix[l]*suffix*inverse[l];suffix*=x-l;
         }
     }
     weightNorm=0.;for(double w:weights)weightNorm+=std::abs(w);
@@ -153,20 +158,36 @@ inline int sample(const double* times,const double* background,int length,
     thread_local std::vector<double> voltage,relative,tableError;
     voltage.assign(length,0.);relative.resize(length);tableError.clear();
     double uncertainty=0;bool exact=false;
+    std::vector<Pulse> prepared;
+    std::vector<std::vector<double>> sortedOnsets,rankWeights;
+    if(count && std::any_of(pulses,pulses+count,[](const Pulse& p){return p.charge.scale>0;})){
+        prepared.assign(pulses,pulses+count);sortedOnsets.resize(count);rankWeights.resize(count);
+        for(int k=0;k<count;++k){
+            auto& p=prepared[k];if(!p.charge.scale||!p.count||p.table)continue;
+            if(!std::is_sorted(p.onsets,p.onsets+p.count)){
+                auto& times=sortedOnsets[k];times.assign(p.onsets,p.onsets+p.count);
+                std::sort(times.begin(),times.end());p.onsets=times.data();
+            }
+            rankWeights[k]=p.charge.weights(p.count,p.event);p.weights=rankWeights[k].data();
+            for(double weight:rankWeights[k])p.totalWeight+=weight;
+        }
+        pulses=prepared.data();
+    }
     for(int k=0;k<count;++k){
         const auto& p=pulses[k];
         if(p.count==0)continue;
         // Keep the certified path in the well-conditioned range of the
         // archived Erlang implementation. Other poles and orders use it directly.
-        if(p.order<5||p.order>24||!(p.tau>0)||p.count>65536||length>8192||
+        if(p.order!=std::floor(p.order)||p.order<5||p.order>24||!(p.tau>0)||p.count>65536||length>8192||
                 (filter>0&&(filter/p.tau<.25||filter/p.tau>4.||std::abs(filter/p.tau-1)<1e-5))){exact=true;break;}
         for(int i=0;i<length;++i)relative[i]=times[i]-p.origin;
         const double scale=p.scale*p.polarity*p.factor;
+        const double totalWeight=p.weights?p.totalWeight:double(p.count);
         if(p.table){
             const auto& tab=*p.table;
             if(tableError.empty())tableError.resize(length);
             const double bound=std::abs(scale)*tab.unitError;
-            const double tail=std::abs(scale)*p.count/p.tau*1e-12;
+            const double tail=std::abs(scale)*tab.chargeSum/p.tau*1e-12;
             for(int i=0;i<length;++i){
                 if(relative[i]<=tab.first)continue;
                 if(relative[i]>=tab.last){tableError[i]+=tail;continue;}
@@ -174,8 +195,8 @@ inline int sample(const double* times,const double* background,int length,
             }
             continue;
         }
-        const auto& shape=kernel(p.order,p.tau,filter);
-        double weightNorm=p.count;
+        const auto& shape=kernel(static_cast<int>(p.order),p.tau,filter);
+        double weightNorm=totalWeight;
         const bool grouped=clustered(p,shape,relative,scale,voltage,weightNorm);
         if(!grouped)for(int j=0;j<p.count;++j){
             const double onset=p.onsets[j];
@@ -183,7 +204,7 @@ inline int sample(const double* times,const double* background,int length,
             for(;i<length;++i){
                 const double age=relative[i]-onset;
                 if(age>=shape.cutoff)break;
-                voltage[i]+=shape.at(age)*scale;
+                voltage[i]+=shape.at(age)*scale*(p.weights?p.weights[j]:1.);
             }
         }
         // For n >= 5 the fourth derivative is a fourth difference of five
@@ -196,7 +217,7 @@ inline int sample(const double* times,const double* background,int length,
         // The tenth derivative is bounded by 2^10/tau^11. On the central
         // interval the product of the ten distances is at most
         // (0.5*1.5*2.5*3.5*4.5)^2; spacing tau/8 gives < 2.30e-10/tau.
-        const double grouping=grouped?p.count*2.30e-10:0.;
+        const double grouping=grouped?totalWeight*2.30e-10:0.;
         uncertainty+=std::abs(scale)/p.tau*(weightNorm*(16./(24.*4294967296.)+1e-12+propagation)+grouping);
     }
     auto code=[&](double v){return std::clamp(std::floor((v-low)/lsb+.5),0.,static_cast<double>(levels-1));};
@@ -247,7 +268,9 @@ inline int sample(const double* times,const double* background,int length,
             const auto& p=pulses[k];if(!p.count)continue;
             std::vector<double> sorted(p.onsets,p.onsets+p.count);std::sort(sorted.begin(),sorted.end());
             analog_pmt::Response r;r.order=p.order;r.tau=p.tau;r.filterTau=filter;
-            analog_pmt::Chain chain(sorted,r);
+            const auto tableWeights=p.table?p.charge.weights(p.count,p.event):std::vector<double>{};
+            const double* weights=tableWeights.empty()?p.weights:tableWeights.data();
+            analog_pmt::Chain chain(sorted.data(),sorted.size(),r,false,weights);
             for(int i=0;i<end;++i){
                 const double t=times[i]-p.origin;
                 if(t>=sorted.front())voltage[i]+=((chain.at(t)*p.scale)*p.polarity)*p.factor;
